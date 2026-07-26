@@ -2,6 +2,6 @@
 
 import { BinaryWorkbench } from '@/components/tools/binary-workbench'
 
-export function BinaryConverter() {
-  return <BinaryWorkbench defaultTab="encode" />
+export function BinaryDecoder() {
+  return <BinaryWorkbench defaultTab="decode" />
 }

@@ -8,7 +8,8 @@ interface GuideCardProps {
 }
 
 export function GuideCard({ guide, compact = false }: GuideCardProps) {
-  const formattedDate = new Date(guide.publishedAt).toLocaleDateString('en-US', {
+  const displayDate = guide.updatedAt ?? guide.publishedAt
+  const formattedDate = new Date(displayDate).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -21,7 +22,7 @@ export function GuideCard({ guide, compact = false }: GuideCardProps) {
     >
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <BookOpen className="size-3.5 shrink-0" aria-hidden />
-        <time dateTime={guide.publishedAt}>{formattedDate}</time>
+        <time dateTime={displayDate}>{formattedDate}</time>
       </div>
       <h3
         className={`mt-2 font-semibold transition-colors group-hover:text-primary ${compact ? 'text-lg' : 'text-xl'}`}

@@ -55,6 +55,15 @@ function GuideBlockRenderer({ block }: { block: GuideBlock }) {
           {block.label} →
         </Link>
       )
+    case 'compare-cta':
+      return (
+        <Link
+          href={`/compare/${block.slug}`}
+          className="mt-6 inline-flex items-center rounded-xl border border-border/70 bg-muted/30 px-5 py-2.5 text-sm font-medium transition-colors hover:border-primary/30 hover:bg-muted/50"
+        >
+          {block.label} →
+        </Link>
+      )
     default:
       return null
   }
@@ -76,6 +85,7 @@ export default async function GuidePage({ params }: PageProps) {
     headline: guide.title,
     description: guide.description,
     datePublished: guide.publishedAt,
+    dateModified: guide.updatedAt ?? guide.publishedAt,
     author: { '@type': 'Organization', name: siteConfig.name },
     publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
     url: `${siteConfig.url}/guides/${guide.slug}`,

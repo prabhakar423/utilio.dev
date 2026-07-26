@@ -2,6 +2,6 @@
 
 import { HexWorkbench } from '@/components/tools/hex-workbench'
 
-export function HexEncoder() {
-  return <HexWorkbench defaultTab="encode" />
+export function HexDecoder() {
+  return <HexWorkbench defaultTab="decode" />
 }

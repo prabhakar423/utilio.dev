@@ -2,6 +2,6 @@
 
 import { HtmlWorkbench } from '@/components/tools/html-workbench'
 
-export function HtmlEncoder() {
-  return <HtmlWorkbench defaultTab="encode" />
+export function HtmlDecoder() {
+  return <HtmlWorkbench defaultTab="decode" />
 }

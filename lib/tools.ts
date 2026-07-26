@@ -247,17 +247,21 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'Hash Generator',
     description: 'Generate SHA-256, SHA-384, and SHA-512 hashes',
     longDescription:
-      'Compute cryptographic hashes from any text using SHA-256, SHA-384, or SHA-512. All hashing runs locally via the Web Crypto API — your input never leaves the browser.',
+      'Compute cryptographic hashes and HMAC signatures in one workbench. SHA-256, SHA-384, and SHA-512 via Web Crypto — switch between Hash and HMAC tabs without leaving the page.',
     category: 'security',
     icon: 'shield-check',
-    keywords: ['hash generator', 'sha256', 'sha512', 'checksum', 'cryptographic hash'],
+    keywords: ['hash generator', 'sha256', 'sha512', 'checksum', 'cryptographic hash', 'hmac generator'],
     type: 'static',
     addedAt: '2026-02-10',
-    relatedTools: ['base64-encoder', 'jwt-decoder', 'password-generator'],
+    relatedTools: ['hmac-generator', 'jwt-decoder', 'base64-encoder'],
     faq: [
       {
         question: 'What hash algorithms are supported?',
         answer: 'SHA-256, SHA-384, and SHA-512 via the browser Web Crypto API. MD5 is not included because it is cryptographically broken.',
+      },
+      {
+        question: 'Can I generate HMAC signatures here?',
+        answer: 'Yes. Switch to the HMAC tab to sign a message with a secret key — used for webhooks, API auth, and JWT HS256 verification.',
       },
       ...defaultFaq,
     ],
@@ -311,14 +315,24 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'Unix Timestamp Converter',
     description: 'Convert Unix timestamps to dates and vice versa',
     longDescription:
-      'Convert between Unix epoch timestamps (seconds and milliseconds) and human-readable dates. Supports current time, custom timestamps, and ISO 8601 output.',
+      'Convert between Unix epoch timestamps and human-readable dates with relative time ("3 days ago", "in 2 hours"). Auto-detects seconds vs milliseconds. One workbench for both directions.',
     category: 'datetime',
     icon: 'clock',
-    keywords: ['unix timestamp', 'epoch converter', 'timestamp to date', 'date to timestamp'],
+    keywords: ['unix timestamp', 'epoch converter', 'timestamp to date', 'date to timestamp', 'relative time'],
     type: 'static',
     addedAt: '2026-02-11',
-    relatedTools: ['age-calculator', 'json-formatter', 'uuid-generator'],
-    faq: defaultFaq,
+    relatedTools: ['timezone-converter', 'jwt-decoder', 'cron-parser'],
+    faq: [
+      {
+        question: 'Does it show relative time?',
+        answer: 'Yes. When converting a timestamp to a date, the workbench shows relative time like "5 minutes ago" or "in 2 days" alongside local, ISO, and UTC formats.',
+      },
+      {
+        question: 'Seconds or milliseconds?',
+        answer: 'Both. Values with 13+ digits are treated as milliseconds; 10-digit values are seconds. The detected unit is shown in the result.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/unix-timestamp-converter').then((mod) => ({
         default: mod.UnixTimestampConverter,
@@ -347,32 +361,88 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'HTML Encoder',
     description: 'Encode special characters to HTML entities',
     longDescription:
-      'Convert characters like <, >, &, and quotes to HTML entities for safe display in web pages and prevention of XSS in templates.',
+      'Encode and decode HTML entities on one page — escape &lt;, &gt;, &amp;, and quotes for safe display, or reverse entities back to characters.',
     category: 'encoding',
     icon: 'code',
-    keywords: ['html encoder', 'html entities', 'escape html', 'html encode'],
+    keywords: ['html encoder', 'html entities', 'escape html', 'html encode', 'html decode'],
     type: 'static',
     addedAt: '2026-02-12',
-    relatedTools: ['url-encoder', 'base64-encoder', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['html-decoder', 'url-encoder', 'json-formatter'],
+    faq: [
+      {
+        question: 'Can I decode HTML entities here?',
+        answer: 'Yes. Switch to the Decode tab in the same HTML workbench — encode and decode share one page with shareable links.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/html-encoder').then((mod) => ({ default: mod.HtmlEncoder })),
+  },
+  'html-decoder': {
+    id: 'html-decoder',
+    title: 'HTML Decoder',
+    description: 'Decode HTML entities back to plain text',
+    longDescription:
+      'Convert HTML entities like &amp;lt; and &amp;amp; back to readable characters. Same workbench as the HTML Encoder — switch tabs without leaving the page.',
+    category: 'encoding',
+    icon: 'code',
+    keywords: ['html decoder', 'decode html entities', 'unescape html', 'html entity decoder'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['html-encoder', 'url-decoder', 'strip-html-tags'],
+    faq: [
+      {
+        question: 'Can I encode HTML here?',
+        answer: 'Yes. Use the Encode tab in the same HTML workbench to escape special characters for safe HTML output.',
+      },
+      ...defaultFaq,
+    ],
+    component: () =>
+      import('@/components/tools/html-decoder').then((mod) => ({ default: mod.HtmlDecoder })),
   },
   'hex-encoder': {
     id: 'hex-encoder',
     title: 'Hex Encoder',
     description: 'Convert text to hexadecimal and hex back to text',
     longDescription:
-      'Encode plain text to hexadecimal representation or decode hex strings back to readable text. Useful for debugging binary data and color values.',
+      'Encode plain text to hex or decode hex strings to readable text in one workbench. Round-trip with a single click — useful for debugging binary data and color values.',
     category: 'encoding',
     icon: 'hash',
-    keywords: ['hex encoder', 'hexadecimal', 'text to hex', 'hex decode'],
+    keywords: ['hex encoder', 'hexadecimal', 'text to hex', 'hex decode', 'hex decoder'],
     type: 'static',
     addedAt: '2026-02-13',
-    relatedTools: ['base64-encoder', 'hash-generator', 'url-encoder'],
-    faq: defaultFaq,
+    relatedTools: ['hex-decoder', 'base64-encoder', 'hash-generator'],
+    faq: [
+      {
+        question: 'Can I decode hex back to text?',
+        answer: 'Yes. Switch to the Hex → Text tab or use “Decode output →” after encoding. Both directions live on one page.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/hex-encoder').then((mod) => ({ default: mod.HexEncoder })),
+  },
+  'hex-decoder': {
+    id: 'hex-decoder',
+    title: 'Hex Decoder',
+    description: 'Convert hexadecimal strings back to plain text',
+    longDescription:
+      'Decode hex strings (e.g. 48656c6c6f) to readable text. Same workbench as the Hex Encoder — whitespace in input is ignored automatically.',
+    category: 'encoding',
+    icon: 'hash',
+    keywords: ['hex decoder', 'hexadecimal decode', 'hex to text', 'decode hex string'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['hex-encoder', 'binary-converter', 'ascii-converter'],
+    faq: [
+      {
+        question: 'Can I encode text to hex here?',
+        answer: 'Yes. Switch to the Text → Hex tab in the same workbench to encode plain text to hexadecimal.',
+      },
+      ...defaultFaq,
+    ],
+    component: () =>
+      import('@/components/tools/hex-decoder').then((mod) => ({ default: mod.HexDecoder })),
   },
   'lorem-ipsum-generator': {
     id: 'lorem-ipsum-generator',
@@ -523,14 +593,20 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'Markdown to HTML',
     description: 'Convert Markdown syntax to HTML instantly',
     longDescription:
-      'Transform Markdown text into HTML with support for headings, bold, italic, links, lists, and inline code. Includes live HTML preview.',
+      'Transform Markdown to HTML with live preview — same workbench as Markdown Preview and HTML → Markdown for full round-trip editing.',
     category: 'text',
     icon: 'file-code',
     keywords: ['markdown to html', 'md converter', 'markdown converter', 'html generator'],
     type: 'static',
     addedAt: '2026-02-17',
-    relatedTools: ['html-encoder', 'strip-html-tags', 'word-counter'],
-    faq: defaultFaq,
+    relatedTools: ['markdown-preview', 'html-to-markdown', 'html-beautifier'],
+    faq: [
+      {
+        question: 'Is there a live preview?',
+        answer: 'Yes. Use the Live preview tab for side-by-side editing, or the Markdown → HTML tab to copy HTML source.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/markdown-to-html').then((mod) => ({ default: mod.MarkdownToHtml })),
   },
@@ -709,14 +785,20 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'CSV to JSON',
     description: 'Convert CSV data to JSON format',
     longDescription:
-      'Transform comma-separated values into a JSON array of objects. Paste CSV with a header row and get clean, formatted JSON output instantly.',
+      'Transform comma-separated values into a JSON array of objects — switch to JSON → CSV on the same page for round-trip conversion with live output.',
     category: 'developer',
     icon: 'table',
     keywords: ['csv to json', 'convert csv', 'csv json converter', 'csv parser'],
     type: 'static',
     addedAt: '2026-02-23',
-    relatedTools: ['json-to-csv', 'json-formatter', 'sql-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['json-to-csv', 'json-formatter', 'csv-formatter'],
+    faq: [
+      {
+        question: 'Can I convert JSON back to CSV?',
+        answer: 'Yes. Use the JSON → CSV tab in the same workbench — input and tab are shareable via link.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/csv-to-json').then((mod) => ({ default: mod.CsvToJson })),
   },
@@ -725,14 +807,20 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'JSON to CSV',
     description: 'Convert JSON arrays to CSV format',
     longDescription:
-      'Export JSON array data to CSV for spreadsheets and databases. Automatically generates headers from object keys and handles comma escaping.',
+      'Export JSON array data to CSV for spreadsheets — same workbench as CSV → JSON with row count and round-trip support.',
     category: 'developer',
     icon: 'sheet',
     keywords: ['json to csv', 'convert json csv', 'export json', 'json csv converter'],
     type: 'static',
     addedAt: '2026-02-23',
-    relatedTools: ['csv-to-json', 'json-formatter', 'sql-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['csv-to-json', 'json-formatter', 'csv-formatter'],
+    faq: [
+      {
+        question: 'Can I convert CSV back to JSON?',
+        answer: 'Yes. Switch to the CSV → JSON tab on the same page — both directions share one workbench.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/json-to-csv').then((mod) => ({ default: mod.JsonToCsv })),
   },
@@ -741,14 +829,20 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'XML Formatter',
     description: 'Format and beautify XML documents',
     longDescription:
-      'Pretty-print XML with proper indentation and validate structure. Makes XML configs, SOAP responses, and RSS feeds readable for debugging.',
+      'Validate and pretty-print XML in the Web Formatter workbench — switch to HTML, CSS, or JS tabs without leaving the page.',
     category: 'developer',
     icon: 'code-xml',
     keywords: ['xml formatter', 'format xml', 'xml beautifier', 'pretty print xml'],
     type: 'static',
     addedAt: '2026-02-24',
-    relatedTools: ['json-formatter', 'html-encoder', 'sql-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['html-beautifier', 'json-formatter', 'css-minifier'],
+    faq: [
+      {
+        question: 'Does it catch invalid XML?',
+        answer: 'Yes. Invalid XML shows a parse error. Valid XML is indented for readability.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/xml-formatter').then((mod) => ({ default: mod.XmlFormatter })),
   },
@@ -799,50 +893,138 @@ export const tools: Record<string, ToolDefinition> = {
     title: 'Binary Converter',
     description: 'Convert text to binary and binary back to text',
     longDescription:
-      'Encode text strings to binary (base-2) representation or decode binary back to readable text. Useful for learning, debugging, and low-level data inspection.',
+      'Encode text to 8-bit binary groups or decode binary back to readable text in one workbench — with byte count, examples, and round-trip support.',
     category: 'encoding',
     icon: 'binary',
-    keywords: ['binary converter', 'text to binary', 'binary to text', 'binary encoder'],
+    keywords: ['binary converter', 'text to binary', 'binary to text', 'binary encoder', 'binary decoder'],
     type: 'static',
     addedAt: '2026-02-25',
-    relatedTools: ['hex-encoder', 'base64-encoder', 'hash-generator'],
-    faq: defaultFaq,
+    relatedTools: ['binary-decoder', 'hex-encoder', 'ascii-converter'],
+    faq: [
+      {
+        question: 'How is text encoded to binary?',
+        answer: 'Each UTF-8 byte is shown as an 8-bit binary group separated by spaces. "Hi" becomes 01001000 01101001.',
+      },
+      {
+        question: 'Can I decode binary here?',
+        answer: 'Yes. Switch to the Binary → Text tab or use “Decode output →” after encoding.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/binary-converter').then((mod) => ({ default: mod.BinaryConverter })),
+  },
+  'binary-decoder': {
+    id: 'binary-decoder',
+    title: 'Binary Decoder',
+    description: 'Decode binary strings back to plain text',
+    longDescription:
+      'Convert space-separated 8-bit binary groups to readable text. Same workbench as the Binary Converter — switch tabs without leaving the page.',
+    category: 'encoding',
+    icon: 'binary',
+    keywords: ['binary decoder', 'binary to text', 'decode binary string', 'binary translator'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['binary-converter', 'hex-decoder', 'ascii-decoder'],
+    faq: [
+      {
+        question: 'Can I encode text to binary here?',
+        answer: 'Yes. Use the Text → Binary tab in the same workbench to encode plain text.',
+      },
+      ...defaultFaq,
+    ],
+    component: () =>
+      import('@/components/tools/binary-decoder').then((mod) => ({ default: mod.BinaryDecoder })),
   },
   'morse-code-translator': {
     id: 'morse-code-translator',
     title: 'Morse Code Translator',
     description: 'Translate text to Morse code and decode Morse to text',
     longDescription:
-      'Convert between plain text and International Morse Code. Encode messages to dots and dashes or decode Morse code back to readable text.',
+      'Convert between plain text and International Morse Code with a built-in reference chart. Encode, decode, and round-trip in one shareable workbench.',
     category: 'encoding',
     icon: 'radio',
     keywords: ['morse code', 'morse translator', 'text to morse', 'morse decoder'],
     type: 'static',
     addedAt: '2026-02-26',
-    relatedTools: ['binary-converter', 'rot13-encoder', 'base64-encoder'],
-    faq: defaultFaq,
+    relatedTools: ['morse-decoder', 'binary-converter', 'rot13-encoder'],
+    faq: [
+      {
+        question: 'Is there a Morse code chart?',
+        answer: 'Yes. Expand the reference section on the tool page for A–Z and 0–9 codes. Use / between words when encoding.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/morse-code-translator').then((mod) => ({
         default: mod.MorseCodeTranslator,
       })),
+  },
+  'morse-decoder': {
+    id: 'morse-decoder',
+    title: 'Morse Code Decoder',
+    description: 'Decode Morse code dots and dashes to plain text',
+    longDescription:
+      'Convert Morse code (... --- ...) back to readable text. Same workbench as the Morse translator — includes encode tab and reference chart.',
+    category: 'encoding',
+    icon: 'radio',
+    keywords: ['morse decoder', 'decode morse code', 'morse to text', 'morse code translator'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['morse-code-translator', 'binary-decoder', 'ascii-decoder'],
+    faq: [
+      {
+        question: 'Can I encode text to Morse here?',
+        answer: 'Yes. Switch to the Text → Morse tab in the same workbench.',
+      },
+      ...defaultFaq,
+    ],
+    component: () =>
+      import('@/components/tools/morse-decoder').then((mod) => ({ default: mod.MorseDecoder })),
   },
   'rot13-encoder': {
     id: 'rot13-encoder',
     title: 'ROT13 Encoder',
     description: 'Encode and decode text with ROT13 cipher',
     longDescription:
-      'Apply ROT13 letter substitution cipher to any text. ROT13 is symmetric — encoding and decoding use the same operation. Often used for hiding spoilers.',
+      'Apply ROT13 letter substitution with live output. Symmetric cipher — encoding and decoding use the same operation. Shareable links included.',
     category: 'encoding',
     icon: 'lock',
-    keywords: ['rot13', 'rot13 encoder', 'caesar cipher', 'text cipher'],
+    keywords: ['rot13', 'rot13 encoder', 'caesar cipher', 'text cipher', 'rot13 decoder'],
     type: 'static',
     addedAt: '2026-02-26',
-    relatedTools: ['base64-encoder', 'morse-code-translator', 'hash-generator'],
-    faq: defaultFaq,
+    relatedTools: ['rot13-decoder', 'morse-code-translator', 'base64-encoder'],
+    faq: [
+      {
+        question: 'Is ROT13 the same as decoding?',
+        answer: 'Yes. ROT13 is symmetric — applying it twice returns the original text.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/rot13-encoder').then((mod) => ({ default: mod.Rot13Encoder })),
+  },
+  'rot13-decoder': {
+    id: 'rot13-decoder',
+    title: 'ROT13 Decoder',
+    description: 'Decode ROT13 cipher text back to plain text',
+    longDescription:
+      'Decode ROT13-encoded text instantly. Same workbench as the ROT13 encoder — the operation is identical because ROT13 is symmetric.',
+    category: 'encoding',
+    icon: 'lock',
+    keywords: ['rot13 decoder', 'decode rot13', 'rot13 decrypt', 'caesar cipher decoder'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['rot13-encoder', 'morse-decoder', 'hash-generator'],
+    faq: [
+      {
+        question: 'How is decoding different from encoding?',
+        answer: 'It is not — ROT13 uses the same transform for both. This page opens the same workbench for users searching for a decoder.',
+      },
+      ...defaultFaq,
+    ],
+    component: () =>
+      import('@/components/tools/rot13-decoder').then((mod) => ({ default: mod.Rot13Decoder })),
   },
   'duplicate-line-remover': {
     id: 'duplicate-line-remover',
@@ -938,14 +1120,21 @@ export const tools: Record<string, ToolDefinition> = {
     id: 'markdown-preview',
     title: 'Markdown Preview',
     description: 'Write Markdown with live HTML preview',
-    longDescription: 'Real-time Markdown editor with side-by-side live preview. Supports headings, bold, italic, links, lists, and inline code.',
+    longDescription:
+      'Real-time Markdown editor with side-by-side preview. Export HTML, convert HTML back to Markdown — all in one shareable workbench.',
     category: 'text',
     icon: 'eye',
     keywords: ['markdown preview', 'markdown editor', 'live markdown', 'md preview'],
     type: 'static',
     addedAt: '2026-03-02',
-    relatedTools: ['markdown-to-html', 'json-formatter', 'word-counter'],
-    faq: defaultFaq,
+    relatedTools: ['markdown-to-html', 'html-to-markdown', 'word-counter'],
+    faq: [
+      {
+        question: 'Can I copy the HTML output?',
+        answer: 'Yes. Switch to the Markdown → HTML tab to view and copy HTML source, or use Copy HTML from the preview tab.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/markdown-preview').then((mod) => ({ default: mod.MarkdownPreview })),
   },
   'http-status-codes': {
@@ -1057,56 +1246,84 @@ export const tools: Record<string, ToolDefinition> = {
     id: 'css-minifier',
     title: 'CSS Minifier',
     description: 'Minify CSS by removing whitespace and comments',
-    longDescription: 'Compress CSS files for production by stripping comments, whitespace, and unnecessary characters. Shows byte savings after minification.',
+    longDescription:
+      'Compress CSS for production in the Web Formatter workbench — switch to HTML beautify, JS minify, or XML format without changing pages.',
     category: 'developer',
     icon: 'minimize-2',
     keywords: ['css minifier', 'minify css', 'compress css', 'css optimizer'],
     type: 'static',
     addedAt: '2026-03-06',
-    relatedTools: ['html-beautifier', 'json-formatter', 'xml-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['html-beautifier', 'javascript-minifier', 'xml-formatter'],
+    faq: [
+      {
+        question: 'Can I format HTML on the same page?',
+        answer: 'Yes. Use the HTML tab in the same Web Formatter workbench to pretty-print HTML.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/css-minifier').then((mod) => ({ default: mod.CssMinifier })),
   },
   'html-beautifier': {
     id: 'html-beautifier',
     title: 'HTML Beautifier',
     description: 'Format and indent HTML code',
-    longDescription: 'Pretty-print HTML with proper indentation for readability. Makes minified or messy HTML easy to read and debug.',
+    longDescription:
+      'Pretty-print HTML with proper indentation — part of the Web Formatter workbench alongside CSS minify, JS minify, and XML format.',
     category: 'developer',
     icon: 'code',
     keywords: ['html beautifier', 'format html', 'pretty print html', 'html formatter'],
     type: 'static',
     addedAt: '2026-03-06',
-    relatedTools: ['html-encoder', 'css-minifier', 'markdown-to-html'],
-    faq: defaultFaq,
+    relatedTools: ['css-minifier', 'javascript-minifier', 'markdown-preview'],
+    faq: [
+      {
+        question: 'Does it validate HTML?',
+        answer: 'It pretty-prints structure with indentation. For XML validation and formatting, use the XML tab in the same workbench.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/html-beautifier').then((mod) => ({ default: mod.HtmlBeautifier })),
   },
   'yaml-to-json': {
     id: 'yaml-to-json',
     title: 'YAML to JSON',
     description: 'Convert YAML data to JSON format',
-    longDescription: 'Parse YAML configuration files and convert to JSON. Useful for Kubernetes configs, Docker Compose, GitHub Actions, and CI pipelines.',
+    longDescription:
+      'Parse YAML and convert to formatted JSON in one workbench — switch to JSON → YAML without changing pages. Ideal for Kubernetes configs, Docker Compose, and GitHub Actions.',
     category: 'developer',
     icon: 'arrow-right-left',
     keywords: ['yaml to json', 'convert yaml', 'yaml json converter', 'yaml parser'],
     type: 'static',
     addedAt: '2026-03-07',
     relatedTools: ['json-to-yaml', 'json-formatter', 'csv-to-json'],
-    faq: defaultFaq,
+    faq: [
+      {
+        question: 'Can I convert JSON back to YAML?',
+        answer: 'Yes. Use the JSON → YAML tab in the same workbench — your input and tab selection are shareable via link.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/yaml-to-json').then((mod) => ({ default: mod.YamlToJson })),
   },
   'json-to-yaml': {
     id: 'json-to-yaml',
     title: 'JSON to YAML',
     description: 'Convert JSON data to YAML format',
-    longDescription: 'Transform JSON objects and arrays into clean YAML output. Ideal for creating config files, Kubernetes manifests, and Docker Compose files.',
+    longDescription:
+      'Transform JSON into clean YAML output in the same workbench as YAML → JSON. Round-trip configs, copy results, and share links with preserved input.',
     category: 'developer',
     icon: 'arrow-left-right',
     keywords: ['json to yaml', 'convert json yaml', 'json yaml converter'],
     type: 'static',
     addedAt: '2026-03-07',
     relatedTools: ['yaml-to-json', 'json-formatter', 'csv-to-json'],
-    faq: defaultFaq,
+    faq: [
+      {
+        question: 'Can I convert YAML back to JSON?',
+        answer: 'Yes. Switch to the YAML → JSON tab on the same page — both directions share one workbench.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/json-to-yaml').then((mod) => ({ default: mod.JsonToYaml })),
   },
   'character-frequency-counter': {
@@ -1267,42 +1484,63 @@ export const tools: Record<string, ToolDefinition> = {
     id: 'javascript-minifier',
     title: 'JavaScript Minifier',
     description: 'Minify JavaScript by removing comments and whitespace',
-    longDescription: 'Compress JavaScript files for production by stripping comments and unnecessary whitespace. Shows byte savings after minification.',
+    longDescription:
+      'Compress JavaScript in the Web Formatter workbench — shows byte savings and shares state with HTML, CSS, and XML tabs.',
     category: 'developer',
     icon: 'file-code',
     keywords: ['javascript minifier', 'minify js', 'compress javascript', 'js optimizer'],
     type: 'static',
     addedAt: '2026-03-13',
-    relatedTools: ['css-minifier', 'json-formatter', 'html-beautifier'],
-    faq: defaultFaq,
+    relatedTools: ['css-minifier', 'html-beautifier', 'json-formatter'],
+    faq: [
+      {
+        question: 'Is this safe for all JavaScript?',
+        answer: 'It is a basic whitespace and comment stripper — always test minified code before deploying to production.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/javascript-minifier').then((mod) => ({ default: mod.JavascriptMinifier })),
   },
   'html-to-markdown': {
     id: 'html-to-markdown',
     title: 'HTML to Markdown',
     description: 'Convert HTML markup to Markdown format',
-    longDescription: 'Transform HTML into clean Markdown syntax. Useful for migrating content, documentation workflows, and CMS exports.',
+    longDescription:
+      'Transform HTML into clean Markdown syntax in the same workbench as Markdown Preview — round-trip content without switching tools.',
     category: 'developer',
     icon: 'file-text',
     keywords: ['html to markdown', 'convert html markdown', 'html markdown converter'],
     type: 'static',
     addedAt: '2026-03-14',
     relatedTools: ['markdown-to-html', 'markdown-preview', 'strip-html-tags'],
-    faq: defaultFaq,
+    faq: [
+      {
+        question: 'Can I preview the Markdown after conversion?',
+        answer: 'Yes. Click “Preview Markdown →” to send the output to the Live preview tab.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/html-to-markdown').then((mod) => ({ default: mod.HtmlToMarkdown })),
   },
   'ip-converter': {
     id: 'ip-converter',
     title: 'IP Address Converter',
     description: 'Convert IPv4 addresses to decimal and hex',
-    longDescription: 'Convert between IPv4 dotted notation, decimal (long integer), and hexadecimal formats. Essential for network debugging and database storage.',
+    longDescription:
+      'Convert between IPv4 dotted notation, 32-bit decimal, and hexadecimal — all three formats update live as you type. Copy all formats with one click.',
     category: 'network',
     icon: 'globe',
-    keywords: ['ip converter', 'ipv4 to decimal', 'ip to long', 'ip address converter'],
+    keywords: ['ip converter', 'ipv4 to decimal', 'ip to long', 'ip address converter', 'ipv4 to hex'],
     type: 'static',
     addedAt: '2026-03-14',
-    relatedTools: ['cidr-calculator', 'url-parser', 'http-status-codes'],
-    faq: defaultFaq,
+    relatedTools: ['cidr-calculator', 'url-parser', 'hex-encoder'],
+    faq: [
+      {
+        question: 'Do all three formats update live?',
+        answer: 'Yes. Edit IPv4, decimal, or hex — the other two fields update automatically when the value is valid.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/ip-converter').then((mod) => ({ default: mod.IpConverter })),
   },
   'mac-address-generator': {
@@ -1323,14 +1561,21 @@ export const tools: Record<string, ToolDefinition> = {
     id: 'hmac-generator',
     title: 'HMAC Generator',
     description: 'Generate HMAC signatures with SHA-256, SHA-384, or SHA-512',
-    longDescription: 'Compute HMAC (Hash-based Message Authentication Code) using a secret key and message. Used for API authentication, JWT signing, and webhook verification.',
+    longDescription:
+      'Compute HMAC signatures with a secret key and message — same workbench as the Hash Generator. Used for API webhooks, JWT HS256, and request signing.',
     category: 'security',
     icon: 'key-round',
-    keywords: ['hmac generator', 'hmac sha256', 'message authentication', 'api signature'],
+    keywords: ['hmac generator', 'hmac sha256', 'message authentication', 'api signature', 'webhook signature'],
     type: 'static',
     addedAt: '2026-03-15',
-    relatedTools: ['hash-generator', 'jwt-generator', 'jwt-decoder'],
-    faq: defaultFaq,
+    relatedTools: ['hash-generator', 'jwt-decoder', 'jwt-generator'],
+    faq: [
+      {
+        question: 'Can I compute plain SHA-256 hashes here?',
+        answer: 'Yes. Switch to the Hash tab in the same workbench for SHA-256, SHA-384, or SHA-512 without a secret key.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/hmac-generator').then((mod) => ({ default: mod.HmacGenerator })),
   },
   'chmod-calculator': {
@@ -1449,15 +1694,47 @@ export const tools: Record<string, ToolDefinition> = {
     id: 'ascii-converter',
     title: 'ASCII Converter',
     description: 'Convert characters to ASCII codes and back',
-    longDescription: 'Look up ASCII/Unicode code points for any character, or convert decimal and hex codes back to characters. Essential for encoding debugging.',
+    longDescription:
+      'Look up ASCII/Unicode code points in a character table, or convert decimal and hex codes back to text — one shareable workbench.',
     category: 'encoding',
     icon: 'hash',
-    keywords: ['ascii converter', 'char to ascii', 'ascii code', 'character code'],
+    keywords: ['ascii converter', 'char to ascii', 'ascii code', 'character code', 'ascii table'],
     type: 'static',
     addedAt: '2026-03-20',
-    relatedTools: ['hex-encoder', 'binary-converter', 'html-encoder'],
-    faq: defaultFaq,
+    relatedTools: ['ascii-decoder', 'hex-encoder', 'binary-converter'],
+    faq: [
+      {
+        question: 'Does it show a character code table?',
+        answer: 'Yes. In Char → Code mode, each character is listed with decimal and hex values in a table below the output.',
+      },
+      {
+        question: 'Can I convert codes back to text?',
+        answer: 'Yes. Switch to Code → Char and paste decimal (72 101) or hex (0x48 0x65) codes.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/ascii-converter').then((mod) => ({ default: mod.AsciiConverter })),
+  },
+  'ascii-decoder': {
+    id: 'ascii-decoder',
+    title: 'ASCII Decoder',
+    description: 'Convert ASCII/Unicode codes back to characters',
+    longDescription:
+      'Paste decimal or hex character codes and get readable text. Same workbench as the ASCII Converter — supports space or comma-separated codes.',
+    category: 'encoding',
+    icon: 'hash',
+    keywords: ['ascii decoder', 'code to char', 'ascii to text', 'character code decoder'],
+    type: 'static',
+    addedAt: '2026-07-26',
+    relatedTools: ['ascii-converter', 'hex-decoder', 'binary-decoder'],
+    faq: [
+      {
+        question: 'What code formats are supported?',
+        answer: 'Decimal (72 101 108) and hex (0x48 0x65 0x6C) codes, separated by spaces or commas.',
+      },
+      ...defaultFaq,
+    ],
+    component: () => import('@/components/tools/ascii-decoder').then((mod) => ({ default: mod.AsciiDecoder })),
   },
   'csv-formatter': {
     id: 'csv-formatter',

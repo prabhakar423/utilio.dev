@@ -3,25 +3,45 @@ export type GuideBlock =
   | { type: 'heading'; text: string }
   | { type: 'list'; items: string[] }
   | { type: 'tool-cta'; toolId: string; label: string }
+  | { type: 'compare-cta'; slug: string; label: string }
 
 export interface Guide {
   slug: string
   title: string
   description: string
   publishedAt: string
+  updatedAt?: string
   keywords: string[]
   relatedTools: string[]
   blocks: GuideBlock[]
 }
+
+export const WORKBENCH_GUIDE_SLUGS = [
+  'hash-generator-sha256-online-free',
+  'markdown-preview-online-free',
+  'csv-to-json-converter-online-free',
+  'hex-encoder-decoder-online-free',
+  'binary-converter-online-free',
+  'web-formatter-online-free',
+] as const
+
+export const FEATURED_GUIDE_SLUGS = [
+  'jwt-decoder-online-free',
+  'json-formatter-pretty-print-online-free',
+  'base64-encode-decode-online-free',
+  'url-encode-decode-online-free',
+  'cron-expression-generator-online',
+] as const
 
 export const guides: Record<string, Guide> = {
   'what-is-base64': {
     slug: 'what-is-base64',
     title: 'What Is Base64 Encoding?',
     description:
-      'Learn what Base64 encoding is, why developers use it, and how to encode or decode Base64 strings online.',
+      'Learn what Base64 encoding is, why developers use it, and how to encode or decode Base64 strings online — including URL-safe mode.',
     publishedAt: '2026-02-10',
-    keywords: ['base64', 'encoding', 'what is base64', 'base64 explained'],
+    updatedAt: '2026-07-26',
+    keywords: ['base64', 'encoding', 'what is base64', 'base64 explained', 'url-safe base64'],
     relatedTools: ['base64-encoder', 'base64-decoder', 'url-encoder'],
     blocks: [
       {
@@ -43,16 +63,21 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'Base64 takes every 3 bytes of input (24 bits) and splits them into 4 groups of 6 bits. Each group maps to one of 64 characters: A–Z, a–z, 0–9, plus, and slash. Padding with = is added when input length is not divisible by 3.',
       },
+      { type: 'heading', text: 'Standard vs URL-safe Base64' },
+      {
+        type: 'paragraph',
+        text: 'Standard Base64 uses + and / which break in URLs. URL-safe Base64 replaces them with - and _ and often omits padding — the format JWTs use. Utillio\'s Base64 workbench supports both modes with live encode/decode on one page.',
+      },
       { type: 'heading', text: 'Example' },
       {
         type: 'paragraph',
-        text: 'The string "Hello World" encodes to "SGVsbG8gV29ybGQ=". You can verify this instantly using our free Base64 encoder — no data leaves your browser.',
+        text: 'The string "Hello World" encodes to "SGVsbG8gV29ybGQ=". You can verify this instantly using the free Base64 workbench — no data leaves your browser.',
       },
-      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Try the Base64 Encoder' },
+      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Open Base64 workbench' },
       { type: 'heading', text: 'Base64 vs other encodings' },
       {
         type: 'paragraph',
-        text: 'Base64 is not encryption — it is encoding. Anyone can decode it. For URL-safe contexts, use URL encoding instead. For cryptographic hashing, use a hash generator. Base64 is specifically for representing binary data as ASCII text.',
+        text: 'Base64 is not encryption — it is encoding. Anyone can decode it. For URL query strings, use percent-encoding. For cryptographic hashing, use a hash generator. Base64 is specifically for representing binary data as ASCII text.',
       },
       { type: 'tool-cta', toolId: 'hash-generator', label: 'Try the Hash Generator' },
     ],
@@ -61,10 +86,11 @@ export const guides: Record<string, Guide> = {
     slug: 'how-to-format-json',
     title: 'How to Format JSON Online',
     description:
-      'Step-by-step guide to formatting, validating, and minifying JSON. Fix syntax errors and pretty-print JSON for readability.',
+      'Step-by-step guide to formatting, validating, and minifying JSON with live output, error locations, and structure preview.',
     publishedAt: '2026-02-12',
-    keywords: ['format json', 'json formatter', 'pretty print json', 'validate json'],
-    relatedTools: ['json-formatter', 'jwt-decoder', 'base64-encoder'],
+    updatedAt: '2026-07-26',
+    keywords: ['format json', 'json formatter', 'pretty print json', 'validate json', 'json syntax error'],
+    relatedTools: ['json-formatter', 'jwt-decoder', 'json-to-yaml'],
     blocks: [
       {
         type: 'paragraph',
@@ -80,20 +106,31 @@ export const guides: Record<string, Guide> = {
           'Comparing two JSON payloads side by side',
         ],
       },
-      { type: 'heading', text: 'How to format JSON in 3 steps' },
+      { type: 'heading', text: 'How to format JSON in Utillio' },
       {
         type: 'list',
         items: [
           'Copy your raw JSON — from an API response, log file, or config',
-          'Paste it into the JSON Formatter input box',
-          'Click Format (or press Ctrl+Enter) to pretty-print with 2-space indentation',
+          'Paste it into the JSON Formatter — output updates live as you type',
+          'Switch between Format, Minify, and Validate modes with one click',
+          'Use Copy to grab the result, or Share to send a link with input preserved',
         ],
       },
       { type: 'tool-cta', toolId: 'json-formatter', label: 'Open JSON Formatter' },
+      { type: 'heading', text: 'Live features that speed up debugging' },
+      {
+        type: 'list',
+        items: [
+          'Structure preview — see object/array counts and max depth at a glance',
+          'Parse errors show line and column so you can jump to the mistake',
+          'Stats panel — character count, key count, and nesting depth',
+          'Shareable links encode input in the URL for team handoffs',
+        ],
+      },
       { type: 'heading', text: 'Format vs minify vs validate' },
       {
         type: 'paragraph',
-        text: 'Format (pretty-print) adds readable indentation. Minify removes all whitespace for smaller payloads — useful before sending JSON to an API. Validate checks syntax without changing the output — ideal for CI checks or quick error detection.',
+        text: 'Format (pretty-print) adds readable 2-space indentation. Minify removes all whitespace for smaller payloads — useful before sending JSON to an API. Validate checks syntax without changing the output — ideal for CI checks or quick error detection.',
       },
       { type: 'heading', text: 'Common JSON errors' },
       {
@@ -107,8 +144,9 @@ export const guides: Record<string, Guide> = {
       },
       {
         type: 'paragraph',
-        text: 'Our JSON Formatter shows the exact parse error message and line context, making it easy to locate and fix syntax issues quickly.',
+        text: 'The Utillio JSON Formatter shows the exact parse error with line and column context, making it easy to locate and fix syntax issues quickly.',
       },
+      { type: 'compare-cta', slug: 'utillio-vs-json-formatter', label: 'Compare Utillio vs JSONFormatter.org' },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode JWT tokens' },
     ],
   },
@@ -116,10 +154,11 @@ export const guides: Record<string, Guide> = {
     slug: 'what-is-jwt',
     title: 'What Is a JWT (JSON Web Token)?',
     description:
-      'Understand JSON Web Tokens — how they work, their structure, and when to use them for authentication.',
+      'Understand JSON Web Tokens — structure, decode, verify, and sign — with Utillio\'s free browser-based JWT workbench.',
     publishedAt: '2026-02-15',
-    keywords: ['jwt', 'json web token', 'what is jwt', 'jwt authentication'],
-    relatedTools: ['jwt-decoder', 'json-formatter', 'hash-generator'],
+    updatedAt: '2026-07-26',
+    keywords: ['jwt', 'json web token', 'what is jwt', 'jwt authentication', 'jwt verify', 'jwt sign'],
+    relatedTools: ['jwt-decoder', 'jwt-generator', 'json-formatter'],
     blocks: [
       {
         type: 'paragraph',
@@ -128,8 +167,18 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'JWT structure' },
       {
         type: 'paragraph',
-        text: 'Every JWT has three parts separated by dots: Header.Payload.Signature. The header describes the token type and signing algorithm. The payload contains claims (user ID, roles, expiration). The signature verifies the token has not been tampered with.',
+        text: 'Every JWT has three parts separated by dots: Header.Payload.Signature. The header describes the token type and signing algorithm (HS256, RS256, etc.). The payload contains claims (user ID, roles, expiration). The signature verifies the token has not been tampered with.',
       },
+      { type: 'heading', text: 'Decode vs verify vs sign' },
+      {
+        type: 'list',
+        items: [
+          'Decode — read header and payload claims (does not prove authenticity)',
+          'Verify — check the signature with a secret (HMAC) or public key (RSA)',
+          'Sign — create a new token with custom claims and a shared secret',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Open JWT workbench' },
       { type: 'heading', text: 'When to use JWTs' },
       {
         type: 'list',
@@ -140,7 +189,6 @@ export const guides: Record<string, Guide> = {
           'Microservices identity propagation',
         ],
       },
-      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode a JWT token' },
       { type: 'heading', text: 'Important security notes' },
       {
         type: 'list',
@@ -151,7 +199,8 @@ export const guides: Record<string, Guide> = {
           'Set short expiration times and use refresh tokens for long sessions',
         ],
       },
-      { type: 'tool-cta', toolId: 'hash-generator', label: 'Generate SHA-256 hashes' },
+      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+      { type: 'tool-cta', toolId: 'jwt-generator', label: 'Sign a JWT' },
     ],
   },
   'sha256-hash-explained': {
@@ -190,10 +239,11 @@ export const guides: Record<string, Guide> = {
     slug: 'unix-timestamp-guide',
     title: 'Unix Timestamp Guide',
     description:
-      'Understand Unix epoch timestamps — what they are, how to convert them, and common pitfalls.',
+      'Understand Unix epoch timestamps — conversion, relative time, and seconds vs milliseconds.',
     publishedAt: '2026-02-17',
-    keywords: ['unix timestamp', 'epoch time', 'timestamp converter', 'unix time'],
-    relatedTools: ['unix-timestamp-converter', 'cron-parser', 'age-calculator'],
+    updatedAt: '2026-07-26',
+    keywords: ['unix timestamp', 'epoch time', 'timestamp converter', 'unix time', 'relative time'],
+    relatedTools: ['unix-timestamp-converter', 'jwt-decoder', 'cron-parser'],
     blocks: [
       {
         type: 'paragraph',
@@ -202,19 +252,29 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Seconds vs milliseconds' },
       {
         type: 'paragraph',
-        text: 'Most systems use seconds (10 digits, e.g. 1700000000). JavaScript and some APIs use milliseconds (13 digits, e.g. 1700000000000). Always check which format your system expects.',
+        text: 'Most systems use seconds (10 digits, e.g. 1700000000). JavaScript and some APIs use milliseconds (13 digits). Utillio auto-detects the format and shows which was used.',
+      },
+      { type: 'heading', text: 'Timestamp workbench features' },
+      {
+        type: 'list',
+        items: [
+          'Relative time badge — "3 days ago" or "in 2 hours"',
+          'Local, ISO 8601, and UTC output formats',
+          'Timestamp → Date and Date → Timestamp tabs',
+          'Use current time with one click',
+        ],
       },
       { type: 'heading', text: 'Common use cases' },
       {
         type: 'list',
         items: [
-          'Debugging API responses and log files',
+          'Debugging API responses and JWT exp claims',
           'Database query filters by date range',
           'Cache expiration and TTL values',
-          'JWT token expiration (exp claim)',
+          'Log file timestamp interpretation',
         ],
       },
-      { type: 'tool-cta', toolId: 'unix-timestamp-converter', label: 'Convert timestamps' },
+      { type: 'tool-cta', toolId: 'unix-timestamp-converter', label: 'Open Timestamp workbench' },
     ],
   },
   'regex-basics': {
@@ -330,15 +390,18 @@ export const guides: Record<string, Guide> = {
   'cron-scheduling-guide': {
     slug: 'cron-scheduling-guide',
     title: 'Cron Scheduling Guide',
-    description: 'Master cron expressions for Linux crontab, Kubernetes, GitHub Actions, and CI pipelines.',
+    description: 'Master cron expressions for Linux crontab, Kubernetes, GitHub Actions, and CI pipelines — with live next-run preview.',
     publishedAt: '2026-02-23',
-    keywords: ['cron guide', 'cron expression', 'crontab tutorial', 'cron schedule'],
-    relatedTools: ['cron-parser', 'unix-timestamp-converter', 'timezone-converter'],
+    updatedAt: '2026-07-26',
+    keywords: ['cron guide', 'cron expression', 'crontab tutorial', 'cron schedule', 'cron next run'],
+    relatedTools: ['cron-parser', 'cron-generator', 'unix-timestamp-converter'],
     blocks: [
       { type: 'paragraph', text: 'Cron expressions define recurring job schedules using 5 fields: minute, hour, day of month, month, and day of week. They power Linux crontab, Kubernetes CronJobs, AWS EventBridge, and GitHub Actions schedules.' },
       { type: 'heading', text: 'Common cron patterns' },
       { type: 'list', items: ['0 * * * * — every hour at minute 0', '0 9 * * 1-5 — 9 AM weekdays', '*/15 * * * * — every 15 minutes', '0 0 1 * * — first day of every month at midnight', '0 0 * * 0 — every Sunday at midnight'] },
-      { type: 'tool-cta', toolId: 'cron-parser', label: 'Parse cron expressions' },
+      { type: 'heading', text: 'Validate with next-run preview' },
+      { type: 'paragraph', text: 'The Utillio Cron workbench parses any expression and shows the next 5 scheduled runs with a field-by-field breakdown. Paste an existing cron from crontab or build one visually with presets — both tabs share the same page.' },
+      { type: 'tool-cta', toolId: 'cron-parser', label: 'Open Cron workbench' },
       { type: 'heading', text: 'Special characters' },
       { type: 'list', items: ['* — any value', '*/n — every n units', 'n-m — range from n to m', 'n,m — list of values n and m'] },
       { type: 'tool-cta', toolId: 'timezone-converter', label: 'Convert timezones' },
@@ -464,18 +527,21 @@ export const guides: Record<string, Guide> = {
   'hmac-vs-hash-guide': {
     slug: 'hmac-vs-hash-guide',
     title: 'HMAC vs Hash: What Is the Difference?',
-    description: 'Understand when to use a plain hash versus HMAC for authentication and integrity.',
+    description: 'Understand when to use a plain hash versus HMAC — and how Utillio\'s Hash/HMAC workbench covers both.',
     publishedAt: '2026-03-10',
-    keywords: ['hmac vs hash', 'hmac explained', 'message authentication', 'sha256 hmac'],
-    relatedTools: ['hmac-generator', 'hash-generator', 'jwt-generator'],
+    updatedAt: '2026-07-26',
+    keywords: ['hmac vs hash', 'hmac explained', 'message authentication', 'sha256 hmac', 'hash workbench'],
+    relatedTools: ['hash-generator', 'hmac-generator', 'jwt-decoder'],
     blocks: [
       { type: 'paragraph', text: 'Both hashes and HMACs produce fixed-length digests, but they serve different security purposes. A hash verifies integrity. An HMAC verifies both integrity and authenticity.' },
       { type: 'heading', text: 'When to use a hash' },
-      { type: 'list', items: ['Checking file integrity (checksums)', 'Storing passwords (with bcrypt/argon2, not plain SHA)', 'Deduplication and fingerprinting', 'Blockchain and Merkle trees'] },
-      { type: 'tool-cta', toolId: 'hash-generator', label: 'Generate SHA hash' },
+      { type: 'list', items: ['Checking file integrity (checksums)', 'Comparing whether two strings produce the same digest', 'Deduplication and fingerprinting', 'Blockchain and Merkle trees — not for password storage (use bcrypt/argon2)'] },
       { type: 'heading', text: 'When to use HMAC' },
-      { type: 'list', items: ['API request signing (Stripe, AWS, webhooks)', 'JWT token signing', 'Verifying message authenticity with a shared secret', 'Cookie signing in web frameworks'] },
-      { type: 'tool-cta', toolId: 'hmac-generator', label: 'Generate HMAC signature' },
+      { type: 'list', items: ['API request signing (Stripe, AWS, webhooks)', 'Verifying JWT HS256 signatures in the JWT workbench', 'Cookie signing in web frameworks', 'Any workflow needing a shared secret'] },
+      { type: 'heading', text: 'One workbench, two tabs' },
+      { type: 'paragraph', text: 'Utillio combines Hash and HMAC on one page with SHA-256, SHA-384, and SHA-512. Switch tabs without losing input — shareable links preserve algorithm and active tab.' },
+      { type: 'tool-cta', toolId: 'hash-generator', label: 'Open Hash/HMAC workbench' },
+      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
     ],
   },
   'reading-time-seo-guide': {
@@ -497,30 +563,36 @@ export const guides: Record<string, Guide> = {
   'ip-address-basics-guide': {
     slug: 'ip-address-basics-guide',
     title: 'IPv4 Address Formats Explained',
-    description: 'Learn dotted decimal, integer, and hex representations of IP addresses.',
+    description: 'Learn dotted decimal, integer, and hex representations — with live conversion in Utillio\'s IP workbench.',
     publishedAt: '2026-03-12',
-    keywords: ['ipv4 explained', 'ip address format', 'ip to decimal', 'network basics'],
-    relatedTools: ['ip-converter', 'cidr-calculator', 'mac-address-generator'],
+    updatedAt: '2026-07-26',
+    keywords: ['ipv4 explained', 'ip address format', 'ip to decimal', 'ip to hex', 'network basics'],
+    relatedTools: ['ip-converter', 'cidr-calculator', 'hex-encoder'],
     blocks: [
-      { type: 'paragraph', text: 'An IPv4 address is a 32-bit number usually written as four octets separated by dots (e.g. 192.168.1.1). The same address can be expressed as a decimal integer or hexadecimal value.' },
+      { type: 'paragraph', text: 'An IPv4 address is a 32-bit number usually written as four octets separated by dots (e.g. 192.168.1.1). The same address can be expressed as a decimal integer or hexadecimal value — databases and APIs use different formats.' },
       { type: 'heading', text: 'Common formats' },
-      { type: 'list', items: ['Dotted decimal — 192.168.1.1 (human readable)', 'Decimal/long — 3232235777 (database storage, some APIs)', 'Hexadecimal — 0xC0A80101 (low-level networking, debug output)', 'CIDR notation — 192.168.1.0/24 (subnet ranges)'] },
-      { type: 'tool-cta', toolId: 'ip-converter', label: 'Convert IP addresses' },
+      { type: 'list', items: ['Dotted decimal — 192.168.1.1 (human readable)', 'Decimal/long — 3232235777 (MySQL INET_ATON, some APIs)', 'Hexadecimal — 0xC0A80101 (debug output, low-level networking)', 'CIDR notation — 192.168.1.0/24 (subnet ranges)'] },
+      { type: 'heading', text: 'Live conversion in the IP workbench' },
+      { type: 'paragraph', text: 'Edit any format and the others update instantly. Copy all three with one click — useful when debugging Cloudflare, AWS, or database IP storage.' },
+      { type: 'tool-cta', toolId: 'ip-converter', label: 'Open IP workbench' },
       { type: 'tool-cta', toolId: 'cidr-calculator', label: 'Calculate CIDR ranges' },
     ],
   },
   'javascript-minification-guide': {
     slug: 'javascript-minification-guide',
     title: 'JavaScript Minification: What Gets Removed?',
-    description: 'How JS minifiers reduce file size and what to watch out for before deploying.',
+    description: 'How JS minifiers reduce file size — use the Web Formatter workbench for HTML, CSS, JS, and XML.',
     publishedAt: '2026-03-13',
-    keywords: ['javascript minification', 'minify js', 'js production build', 'reduce js size'],
-    relatedTools: ['javascript-minifier', 'css-minifier', 'json-formatter'],
+    updatedAt: '2026-07-26',
+    keywords: ['javascript minification', 'minify js', 'js production build', 'reduce js size', 'web formatter'],
+    relatedTools: ['javascript-minifier', 'css-minifier', 'html-beautifier'],
     blocks: [
       { type: 'paragraph', text: 'Minification removes unnecessary characters from JavaScript without changing functionality — comments, whitespace, and sometimes variable names (in advanced minifiers).' },
       { type: 'heading', text: 'What minifiers remove' },
       { type: 'list', items: ['Single-line comments (//)', 'Multi-line comments (/* */)', 'Extra whitespace and line breaks', 'In advanced tools: shorten variable names (mangling)'] },
-      { type: 'tool-cta', toolId: 'javascript-minifier', label: 'Minify JavaScript online' },
+      { type: 'heading', text: 'Web Formatter workbench' },
+      { type: 'paragraph', text: 'Utillio combines HTML beautify, CSS minify, JS minify, and XML format on one page. Each tab shows byte savings for minifiers and preserves separate inputs when switching tabs.' },
+      { type: 'tool-cta', toolId: 'javascript-minifier', label: 'Open Web Formatter' },
       { type: 'heading', text: 'Production best practices' },
       { type: 'list', items: ['Always test minified code before deployment', 'Use source maps for debugging production issues', 'Combine with gzip/brotli compression on the server', 'For large apps, use build tools like esbuild or Terser'] },
     ],
@@ -528,17 +600,20 @@ export const guides: Record<string, Guide> = {
   'markdown-html-conversion-guide': {
     slug: 'markdown-html-conversion-guide',
     title: 'Markdown ↔ HTML: When to Convert Each Way',
-    description: 'Guide to converting between Markdown and HTML for docs, blogs, and CMS workflows.',
+    description: 'Convert Markdown to HTML with live preview, export source, or reverse HTML to Markdown — one workbench.',
     publishedAt: '2026-03-14',
-    keywords: ['markdown to html', 'html to markdown', 'convert markdown', 'documentation workflow'],
-    relatedTools: ['markdown-to-html', 'html-to-markdown', 'markdown-preview'],
+    updatedAt: '2026-07-26',
+    keywords: ['markdown to html', 'html to markdown', 'convert markdown', 'documentation workflow', 'markdown preview'],
+    relatedTools: ['markdown-preview', 'markdown-to-html', 'html-to-markdown'],
     blocks: [
       { type: 'paragraph', text: 'Markdown and HTML are the two dominant formats for web content. Markdown is easier to write. HTML gives full control over structure and styling.' },
-      { type: 'heading', text: 'Markdown → HTML' },
+      { type: 'heading', text: 'Markdown workbench tabs' },
+      { type: 'list', items: ['Live preview — side-by-side editor and rendered HTML', 'Markdown → HTML — copy HTML source for CMS or email', 'HTML → Markdown — migrate legacy content to Git-friendly Markdown', 'Round-trip: convert HTML → Markdown → preview'] },
+      { type: 'heading', text: 'Markdown → HTML use cases' },
       { type: 'list', items: ['Publishing README files to documentation sites', 'Converting blog drafts to CMS HTML', 'Static site generators (Hugo, Jekyll, Next.js MDX)', 'Email templates from Markdown source'] },
-      { type: 'tool-cta', toolId: 'markdown-to-html', label: 'Convert Markdown to HTML' },
-      { type: 'heading', text: 'HTML → Markdown' },
-      { type: 'list', items: ['Migrating WordPress or CMS content to Markdown', 'Cleaning up exported HTML for GitHub docs', 'Creating editable source from legacy web pages', 'Simplifying HTML-heavy content for version control'] },
+      { type: 'tool-cta', toolId: 'markdown-preview', label: 'Open Markdown workbench' },
+      { type: 'heading', text: 'HTML → Markdown use cases' },
+      { type: 'list', items: ['Migrating WordPress or CMS content to Markdown', 'Cleaning up exported HTML for GitHub docs', 'Creating editable source from legacy web pages'] },
       { type: 'tool-cta', toolId: 'html-to-markdown', label: 'Convert HTML to Markdown' },
     ],
   },
@@ -574,30 +649,36 @@ export const guides: Record<string, Guide> = {
   'cron-builder-guide': {
     slug: 'cron-builder-guide',
     title: 'How to Build Cron Expressions',
-    description: 'Step-by-step guide to creating cron schedules for jobs and automation.',
+    description: 'Step-by-step guide to creating cron schedules for jobs and automation — with visual builder and next-run preview.',
     publishedAt: '2026-03-18',
-    keywords: ['cron expression guide', 'cron syntax', 'cron schedule', 'cron builder'],
+    updatedAt: '2026-07-26',
+    keywords: ['cron expression guide', 'cron syntax', 'cron schedule', 'cron builder', 'cron generator'],
     relatedTools: ['cron-generator', 'cron-parser', 'unix-timestamp-converter'],
     blocks: [
       { type: 'paragraph', text: 'Cron expressions define when scheduled jobs run. Standard cron uses 5 fields: minute, hour, day of month, month, and day of week.' },
       { type: 'heading', text: 'Common patterns' },
       { type: 'list', items: ['* — every value', '*/5 — every 5 units', '1-5 — range (Mon–Fri for weekday)', '0 9 * * 1-5 — 9 AM on weekdays', '0 0 1 * * — midnight on the 1st of each month'] },
+      { type: 'heading', text: 'Build tab in the Cron workbench' },
+      { type: 'paragraph', text: 'Use presets (every minute, hourly, daily, weekly, monthly) or set each field manually. The expression updates live and the Parse tab shows the next 5 runs so you can confirm the schedule before deploying to Kubernetes or crontab.' },
       { type: 'tool-cta', toolId: 'cron-generator', label: 'Build a cron expression' },
-      { type: 'tool-cta', toolId: 'cron-parser', label: 'Parse existing cron' },
+      { type: 'tool-cta', toolId: 'cron-parser', label: 'Parse and preview runs' },
     ],
   },
   'ascii-encoding-guide': {
     slug: 'ascii-encoding-guide',
     title: 'ASCII and Character Encoding Basics',
-    description: 'How ASCII codes work and how they relate to Unicode and UTF-8.',
+    description: 'How ASCII codes work — with a character table, decimal/hex lookup, and code-to-text conversion.',
     publishedAt: '2026-03-19',
-    keywords: ['ascii explained', 'character encoding', 'ascii code', 'utf-8 basics'],
-    relatedTools: ['ascii-converter', 'binary-converter', 'hex-encoder'],
+    updatedAt: '2026-07-26',
+    keywords: ['ascii explained', 'character encoding', 'ascii code', 'utf-8 basics', 'ascii table'],
+    relatedTools: ['ascii-converter', 'ascii-decoder', 'hex-encoder'],
     blocks: [
       { type: 'paragraph', text: 'ASCII assigns numeric codes to 128 characters (0–127). Extended ASCII and Unicode expanded this to support international characters. UTF-8 encodes Unicode using variable-length byte sequences.' },
       { type: 'heading', text: 'Common ASCII codes' },
       { type: 'list', items: ['A = 65, a = 97', '0 = 48', 'Space = 32', 'Newline (LF) = 10', 'Tab = 9'] },
-      { type: 'tool-cta', toolId: 'ascii-converter', label: 'Convert characters to ASCII' },
+      { type: 'heading', text: 'ASCII workbench features' },
+      { type: 'list', items: ['Char → Code tab with decimal and hex table per character', 'Code → Char tab accepts decimal (72 101) or hex (0x48) codes', 'Copy decimal codes for scripts and debug output', 'Shareable links preserve input and active tab'] },
+      { type: 'tool-cta', toolId: 'ascii-converter', label: 'Open ASCII workbench' },
     ],
   },
   'string-similarity-guide': {
@@ -802,19 +883,26 @@ export const guides: Record<string, Guide> = {
     slug: 'base64-encode-decode-online-free',
     title: 'Base64 Encode and Decode Online (Free, Private)',
     description:
-      'Encode text to Base64 or decode Base64 strings online. Free, instant, and private — your data never leaves your browser.',
+      'Encode text to Base64 or decode Base64 strings online — standard and URL-safe modes on one page. Free, instant, and private.',
     publishedAt: '2026-03-30',
+    updatedAt: '2026-07-26',
     keywords: [
       'base64 encode decode online free',
       'base64 encoder online',
       'decode base64 string',
       'base64 converter private',
+      'url-safe base64',
     ],
-    relatedTools: ['base64-encoder', 'base64-decoder', 'url-encoder'],
+    relatedTools: ['base64-encoder', 'base64-decoder', 'jwt-decoder'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Base64 encoding converts binary or text data into ASCII-safe characters. Developers use it for JWT payloads, data URIs, email attachments, and embedding small files in JSON. It is encoding, not encryption — anyone can decode it.',
+      },
+      { type: 'heading', text: 'One workbench, two directions' },
+      {
+        type: 'paragraph',
+        text: 'Utillio combines encode and decode on a single page with live output. Switch between standard Base64 (+/ padding) and URL-safe Base64 (-_ no padding) — the mode JWTs use. Round-trip your input to confirm encoding is correct.',
       },
       { type: 'heading', text: 'Common use cases' },
       {
@@ -828,23 +916,24 @@ export const guides: Record<string, Guide> = {
       },
       {
         type: 'paragraph',
-        text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead.',
+        text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead — Utillio processes everything in your browser.',
       },
-      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Encode to Base64' },
-      { type: 'tool-cta', toolId: 'base64-decoder', label: 'Decode from Base64' },
+      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Open Base64 workbench' },
     ],
   },
   'cron-expression-generator-online': {
     slug: 'cron-expression-generator-online',
     title: 'Cron Expression Generator Online (Free)',
     description:
-      'Build and validate cron schedules visually. Free online cron generator — runs in your browser with no upload.',
+      'Build and validate cron schedules visually with next-run preview. Free online cron workbench — parse, build, and test in your browser.',
     publishedAt: '2026-03-30',
+    updatedAt: '2026-07-26',
     keywords: [
       'cron expression generator online',
       'cron schedule builder',
       'crontab generator free',
       'cron syntax helper',
+      'cron next run calculator',
     ],
     relatedTools: ['cron-generator', 'cron-parser', 'unix-timestamp-converter'],
     blocks: [
@@ -863,6 +952,16 @@ export const guides: Record<string, Guide> = {
           'day of week (0–7, 0 and 7 = Sunday)',
         ],
       },
+      { type: 'heading', text: 'Parse tab — validate existing crons' },
+      {
+        type: 'paragraph',
+        text: 'Paste any cron expression and see a field-by-field breakdown plus the next 5 scheduled runs. Catch mistakes before they hit production — especially day-of-week vs day-of-month confusion.',
+      },
+      { type: 'heading', text: 'Build tab — create from presets' },
+      {
+        type: 'paragraph',
+        text: 'Start from presets (every minute, hourly, daily, weekly, monthly) or set each field manually. The expression string updates live and you can copy it straight into crontab, Kubernetes CronJob, or GitHub Actions.',
+      },
       { type: 'heading', text: 'Examples' },
       {
         type: 'list',
@@ -872,7 +971,7 @@ export const guides: Record<string, Guide> = {
           '0 0 1 * * — first day of every month at midnight',
         ],
       },
-      { type: 'tool-cta', toolId: 'cron-generator', label: 'Generate a cron expression' },
+      { type: 'tool-cta', toolId: 'cron-generator', label: 'Open Cron workbench' },
     ],
   },
   'qr-code-generator-no-upload': {
@@ -910,13 +1009,15 @@ export const guides: Record<string, Guide> = {
     slug: 'hmac-sha256-generator-online',
     title: 'HMAC SHA-256 Generator Online (Free, Private)',
     description:
-      'Generate HMAC-SHA256 signatures for API webhooks and authentication. Runs locally in your browser — secret keys never uploaded.',
+      'Generate HMAC-SHA256 signatures in the Hash/HMAC workbench. SHA-384 and SHA-512 included — secrets never uploaded.',
     publishedAt: '2026-03-31',
+    updatedAt: '2026-07-26',
     keywords: [
       'hmac sha256 generator online',
       'hmac generator free',
       'webhook signature generator',
       'hmac sha256 calculator',
+      'hmac workbench',
     ],
     relatedTools: ['hmac-generator', 'hash-generator', 'jwt-decoder'],
     blocks: [
@@ -924,17 +1025,23 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'HMAC (Hash-based Message Authentication Code) combines a secret key with a message to produce a signature. APIs like Stripe, Shopify, and GitHub webhooks use HMAC-SHA256 so receivers can verify requests were not tampered with.',
       },
-      { type: 'heading', text: 'HMAC vs plain hash' },
+      { type: 'heading', text: 'HMAC tab in the workbench' },
       {
-        type: 'paragraph',
-        text: 'A plain SHA-256 hash of a message can be recomputed by anyone who knows the message. HMAC requires the secret key — only parties with the key can produce or verify the signature.',
+        type: 'list',
+        items: [
+          'Enter secret key and message — output updates live',
+          'Switch between HMAC-SHA256, SHA-384, and SHA-512',
+          'Hash tab available on the same page for plain digests',
+          'Link to JWT workbench for token verification',
+        ],
       },
       { type: 'heading', text: 'Never upload your secret key' },
       {
         type: 'paragraph',
-        text: 'Server-side HMAC tools receive your API secret on their servers. Utillio computes HMAC-SHA256 entirely in your browser using the Web Crypto API.',
+        text: 'Server-side HMAC tools receive your API secret on their servers. Utillio computes HMAC entirely in your browser using the Web Crypto API.',
       },
-      { type: 'tool-cta', toolId: 'hmac-generator', label: 'Generate HMAC-SHA256' },
+      { type: 'tool-cta', toolId: 'hmac-generator', label: 'Open Hash/HMAC workbench' },
+      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
     ],
   },
   'uuid-generator-v4-online-free': {
@@ -973,13 +1080,15 @@ export const guides: Record<string, Guide> = {
     slug: 'json-formatter-pretty-print-online-free',
     title: 'JSON Formatter & Pretty Print Online (Free, Private)',
     description:
-      'Pretty-print, minify, and validate JSON online for free. Runs in your browser — no upload, no sign-up.',
+      'Pretty-print, minify, and validate JSON online with live output, error locations, and structure preview. Runs in your browser.',
     publishedAt: '2026-04-04',
+    updatedAt: '2026-07-26',
     keywords: [
       'json formatter pretty print online free',
       'pretty print json online',
       'format json online private',
       'json beautifier free',
+      'validate json online',
     ],
     relatedTools: ['json-formatter', 'json-to-yaml', 'csv-to-json'],
     blocks: [
@@ -997,7 +1106,19 @@ export const guides: Record<string, Guide> = {
           'Sharing formatted output with teammates via shareable link',
         ],
       },
+      { type: 'heading', text: 'What makes Utillio different' },
+      {
+        type: 'list',
+        items: [
+          'Live output — no button click required, results update as you paste',
+          'Error line and column when JSON is invalid',
+          'Structure preview with object/array counts and max depth',
+          'Format, Minify, and Validate modes on one page',
+          'Share button encodes input in the URL for team handoffs',
+        ],
+      },
       { type: 'tool-cta', toolId: 'json-formatter', label: 'Format JSON now' },
+      { type: 'compare-cta', slug: 'utillio-vs-json-formatter', label: 'Compare Utillio vs JSONFormatter.org' },
     ],
   },
   'password-generator-strong-online-free': {
@@ -1066,19 +1187,31 @@ export const guides: Record<string, Guide> = {
     slug: 'hash-generator-sha256-online-free',
     title: 'SHA-256 Hash Generator Online (Free, Private)',
     description:
-      'Generate SHA-256, SHA-384, and SHA-512 hashes from any text. Browser-based — your input never leaves your device.',
+      'Generate SHA-256, SHA-384, and SHA-512 hashes with live output — Hash and HMAC tabs on one page.',
     publishedAt: '2026-04-05',
+    updatedAt: '2026-07-26',
     keywords: [
       'sha256 hash generator online free',
       'hash generator online',
       'sha256 calculator private',
       'generate hash browser',
+      'hash workbench',
     ],
-    relatedTools: ['hash-generator', 'hmac-generator', 'base64-encoder'],
+    relatedTools: ['hash-generator', 'hmac-generator', 'jwt-decoder'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'Cryptographic hashes produce a fixed-length fingerprint of input data. SHA-256 is widely used for checksums, integrity verification, and blockchain — but remember hashing is one-way, not encryption.',
+        text: 'Cryptographic hashes produce a fixed-length fingerprint of input data. SHA-256 is widely used for checksums and integrity verification — hashing is one-way, not encryption.',
+      },
+      { type: 'heading', text: 'Hash workbench features' },
+      {
+        type: 'list',
+        items: [
+          'Live SHA-256, SHA-384, and SHA-512 as you type',
+          'HMAC tab for keyed signatures with a secret',
+          'Shareable links with algorithm preserved',
+          '100% client-side via Web Crypto API',
+        ],
       },
       { type: 'heading', text: 'When to use SHA-256' },
       {
@@ -1086,24 +1219,28 @@ export const guides: Record<string, Guide> = {
         items: [
           'Verify file integrity with checksums',
           'Compare whether two strings produce the same hash',
-          'Debug API signature workflows (with HMAC for secrets)',
-          'Generate deterministic IDs from content',
+          'Debug API workflows — use HMAC tab when a secret is involved',
+          'Generate deterministic fingerprints from content',
         ],
       },
-      { type: 'tool-cta', toolId: 'hash-generator', label: 'Generate a hash' },
+      { type: 'tool-cta', toolId: 'hash-generator', label: 'Open Hash/HMAC workbench' },
+      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
     ],
   },
   'jwt-decoder-online-free': {
     slug: 'jwt-decoder-online-free',
     title: 'JWT Decoder Online (Free, Private)',
     description:
-      'Decode JSON Web Tokens online without uploading them to a server. Inspect header and payload locally in your browser.',
+      'Decode, verify, and inspect JSON Web Tokens online — HS256/RS256 support, expiry badges, and claims table. Nothing uploaded.',
     publishedAt: '2026-04-06',
+    updatedAt: '2026-07-26',
     keywords: [
       'jwt decoder online free',
       'decode jwt token',
       'jwt parser online',
       'inspect jwt private',
+      'jwt verify online',
+      'rs256 jwt verify',
     ],
     relatedTools: ['jwt-decoder', 'jwt-generator', 'base64-decoder'],
     blocks: [
@@ -1111,82 +1248,113 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'JWTs are Base64URL-encoded JSON with three parts: header, payload, and signature. Decoding lets you inspect claims like exp, sub, and roles — essential for debugging auth flows.',
       },
+      { type: 'heading', text: 'Decode tab — inspect claims' },
+      {
+        type: 'list',
+        items: [
+          'Paste any JWT and see header and payload as formatted JSON',
+          'Claims table with standard fields (iss, sub, exp, iat, aud)',
+          'Expiry badge — see at a glance if the token is expired or still valid',
+          'Copy individual sections or the full decoded output',
+        ],
+      },
+      { type: 'heading', text: 'Verify tab — check signatures' },
+      {
+        type: 'list',
+        items: [
+          'HMAC algorithms: HS256, HS384, HS512 with a shared secret',
+          'RSA algorithms: RS256, RS384, RS512 with a PEM public key',
+          'Instant valid/invalid result — no server round-trip',
+        ],
+      },
       { type: 'heading', text: 'Important security note' },
       {
         type: 'paragraph',
-        text: 'Decoding does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utillio decodes entirely in your browser.',
+        text: 'Decoding alone does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utillio processes everything in your browser.',
       },
-      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode a JWT' },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Open JWT workbench' },
+      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
     ],
   },
   'unix-timestamp-converter-online': {
     slug: 'unix-timestamp-converter-online',
     title: 'Unix Timestamp Converter Online (Free)',
     description:
-      'Convert Unix timestamps to human-readable dates and back. Free online converter — runs locally in your browser.',
+      'Convert Unix timestamps with relative time ("3 days ago"), local/ISO/UTC formats — live in your browser.',
     publishedAt: '2026-04-06',
+    updatedAt: '2026-07-26',
     keywords: [
       'unix timestamp converter online',
       'epoch converter online free',
       'timestamp to date online',
       'convert unix time',
+      'relative timestamp',
     ],
-    relatedTools: ['unix-timestamp-converter', 'timezone-converter', 'date-difference-calculator'],
+    relatedTools: ['unix-timestamp-converter', 'jwt-decoder', 'timezone-converter'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'Unix timestamps count seconds (or milliseconds) since January 1, 1970 UTC. APIs, databases, and logs often use them — converting to local time makes debugging much easier.',
+        text: 'Unix timestamps count seconds (or milliseconds) since January 1, 1970 UTC. APIs, databases, and JWT exp claims use them — converting to human time makes debugging much easier.',
       },
-      { type: 'heading', text: 'Seconds vs milliseconds' },
+      { type: 'heading', text: 'Timestamp workbench tabs' },
       {
         type: 'list',
         items: [
-          '10-digit values are usually seconds (e.g. 1710000000)',
-          '13-digit values are usually milliseconds',
-          'JavaScript Date.now() returns milliseconds',
-          'Python time.time() returns seconds as a float',
+          'Timestamp → Date — relative badge plus local, ISO, and UTC',
+          'Date → Timestamp — seconds and milliseconds output',
+          'Auto-detect 10-digit seconds vs 13-digit milliseconds',
+          'Use current time with one click',
         ],
       },
-      { type: 'tool-cta', toolId: 'unix-timestamp-converter', label: 'Convert a timestamp' },
+      { type: 'tool-cta', toolId: 'unix-timestamp-converter', label: 'Open Timestamp workbench' },
     ],
   },
   'markdown-to-html-converter-online-free': {
     slug: 'markdown-to-html-converter-online-free',
     title: 'Markdown to HTML Converter Online (Free)',
     description:
-      'Convert Markdown to HTML instantly in your browser. Free, private, and no upload required.',
+      'Convert Markdown to HTML with live preview — same workbench includes HTML → Markdown round-trip.',
     publishedAt: '2026-04-07',
+    updatedAt: '2026-07-26',
     keywords: [
       'markdown to html converter online free',
       'convert markdown html',
       'markdown html generator',
       'md to html online',
+      'markdown preview online',
     ],
-    relatedTools: ['markdown-to-html', 'markdown-preview', 'html-beautifier'],
+    relatedTools: ['markdown-to-html', 'markdown-preview', 'html-to-markdown'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Markdown is the standard format for README files, documentation sites, and blog posts. Converting to HTML lets you preview output, embed in CMS systems, or paste into email templates.',
       },
-      { type: 'heading', text: 'Supported Markdown features' },
+      { type: 'heading', text: 'Markdown workbench tabs' },
       {
         type: 'list',
-        items: ['Headings, bold, italic, and links', 'Code blocks and inline code', 'Ordered and unordered lists', 'Blockquotes and horizontal rules'],
+        items: [
+          'Live preview — side-by-side Markdown and rendered HTML',
+          'Markdown → HTML — copy raw HTML output',
+          'HTML → Markdown — reverse conversion for CMS exports',
+          'Round-trip buttons to send output to the other tab',
+        ],
       },
-      { type: 'tool-cta', toolId: 'markdown-to-html', label: 'Convert Markdown to HTML' },
+      { type: 'tool-cta', toolId: 'markdown-to-html', label: 'Open Markdown workbench' },
     ],
   },
   'csv-to-json-converter-online-free': {
     slug: 'csv-to-json-converter-online-free',
     title: 'CSV to JSON Converter Online (Free, Private)',
     description:
-      'Convert CSV spreadsheets to JSON arrays online. Free browser-based converter — your data stays on your device.',
+      'Convert CSV to JSON arrays with row counts and round-trip — CSV ↔ JSON workbench, nothing uploaded.',
     publishedAt: '2026-04-07',
+    updatedAt: '2026-07-26',
     keywords: [
       'csv to json converter online free',
       'convert csv json online',
       'csv json converter private',
       'spreadsheet to json',
+      'csv json workbench',
     ],
     relatedTools: ['csv-to-json', 'json-to-csv', 'json-formatter'],
     blocks: [
@@ -1194,30 +1362,34 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'CSV is universal for spreadsheets and exports; JSON is standard for APIs and JavaScript apps. Converting between them is a daily task for data engineers and frontend developers.',
       },
-      { type: 'heading', text: 'Tips for clean conversion' },
+      { type: 'heading', text: 'CSV ↔ JSON workbench' },
       {
         type: 'list',
         items: [
-          'Ensure the first row contains column headers',
-          'Watch for commas inside quoted fields',
-          'Large files may be slow — Utillio processes locally without upload',
-          'Use JSON to CSV for the reverse transformation',
+          'CSV → JSON and JSON → CSV tabs on one page',
+          'Live output with row count badge',
+          'Swap output to the reverse tab for round-trip checks',
+          'First row treated as column headers',
+          'Shareable links — spreadsheet data stays in your browser',
         ],
       },
-      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Convert CSV to JSON' },
+      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Open CSV ↔ JSON workbench' },
     ],
   },
   'url-encode-decode-online-free': {
     slug: 'url-encode-decode-online-free',
-    title: 'URL Encode and Decode Online (Free, Private)',
+    title: 'URL Encode, Decode & Parse Online (Free, Private)',
     description:
-      'Encode and decode URL strings and query parameters online. Free, browser-based — nothing uploaded to a server.',
+      'Encode and decode URL strings, parse query parameters, and inspect URL components — all on one page, nothing uploaded.',
     publishedAt: '2026-04-08',
+    updatedAt: '2026-07-26',
     keywords: [
       'url encode decode online free',
       'url encoder online',
       'decode url online',
       'percent encoding online',
+      'url parser online',
+      'query string parser',
     ],
     relatedTools: ['url-encoder', 'url-decoder', 'url-parser'],
     blocks: [
@@ -1225,13 +1397,31 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'URL encoding (percent-encoding) converts special characters like spaces and ampersands into safe ASCII for query strings and path segments. Essential when building API requests or debugging broken links.',
       },
+      { type: 'heading', text: 'Encode and Decode tabs' },
+      {
+        type: 'list',
+        items: [
+          'Component mode — encode/decode individual values (spaces → %20)',
+          'Full URL mode — encode or decode an entire URL string',
+          'Form mode — application/x-www-form-urlencoded (spaces → +)',
+          'Live output updates as you type',
+        ],
+      },
+      { type: 'heading', text: 'Parse tab — break down any URL' },
+      {
+        type: 'list',
+        items: [
+          'Protocol, host, port, pathname, hash extracted automatically',
+          'Query parameters table with decoded name/value pairs',
+          'Debug redirect chains and OAuth callback URLs',
+        ],
+      },
       { type: 'heading', text: 'Common encoded characters' },
       {
         type: 'list',
-        items: ['Space → %20', 'Ampersand & → %26', 'Equals = → %3D', 'Plus + → %2B'],
+        items: ['Space → %20 (or + in form encoding)', 'Ampersand & → %26', 'Equals = → %3D', 'Plus + → %2B'],
       },
-      { type: 'tool-cta', toolId: 'url-encoder', label: 'Encode a URL' },
-      { type: 'tool-cta', toolId: 'url-decoder', label: 'Decode a URL' },
+      { type: 'tool-cta', toolId: 'url-encoder', label: 'Open URL workbench' },
     ],
   },
   'text-diff-compare-online-free': {
@@ -1502,78 +1692,106 @@ export const guides: Record<string, Guide> = {
     slug: 'xml-formatter-pretty-print-online-free',
     title: 'XML Formatter & Pretty Print Online (Free)',
     description:
-      'Format and beautify XML documents online. Free, private XML formatter — runs in your browser, no upload.',
+      'Format XML with indentation in the Web Formatter workbench — HTML, CSS, JS, and XML on one page.',
     publishedAt: '2026-04-13',
+    updatedAt: '2026-07-26',
     keywords: [
       'xml formatter pretty print online free',
       'format xml online',
       'xml beautifier private',
       'pretty print xml online',
+      'web formatter workbench',
     ],
-    relatedTools: ['xml-formatter', 'json-formatter', 'html-beautifier'],
+    relatedTools: ['xml-formatter', 'html-beautifier', 'css-minifier'],
     blocks: [
       {
         type: 'paragraph',
         text: 'XML remains common in enterprise APIs, SOAP services, Android layouts, and config files. Minified XML from logs is hard to read — formatting reveals structure and helps catch mismatched tags.',
       },
-      { type: 'heading', text: 'When to format XML' },
+      { type: 'heading', text: 'XML tab in Web Formatter' },
       {
         type: 'list',
-        items: ['Debugging SOAP or RSS feed responses', 'Reviewing Android layout or plist files', 'Validating config before deployment', 'Converting between XML and JSON workflows'],
+        items: [
+          'Pretty-print with consistent indentation',
+          'Same workbench includes HTML beautify, CSS minify, and JS minify',
+          'Live output as you type',
+          'Shareable links for team debugging',
+        ],
       },
-      { type: 'tool-cta', toolId: 'xml-formatter', label: 'Format XML now' },
+      { type: 'tool-cta', toolId: 'xml-formatter', label: 'Open Web Formatter workbench' },
     ],
   },
   'hex-encoder-decoder-online-free': {
     slug: 'hex-encoder-decoder-online-free',
     title: 'Hex Encoder & Decoder Online (Free, Private)',
     description:
-      'Convert text to hexadecimal and back online. Free browser-based hex converter — nothing uploaded to servers.',
+      'Convert text to hex and back with round-trip — encode/decode tabs on one page, live output.',
     publishedAt: '2026-04-13',
+    updatedAt: '2026-07-26',
     keywords: [
       'hex encoder decoder online free',
       'text to hex online',
       'hexadecimal converter private',
       'decode hex string online',
+      'hex workbench',
     ],
-    relatedTools: ['hex-encoder', 'binary-converter', 'ascii-converter'],
+    relatedTools: ['hex-encoder', 'hex-decoder', 'binary-converter'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Hexadecimal encoding represents bytes as pairs of 0-9 and A-F characters. Developers use it for color codes, binary dumps, cryptographic keys, and debugging raw data streams.',
       },
-      { type: 'heading', text: 'Common hex use cases' },
+      { type: 'heading', text: 'Hex workbench features' },
       {
         type: 'list',
-        items: ['CSS color values (#FF5733)', 'Inspecting binary data in logs', 'Encoding short binary payloads as text', 'Debugging serial protocol messages'],
+        items: [
+          'Text → Hex and Hex → Text tabs with live output',
+          'Round-trip button to send output to the other tab',
+          'Dedicated SEO URLs for encoder and decoder',
+          '100% client-side — nothing uploaded',
+        ],
       },
-      { type: 'tool-cta', toolId: 'hex-encoder', label: 'Convert to hex' },
+      { type: 'tool-cta', toolId: 'hex-encoder', label: 'Open Hex workbench' },
     ],
   },
   'jwt-generator-online-free': {
     slug: 'jwt-generator-online-free',
     title: 'JWT Generator Online (Free, Private)',
     description:
-      'Create and sign JSON Web Tokens locally in your browser. Free JWT generator — secrets never uploaded to a server.',
+      'Create and sign JSON Web Tokens locally in your browser. HS256 signing with custom claims — secrets never uploaded.',
     publishedAt: '2026-04-14',
+    updatedAt: '2026-07-26',
     keywords: [
       'jwt generator online free',
       'create jwt token online',
       'json web token generator private',
       'sign jwt browser',
+      'hs256 jwt generator',
     ],
-    relatedTools: ['jwt-generator', 'jwt-decoder', 'base64-encoder'],
+    relatedTools: ['jwt-generator', 'jwt-decoder', 'hmac-generator'],
     blocks: [
       {
         type: 'paragraph',
         text: 'JWTs carry authenticated claims between services. Generating test tokens for local development requires setting header, payload, and signing secret — but production secrets must never go to server-side generators.',
       },
+      { type: 'heading', text: 'Sign tab in the JWT workbench' },
+      {
+        type: 'list',
+        items: [
+          'Edit header JSON — set alg (HS256, HS384, HS512) and typ',
+          'Edit payload JSON — add sub, exp, roles, and custom claims',
+          'Enter a shared secret — processed locally via Web Crypto API',
+          'Copy the signed token or switch to Decode/Verify to inspect it',
+        ],
+      },
       { type: 'heading', text: 'JWT structure' },
       {
         type: 'list',
-        items: ['Header — algorithm and token type', 'Payload — claims like sub, exp, and roles', 'Signature — verifies integrity with a shared secret or key', 'Use decoder tool to inspect existing tokens'],
+        items: ['Header — algorithm and token type', 'Payload — claims like sub, exp, and roles', 'Signature — verifies integrity with a shared secret or key'],
       },
-      { type: 'tool-cta', toolId: 'jwt-generator', label: 'Generate a JWT' },
+      { type: 'tool-cta', toolId: 'jwt-generator', label: 'Sign a JWT' },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode and verify tokens' },
+      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
     ],
   },
   'compound-interest-calculator-online-free': {
@@ -1658,31 +1876,33 @@ export const guides: Record<string, Guide> = {
     slug: 'html-beautifier-online-free',
     title: 'HTML Beautifier Online (Free, Private)',
     description:
-      'Format and beautify HTML with proper indentation online. Free browser-based formatter — your markup never leaves your device.',
+      'Beautify HTML with indentation in the Web Formatter workbench — CSS/JS minify and XML format on one page.',
     publishedAt: '2026-04-16',
+    updatedAt: '2026-07-26',
     keywords: [
       'html beautifier online free',
       'format html online',
       'pretty print html private',
       'html formatter browser',
+      'web formatter workbench',
     ],
-    relatedTools: ['html-beautifier', 'html-minifier', 'css-minifier'],
+    relatedTools: ['html-beautifier', 'css-minifier', 'xml-formatter'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Minified or messy HTML from templates, CMS exports, or email clients is hard to debug. Beautifying adds readable indentation so you can spot unclosed tags, nested structure issues, and accessibility problems before shipping.',
       },
-      { type: 'heading', text: 'When to beautify HTML' },
+      { type: 'heading', text: 'Web Formatter workbench tabs' },
       {
         type: 'list',
         items: [
-          'Reviewing scraped or exported HTML before editing',
-          'Debugging layout issues in email templates',
-          'Learning HTML structure from minified production pages',
-          'Pair with minifier for dev vs production workflows',
+          'HTML — beautify with consistent indentation',
+          'CSS and JavaScript — minify with bytes-saved badge',
+          'XML — pretty-print for SOAP, RSS, and config files',
+          'Shareable state across all four tabs',
         ],
       },
-      { type: 'tool-cta', toolId: 'html-beautifier', label: 'Beautify HTML now' },
+      { type: 'tool-cta', toolId: 'html-beautifier', label: 'Open Web Formatter workbench' },
     ],
   },
   'lorem-ipsum-generator-online-free': {
@@ -1720,13 +1940,15 @@ export const guides: Record<string, Guide> = {
     slug: 'json-to-csv-converter-online-free',
     title: 'JSON to CSV Converter Online (Free, Private)',
     description:
-      'Convert JSON arrays to CSV spreadsheets online. Free, private converter — data processed locally in your browser.',
+      'Export JSON arrays to CSV with live row counts — same workbench handles CSV → JSON round-trip.',
     publishedAt: '2026-04-16',
+    updatedAt: '2026-07-26',
     keywords: [
       'json to csv converter online free',
       'convert json array to csv',
       'json csv export private',
       'json spreadsheet converter browser',
+      'csv json workbench',
     ],
     relatedTools: ['json-to-csv', 'csv-to-json', 'json-formatter'],
     blocks: [
@@ -1734,17 +1956,17 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'API responses and database exports often arrive as JSON arrays of objects. Spreadsheets, BI tools, and finance teams expect CSV. Converting locally avoids uploading sensitive customer or financial data to third-party converters.',
       },
-      { type: 'heading', text: 'JSON to CSV tips' },
+      { type: 'heading', text: 'JSON → CSV tab' },
       {
         type: 'list',
         items: [
-          'Input should be a JSON array of flat objects',
-          'Nested objects may need flattening first',
-          'Column headers come from object keys',
-          'Validate JSON syntax before converting',
+          'Paste a JSON array of objects — headers derived from keys',
+          'Row count shown after conversion',
+          'Swap to CSV → JSON tab to verify round-trip',
+          'Shareable state for team debugging',
         ],
       },
-      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON to CSV' },
+      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Open CSV ↔ JSON workbench' },
     ],
   },
   'color-converter-hex-rgb-online-free': {
@@ -1782,28 +2004,57 @@ export const guides: Record<string, Guide> = {
     slug: 'share-tool-links-guide',
     title: 'How to Share Utillio Tool Links With Preserved Input',
     description:
-      'Share JSON, JWT, regex patterns, and more via URL — input is encoded in the link and restored when opened. Nothing stored on our servers.',
+      'Share JSON, JWT, regex patterns, workbench state, and more via URL — input is encoded in the link and restored when opened. Nothing stored on our servers.',
     publishedAt: '2026-04-16',
+    updatedAt: '2026-07-26',
     keywords: [
       'share json formatter link',
       'shareable tool url with input',
       'private online tools share state',
       'utillio share link',
+      'share jwt decoder link',
     ],
-    relatedTools: ['json-formatter', 'jwt-decoder', 'regex-tester', 'text-diff', 'hash-generator'],
+    relatedTools: ['json-formatter', 'jwt-decoder', 'regex-tester', 'text-diff', 'base64-encoder'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Many Utillio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
       },
-      { type: 'heading', text: 'Tools with shareable state' },
+      { type: 'heading', text: 'How sharing works' },
       {
         type: 'list',
         items: [
-          'JSON Formatter, YAML to JSON, Base64 Encoder',
-          'Hash Generator, JWT Decoder, URL Encoder',
-          'Regex Tester and Text Diff (pattern + text preserved)',
-          'Click Share on any supported tool page to copy the link',
+          'Click Share on any supported tool — the button activates once you have input',
+          'The URL gets a ?q= parameter with compressed, URL-safe encoded state',
+          'Opening the link restores input, tab selection, and settings',
+          'Share is disabled on empty tools to avoid useless links',
+        ],
+      },
+      { type: 'heading', text: 'Workbenches with shareable state' },
+      {
+        type: 'list',
+        items: [
+          'JWT — token, tab, secret/key, algorithm',
+          'Base64 — input, direction, URL-safe mode',
+          'URL — input, tab, encoding mode',
+          'Cron — expression, tab, field values',
+          'Hash/HMAC — input, tab, algorithm, secret',
+          'YAML ↔ JSON — input, direction',
+          'Timestamp — value, tab, format',
+          'HTML, Hex, Binary, ASCII — input, tab',
+          'CSV ↔ JSON — input, direction',
+          'Markdown — tab, markdown/HTML input',
+          'Morse, ROT13, IP, Web Formatter — full state preserved',
+        ],
+      },
+      { type: 'heading', text: 'Other shareable tools' },
+      {
+        type: 'list',
+        items: [
+          'JSON Formatter, YAML↔JSON, CSV↔JSON, JSON string escaper',
+          'Hash Generator, HMAC Generator, Regex Tester, Text Diff',
+          'SQL/XML/HTML formatters, Hex/Binary/ASCII converters',
+          'Unix timestamp, case converter, slug generator, and 40+ more',
         ],
       },
       { type: 'heading', text: 'Privacy note' },
@@ -1814,6 +2065,200 @@ export const guides: Record<string, Guide> = {
       { type: 'tool-cta', toolId: 'json-formatter', label: 'Try shareable JSON Formatter' },
     ],
   },
+  'jwt-verify-online-free': {
+    slug: 'jwt-verify-online-free',
+    title: 'JWT Verify Online (Free, Private) — HS256 & RS256',
+    description:
+      'Verify JWT signatures online with HMAC secrets or RSA public keys. Free browser-based verification — no token upload.',
+    publishedAt: '2026-07-26',
+    keywords: [
+      'jwt verify online free',
+      'verify jwt signature',
+      'rs256 jwt verify online',
+      'hs256 jwt verify',
+      'jwt signature checker',
+    ],
+    relatedTools: ['jwt-decoder', 'jwt-generator', 'hmac-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Verifying a JWT proves the token was signed by someone who holds the secret or private key — not just that the payload looks valid. This is the step most decoders skip, and the one that matters for security.',
+      },
+      { type: 'heading', text: 'HMAC verification (HS256, HS384, HS512)' },
+      {
+        type: 'paragraph',
+        text: 'Symmetric algorithms use a shared secret. Paste the JWT and enter the same secret your server uses. Utillio recomputes the signature locally and shows valid or invalid instantly.',
+      },
+      { type: 'heading', text: 'RSA verification (RS256, RS384, RS512)' },
+      {
+        type: 'paragraph',
+        text: 'Asymmetric algorithms use a public key to verify tokens signed with a private key. Paste your PEM public key — the format Auth0, Firebase, and most OIDC providers publish in their JWKS endpoint.',
+      },
+      { type: 'heading', text: 'When to verify vs decode' },
+      {
+        type: 'list',
+        items: [
+          'Decode only — quick inspection of claims during development',
+          'Verify — confirm a token is authentic before trusting its claims',
+          'Always verify on your server in production — browser tools are for debugging',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Verify a JWT now' },
+      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+    ],
+  },
+  'url-parser-online-free': {
+    slug: 'url-parser-online-free',
+    title: 'URL Parser Online (Free) — Query Params & Components',
+    description:
+      'Parse any URL into protocol, host, path, hash, and query parameters. Free browser-based URL parser with decoded values.',
+    publishedAt: '2026-07-26',
+    keywords: [
+      'url parser online free',
+      'parse url query string',
+      'url component breakdown',
+      'query parameter decoder',
+      'url inspector online',
+    ],
+    relatedTools: ['url-parser', 'url-encoder', 'url-decoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'URLs carry structure — protocol, host, port, path, query string, and fragment. Parsing them manually is error-prone, especially with encoded query parameters in OAuth callbacks, analytics tags, and API endpoints.',
+      },
+      { type: 'heading', text: 'What the Parse tab shows' },
+      {
+        type: 'list',
+        items: [
+          'Protocol (https), hostname, port, pathname, and hash fragment',
+          'Query parameters table with decoded names and values',
+          'Handles nested encoding (%2520 → space after double-decode)',
+        ],
+      },
+      { type: 'heading', text: 'Common debugging scenarios' },
+      {
+        type: 'list',
+        items: [
+          'OAuth redirect URIs with state and code parameters',
+          'UTM tracking links with multiple query params',
+          'API endpoints with encoded filter values',
+          'Broken links where encoding was applied twice',
+        ],
+      },
+      { type: 'paragraph', text: 'The URL workbench also includes Encode and Decode tabs with component, full URL, and form encoding modes — all shareable via link.' },
+      { type: 'tool-cta', toolId: 'url-parser', label: 'Parse a URL now' },
+    ],
+  },
+  'markdown-preview-online-free': {
+    slug: 'markdown-preview-online-free',
+    title: 'Markdown Preview Online (Free, Private)',
+    description:
+      'Preview Markdown with live rendered HTML — convert to HTML or reverse from HTML on the same workbench.',
+    publishedAt: '2026-07-26',
+    updatedAt: '2026-07-26',
+    keywords: [
+      'markdown preview online free',
+      'live markdown preview',
+      'markdown renderer browser',
+      'preview markdown private',
+      'markdown workbench',
+    ],
+    relatedTools: ['markdown-preview', 'markdown-to-html', 'html-to-markdown'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Writing Markdown for READMEs, docs, or blog drafts is faster when you see rendered output instantly. A live preview catches formatting mistakes — broken links, missing code fences, heading hierarchy — before you commit or publish.',
+      },
+      { type: 'heading', text: 'Markdown workbench tabs' },
+      {
+        type: 'list',
+        items: [
+          'Live preview — side-by-side editor and rendered HTML',
+          'Markdown → HTML — copy raw HTML for CMS or email',
+          'HTML → Markdown — convert exported HTML back to Markdown',
+          'Round-trip buttons between tabs',
+          'Shareable links preserve tab and content',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'markdown-preview', label: 'Open Markdown workbench' },
+    ],
+  },
+  'binary-converter-online-free': {
+    slug: 'binary-converter-online-free',
+    title: 'Binary Converter Online (Free, Private)',
+    description:
+      'Convert text to binary and back with byte/bit counts — encode/decode tabs with round-trip on one page.',
+    publishedAt: '2026-07-26',
+    updatedAt: '2026-07-26',
+    keywords: [
+      'binary converter online free',
+      'text to binary online',
+      'binary to text decoder',
+      'binary encoder private',
+      'binary workbench',
+    ],
+    relatedTools: ['binary-converter', 'binary-decoder', 'hex-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Binary representation shows each character as an 8-bit sequence of 0s and 1s. It is useful for learning encoding, debugging low-level protocols, and teaching how computers store text.',
+      },
+      { type: 'heading', text: 'Binary workbench features' },
+      {
+        type: 'list',
+        items: [
+          'Text → Binary and Binary → Text tabs',
+          'Byte and bit count badge on output',
+          'Space-separated 8-bit groups for readability',
+          'Round-trip button to verify encode/decode',
+          'Dedicated encoder and decoder SEO URLs',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'binary-converter', label: 'Open Binary workbench' },
+    ],
+  },
+  'web-formatter-online-free': {
+    slug: 'web-formatter-online-free',
+    title: 'Web Formatter Online (Free) — HTML, CSS, JS & XML',
+    description:
+      'Beautify HTML, minify CSS/JS, and format XML on one workbench — live output with bytes saved.',
+    publishedAt: '2026-07-26',
+    updatedAt: '2026-07-26',
+    keywords: [
+      'web formatter online free',
+      'html beautifier css minifier',
+      'javascript minifier online private',
+      'xml formatter workbench',
+      'format html css js online',
+    ],
+    relatedTools: ['html-beautifier', 'css-minifier', 'javascript-minifier', 'xml-formatter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Frontend developers constantly switch between beautifying HTML for debugging and minifying CSS/JS for production. Utillio combines all four formatters on one page so you do not juggle separate tools.',
+      },
+      { type: 'heading', text: 'Four tabs, one workbench' },
+      {
+        type: 'list',
+        items: [
+          'HTML — beautify with readable indentation',
+          'CSS — minify with bytes-saved percentage',
+          'JavaScript — minify for production bundles',
+          'XML — pretty-print SOAP, RSS, and config files',
+          'Shareable links preserve tab and input',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'html-beautifier', label: 'Open Web Formatter workbench' },
+    ],
+  },
+}
+
+export function getWorkbenchGuides(): Guide[] {
+  return WORKBENCH_GUIDE_SLUGS.map((slug) => guides[slug]).filter(Boolean)
+}
+
+export function getFeaturedGuides(): Guide[] {
+  return FEATURED_GUIDE_SLUGS.map((slug) => guides[slug]).filter(Boolean)
 }
 
 export function getAllGuides(): Guide[] {

@@ -174,7 +174,8 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "sha256",
       "sha512",
       "checksum",
-      "cryptographic hash"
+      "cryptographic hash",
+      "hmac generator"
     ],
     "categoryName": "Security"
   },
@@ -220,7 +221,8 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "unix timestamp",
       "epoch converter",
       "timestamp to date",
-      "date to timestamp"
+      "date to timestamp",
+      "relative time"
     ],
     "categoryName": "Date & Time"
   },
@@ -248,7 +250,22 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "html encoder",
       "html entities",
       "escape html",
-      "html encode"
+      "html encode",
+      "html decode"
+    ],
+    "categoryName": "Converters"
+  },
+  {
+    "id": "html-decoder",
+    "title": "HTML Decoder",
+    "description": "Decode HTML entities back to plain text",
+    "category": "encoding",
+    "icon": "code",
+    "keywords": [
+      "html decoder",
+      "decode html entities",
+      "unescape html",
+      "html entity decoder"
     ],
     "categoryName": "Converters"
   },
@@ -262,7 +279,22 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "hex encoder",
       "hexadecimal",
       "text to hex",
-      "hex decode"
+      "hex decode",
+      "hex decoder"
+    ],
+    "categoryName": "Converters"
+  },
+  {
+    "id": "hex-decoder",
+    "title": "Hex Decoder",
+    "description": "Convert hexadecimal strings back to plain text",
+    "category": "encoding",
+    "icon": "hash",
+    "keywords": [
+      "hex decoder",
+      "hexadecimal decode",
+      "hex to text",
+      "decode hex string"
     ],
     "categoryName": "Converters"
   },
@@ -613,7 +645,22 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "binary converter",
       "text to binary",
       "binary to text",
-      "binary encoder"
+      "binary encoder",
+      "binary decoder"
+    ],
+    "categoryName": "Converters"
+  },
+  {
+    "id": "binary-decoder",
+    "title": "Binary Decoder",
+    "description": "Decode binary strings back to plain text",
+    "category": "encoding",
+    "icon": "binary",
+    "keywords": [
+      "binary decoder",
+      "binary to text",
+      "decode binary string",
+      "binary translator"
     ],
     "categoryName": "Converters"
   },
@@ -632,6 +679,20 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "categoryName": "Converters"
   },
   {
+    "id": "morse-decoder",
+    "title": "Morse Code Decoder",
+    "description": "Decode Morse code dots and dashes to plain text",
+    "category": "encoding",
+    "icon": "radio",
+    "keywords": [
+      "morse decoder",
+      "decode morse code",
+      "morse to text",
+      "morse code translator"
+    ],
+    "categoryName": "Converters"
+  },
+  {
     "id": "rot13-encoder",
     "title": "ROT13 Encoder",
     "description": "Encode and decode text with ROT13 cipher",
@@ -641,7 +702,22 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "rot13",
       "rot13 encoder",
       "caesar cipher",
-      "text cipher"
+      "text cipher",
+      "rot13 decoder"
+    ],
+    "categoryName": "Converters"
+  },
+  {
+    "id": "rot13-decoder",
+    "title": "ROT13 Decoder",
+    "description": "Decode ROT13 cipher text back to plain text",
+    "category": "encoding",
+    "icon": "lock",
+    "keywords": [
+      "rot13 decoder",
+      "decode rot13",
+      "rot13 decrypt",
+      "caesar cipher decoder"
     ],
     "categoryName": "Converters"
   },
@@ -1075,7 +1151,8 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "ip converter",
       "ipv4 to decimal",
       "ip to long",
-      "ip address converter"
+      "ip address converter",
+      "ipv4 to hex"
     ],
     "categoryName": "Network"
   },
@@ -1103,7 +1180,8 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "hmac generator",
       "hmac sha256",
       "message authentication",
-      "api signature"
+      "api signature",
+      "webhook signature"
     ],
     "categoryName": "Security"
   },
@@ -1229,7 +1307,22 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "ascii converter",
       "char to ascii",
       "ascii code",
-      "character code"
+      "character code",
+      "ascii table"
+    ],
+    "categoryName": "Converters"
+  },
+  {
+    "id": "ascii-decoder",
+    "title": "ASCII Decoder",
+    "description": "Convert ASCII/Unicode codes back to characters",
+    "category": "encoding",
+    "icon": "hash",
+    "keywords": [
+      "ascii decoder",
+      "code to char",
+      "ascii to text",
+      "character code decoder"
     ],
     "categoryName": "Converters"
   },

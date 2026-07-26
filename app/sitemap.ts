@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { categories } from '@/lib/categories'
 import { getComparisonSlugs } from '@/lib/comparisons'
-import { getGuideSlugs } from '@/lib/guides'
+import { getAllGuides } from '@/lib/guides'
 import { siteConfig } from '@/lib/site'
 import { toolSearchIndex } from '@/lib/tool-search-index'
 
@@ -19,9 +19,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ]
 
-  const guidePages: MetadataRoute.Sitemap = getGuideSlugs().map((slug) => ({
-    url: `${base}/guides/${slug}`,
-    lastModified: new Date(),
+  const guidePages: MetadataRoute.Sitemap = getAllGuides().map((guide) => ({
+    url: `${base}/guides/${guide.slug}`,
+    lastModified: new Date(guide.updatedAt ?? guide.publishedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
   }))
