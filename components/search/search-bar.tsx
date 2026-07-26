@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
-import { searchToolIndex, type ToolSearchItem } from '@/lib/tool-search-index'
+import { loadSearchIndex, searchLoadedIndex } from '@/lib/search-client'
+import type { ToolSearchItem } from '@/lib/tool-search-index'
 import { cn } from '@/lib/utils'
 
 interface SearchBarProps {
@@ -16,21 +17,33 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [results, setResults] = useState<ToolSearchItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
+  const indexRef = useRef<ToolSearchItem[] | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const isHero = size === 'hero'
 
-  const handleSearch = useCallback((query: string) => {
-    setValue(query)
-    setActiveIndex(-1)
-    if (query.trim()) {
-      setResults(searchToolIndex(query).slice(0, 6))
-      setIsOpen(true)
-    } else {
-      setResults([])
-      setIsOpen(false)
-    }
+  const ensureIndex = useCallback(async () => {
+    if (indexRef.current) return indexRef.current
+    const loaded = await loadSearchIndex()
+    indexRef.current = loaded
+    return loaded
   }, [])
+
+  const handleSearch = useCallback(
+    async (query: string) => {
+      setValue(query)
+      setActiveIndex(-1)
+      if (query.trim()) {
+        const index = await ensureIndex()
+        setResults(searchLoadedIndex(query, index).slice(0, 6))
+        setIsOpen(true)
+      } else {
+        setResults([])
+        setIsOpen(false)
+      }
+    },
+    [ensureIndex],
+  )
 
   const selectResult = useCallback(
     (toolId: string) => {
@@ -108,8 +121,11 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
           placeholder={isHero ? 'Search free tools…' : 'Search tools…'}
           data-search-input
           value={value}
-          onChange={(e) => handleSearch(e.target.value)}
-          onFocus={() => value && setIsOpen(true)}
+          onChange={(e) => void handleSearch(e.target.value)}
+          onFocus={() => {
+            void ensureIndex()
+            if (value) setIsOpen(true)
+          }}
           onKeyDown={handleKeyDown}
           autoComplete="off"
           className={cn(

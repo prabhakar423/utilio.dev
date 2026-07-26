@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, Search, X } from 'lucide-react'
 import { BrandLogo } from '@/components/layout/brand-logo'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
-import { SearchBar } from '@/components/search/search-bar'
+import { DeferredSearchBar } from '@/components/search/deferred-search-bar'
 import { categories } from '@/lib/categories'
 import { cn } from '@/lib/utils'
 
@@ -43,7 +43,7 @@ export function Header() {
         <BrandLogo />
 
         <div className="hidden min-w-0 flex-1 lg:block lg:max-w-sm xl:max-w-md">
-          <SearchBar />
+          <DeferredSearchBar />
         </div>
 
         <nav
@@ -93,6 +93,13 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1">
+          <Link
+            href="/search"
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
+            aria-label="Search tools"
+          >
+            <Search className="size-5" />
+          </Link>
           <ThemeToggle />
           <button
             type="button"
@@ -104,10 +111,6 @@ export function Header() {
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
-      </div>
-
-      <div className="border-t border-border/60 px-4 py-2 lg:hidden">
-        <SearchBar />
       </div>
 
       {mobileOpen && (

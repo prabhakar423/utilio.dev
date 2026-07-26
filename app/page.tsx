@@ -5,7 +5,7 @@ import { GuideCard } from '@/components/cards/guide-card'
 import { ToolCard } from '@/components/cards/tool-card'
 import { DeferredHomeSections } from '@/components/home/deferred-home-sections'
 import { Footer } from '@/components/layout/footer'
-import { Header } from '@/components/layout/header'
+import { HomeHeader } from '@/components/layout/home-header'
 import { JsonLd } from '@/components/seo/json-ld'
 import { HeroSearchForm } from '@/components/search/hero-search-form'
 import { siteConfig } from '@/lib/site'
@@ -35,7 +35,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={[websiteJsonLd(), organizationJsonLd()]} />
-      <Header />
+      <HomeHeader />
       <main id="main-content" className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border/60">
@@ -51,9 +51,7 @@ export default function HomePage() {
 
               <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
                 {siteConfig.hero.headline}
-                <span className="block text-primary [background-image:linear-gradient(to_right,var(--primary),var(--primary),var(--accent))] [-webkit-background-clip:text] [background-clip:text] [-webkit-text-fill-color:transparent] [text-fill-color:transparent] supports-[background-clip:text]:text-transparent">
-                  {siteConfig.hero.highlight}
-                </span>
+                <span className="block text-primary">{siteConfig.hero.highlight}</span>
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80 text-balance">

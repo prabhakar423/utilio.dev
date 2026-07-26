@@ -4,15 +4,20 @@ import { useEffect, useState } from 'react'
 import { Star } from 'lucide-react'
 import { ToolCard } from '@/components/cards/tool-card'
 import { FAVORITES_CHANGED_EVENT, getFavoriteToolIds } from '@/lib/favorite-tools'
-import { getToolSearchItem, type ToolSearchItem } from '@/lib/tool-search-index'
+import { findInLoadedIndex, loadSearchIndex } from '@/lib/search-client'
+import type { ToolSearchItem } from '@/lib/tool-search-index'
 
 export function FavoriteToolsSection() {
   const [favorites, setFavorites] = useState<ToolSearchItem[]>([])
 
   useEffect(() => {
     const load = () => {
-      const ids = getFavoriteToolIds()
-      setFavorites(ids.map((id) => getToolSearchItem(id)).filter(Boolean) as ToolSearchItem[])
+      void loadSearchIndex().then((index) => {
+        const ids = getFavoriteToolIds()
+        setFavorites(
+          ids.map((id) => findInLoadedIndex(id, index)).filter(Boolean) as ToolSearchItem[],
+        )
+      })
     }
     load()
     window.addEventListener(FAVORITES_CHANGED_EVENT, load)

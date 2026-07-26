@@ -46,6 +46,14 @@ const categoryNames = {
   network: 'Network',
 }
 
+const indexItems = entries.map((entry) => ({
+  ...entry,
+  categoryName: categoryNames[entry.category] ?? entry.category,
+}))
+
+fs.mkdirSync(path.join(root, 'public'), { recursive: true })
+fs.writeFileSync(path.join(root, 'public/search-index.json'), JSON.stringify(indexItems))
+
 const searchIndexTs = `export interface ToolSearchItem {
   id: string
   title: string
@@ -56,14 +64,7 @@ const searchIndexTs = `export interface ToolSearchItem {
   keywords: string[]
 }
 
-export const toolSearchIndex: ToolSearchItem[] = ${JSON.stringify(
-  entries.map((entry) => ({
-    ...entry,
-    categoryName: categoryNames[entry.category] ?? entry.category,
-  })),
-  null,
-  2,
-)}
+export const toolSearchIndex: ToolSearchItem[] = ${JSON.stringify(indexItems, null, 2)}
 
 export function searchToolIndex(query: string): ToolSearchItem[] {
   const lowerQuery = query.toLowerCase().trim()

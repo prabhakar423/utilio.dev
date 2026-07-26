@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { DeferredClientUtilities } from '@/components/layout/deferred-client-utilities'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { GlobalShortcuts } from '@/components/layout/global-shortcuts'
-import { ScrollToTop } from '@/components/layout/scroll-to-top'
 import { createPageMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 import './globals.css'
@@ -13,12 +12,7 @@ const inter = Inter({
   variable: '--font-sans',
   display: 'swap',
   preload: true,
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
+  adjustFontFallback: true,
 })
 
 export const metadata: Metadata = {
@@ -44,15 +38,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
         <ThemeProvider>
-          <GlobalShortcuts />
+          <DeferredClientUtilities />
           {children}
-          <ScrollToTop />
         </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
