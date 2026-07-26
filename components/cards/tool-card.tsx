@@ -11,6 +11,7 @@ interface ToolCardProps {
   category: string
   compact?: boolean
   prefetch?: boolean
+  favorite?: React.ReactNode
 }
 
 export function ToolCard({
@@ -21,6 +22,7 @@ export function ToolCard({
   category,
   compact = false,
   prefetch = true,
+  favorite,
 }: ToolCardProps) {
   const IconComponent = getLucideIcon(icon)
   const categoryName = getCategoryName(category)
@@ -30,11 +32,16 @@ export function ToolCard({
       href={`/tools/${id}`}
       prefetch={prefetch}
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-border/70 bg-card/70 p-5 transition-all duration-200',
+        'group relative block h-full overflow-hidden rounded-2xl border border-border/70 bg-card/70 p-5 transition-all duration-200',
         'hover:-translate-y-0.5 hover:border-primary/30 hover:bg-card hover:shadow-lg hover:shadow-primary/5',
         compact && 'p-4',
       )}
     >
+      {favorite && (
+        <div className="pointer-events-none absolute right-3 top-3 z-10 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100 [&>*]:pointer-events-auto">
+          {favorite}
+        </div>
+      )}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
       <div className="flex items-start gap-3">
@@ -43,7 +50,7 @@ export function ToolCard({
             <IconComponent className="size-5" />
           </div>
         )}
-        <div className="min-w-0 flex-1">
+        <div className={cn('min-w-0 flex-1', favorite && 'pr-8')}>
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold tracking-tight transition-colors group-hover:text-primary">
               {title}

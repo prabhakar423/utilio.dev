@@ -14,19 +14,24 @@ interface ToolCardWithFavoriteProps {
 }
 
 export function ToolCardWithFavorite(props: ToolCardWithFavoriteProps) {
+  const { id, title, ...cardProps } = props
+
   return (
-    <div className="group relative">
-      <ToolCard {...props} />
-      <div
-        className="absolute right-3 top-3 z-10 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100"
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        }}
-        onMouseDown={(e) => e.stopPropagation()}
-      >
-        <FavoriteButton toolId={props.id} toolTitle={props.title} compact />
-      </div>
-    </div>
+    <ToolCard
+      {...cardProps}
+      id={id}
+      title={title}
+      favorite={
+        <div
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <FavoriteButton toolId={id} toolTitle={title} compact />
+        </div>
+      }
+    />
   )
 }
