@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { JsonLd } from '@/components/seo/json-ld'
 import { getGuideBySlug, getGuideSlugs, type GuideBlock } from '@/lib/guides'
+import { withPrivacyMetaDescription } from '@/lib/privacy-copy'
 import { createPageMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 import { tools } from '@/lib/tools'
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   return createPageMetadata({
     title: `${guide.title} — ${siteConfig.name}`,
-    description: guide.description,
+    description: withPrivacyMetaDescription(guide.description),
     path: `/guides/${guide.slug}`,
     keywords: guide.keywords,
   })

@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { Copy, RefreshCw } from 'lucide-react'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+import { useToolShortcut } from '@/hooks/use-tool-shortcut'
 
 export function Base64Encoder() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -28,6 +30,8 @@ export function Base64Encoder() {
     setInput('')
     setOutput('')
   }
+
+  useToolShortcut(handleEncode, 'Enter')
 
   return (
     <div className="grid gap-4">
@@ -74,6 +78,7 @@ export function Base64Encoder() {
           <RefreshCw className="w-4 h-4" />
           Clear
         </button>
+        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to encode</span>
       </div>
 
       <div className="p-4 rounded-lg bg-card border border-border">

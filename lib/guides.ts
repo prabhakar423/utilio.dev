@@ -685,6 +685,290 @@ export const guides: Record<string, Guide> = {
       { type: 'tool-cta', toolId: 'markdown-table-generator', label: 'Generate a Markdown table' },
     ],
   },
+  'yaml-to-json-converter-online-free': {
+    slug: 'yaml-to-json-converter-online-free',
+    title: 'YAML to JSON Converter Online (Free)',
+    description:
+      'Convert YAML to JSON instantly in your browser. Free, private, and no upload — ideal for Kubernetes, Docker Compose, and CI configs.',
+    publishedAt: '2026-03-29',
+    keywords: [
+      'yaml to json converter online free',
+      'convert yaml to json',
+      'yaml json converter',
+      'yaml parser online',
+    ],
+    relatedTools: ['yaml-to-json', 'json-to-yaml', 'json-formatter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'YAML is the go-to format for Kubernetes manifests, Docker Compose files, GitHub Actions workflows, and Ansible playbooks. APIs and JavaScript apps often expect JSON instead. Converting between them by hand is error-prone — indentation matters in YAML, and a single misplaced space breaks parsing.',
+      },
+      { type: 'heading', text: 'When you need YAML → JSON' },
+      {
+        type: 'list',
+        items: [
+          'Feeding a Kubernetes manifest into a JSON-only API or validator',
+          'Debugging CI/CD pipeline configs that output YAML',
+          'Migrating legacy YAML configs to JSON-based tools',
+          'Testing config changes before deploying to production',
+        ],
+      },
+      { type: 'heading', text: 'Why use a browser converter?' },
+      {
+        type: 'paragraph',
+        text: 'Server-side converters upload your config to a remote machine. For production secrets, internal hostnames, or API keys embedded in YAML, that is a security risk. Utilio converts YAML to JSON entirely in your browser — nothing is sent over the network.',
+      },
+      { type: 'tool-cta', toolId: 'yaml-to-json', label: 'Convert YAML to JSON now' },
+    ],
+  },
+  'chmod-755-to-symbolic-calculator': {
+    slug: 'chmod-755-to-symbolic-calculator',
+    title: 'Chmod Calculator: Convert 755 to Symbolic (rwxr-xr-x)',
+    description:
+      'Convert chmod octal values like 755 to symbolic notation (rwxr-xr-x) and back. Free online calculator — runs locally, no upload.',
+    publishedAt: '2026-03-29',
+    keywords: [
+      'chmod calculator 755 to symbolic',
+      '755 to rwxr-xr-x',
+      'octal to symbolic chmod',
+      'file permissions calculator',
+    ],
+    relatedTools: ['chmod-calculator', 'binary-converter', 'hex-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Unix file permissions use either octal notation (755, 644, 600) or symbolic notation (rwxr-xr-x). Octal is compact; symbolic is readable. DevOps docs, deployment scripts, and chmod man pages mix both — a quick converter saves time.',
+      },
+      { type: 'heading', text: 'What does 755 mean?' },
+      {
+        type: 'list',
+        items: [
+          '7 (owner) = read + write + execute → rwx',
+          '5 (group) = read + execute → r-x',
+          '5 (others) = read + execute → r-x',
+          '755 in symbolic form = rwxr-xr-x',
+        ],
+      },
+      { type: 'heading', text: 'Common permission values' },
+      {
+        type: 'list',
+        items: [
+          '644 — rw-r--r-- (files: owner read/write, others read)',
+          '600 — rw------- (private files, e.g. SSH keys)',
+          '755 — rwxr-xr-x (executables and directories)',
+          '777 — rwxrwxrwx (world-writable — avoid in production)',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'chmod-calculator', label: 'Open the chmod calculator' },
+    ],
+  },
+  'levenshtein-distance-calculator-online': {
+    slug: 'levenshtein-distance-calculator-online',
+    title: 'Levenshtein Distance Calculator Online',
+    description:
+      'Calculate edit distance and string similarity between two texts. Free online tool — private, browser-based, no upload required.',
+    publishedAt: '2026-03-29',
+    keywords: [
+      'levenshtein distance calculator online',
+      'edit distance calculator',
+      'string similarity online',
+      'fuzzy match calculator',
+    ],
+    relatedTools: ['levenshtein-calculator', 'text-diff', 'find-and-replace'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Levenshtein distance counts the minimum number of single-character edits — insertions, deletions, or substitutions — needed to transform one string into another. It powers spell checkers, fuzzy search, deduplication, and plagiarism detection.',
+      },
+      { type: 'heading', text: 'Example: kitten → sitting' },
+      {
+        type: 'paragraph',
+        text: 'The edit distance between "kitten" and "sitting" is 3: substitute k→s, substitute e→i, append g. A similarity percentage of ~57% reflects how close the two strings are relative to their length.',
+      },
+      { type: 'heading', text: 'When to use edit distance' },
+      {
+        type: 'list',
+        items: [
+          'Matching user input against a list despite typos',
+          'Comparing product names or addresses for duplicates',
+          'Evaluating OCR or transcription accuracy',
+          'Building "did you mean?" search suggestions',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'levenshtein-calculator', label: 'Calculate edit distance' },
+    ],
+  },
+  'base64-encode-decode-online-free': {
+    slug: 'base64-encode-decode-online-free',
+    title: 'Base64 Encode and Decode Online (Free, Private)',
+    description:
+      'Encode text to Base64 or decode Base64 strings online. Free, instant, and private — your data never leaves your browser.',
+    publishedAt: '2026-03-30',
+    keywords: [
+      'base64 encode decode online free',
+      'base64 encoder online',
+      'decode base64 string',
+      'base64 converter private',
+    ],
+    relatedTools: ['base64-encoder', 'base64-decoder', 'url-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Base64 encoding converts binary or text data into ASCII-safe characters. Developers use it for JWT payloads, data URIs, email attachments, and embedding small files in JSON. It is encoding, not encryption — anyone can decode it.',
+      },
+      { type: 'heading', text: 'Common use cases' },
+      {
+        type: 'list',
+        items: [
+          'Decode a JWT header or payload for debugging',
+          'Encode credentials for HTTP Basic Auth',
+          'Create data URIs for inline images in HTML/CSS',
+          'Safely embed binary data in JSON APIs',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead.',
+      },
+      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Encode to Base64' },
+      { type: 'tool-cta', toolId: 'base64-decoder', label: 'Decode from Base64' },
+    ],
+  },
+  'cron-expression-generator-online': {
+    slug: 'cron-expression-generator-online',
+    title: 'Cron Expression Generator Online (Free)',
+    description:
+      'Build and validate cron schedules visually. Free online cron generator — runs in your browser with no upload.',
+    publishedAt: '2026-03-30',
+    keywords: [
+      'cron expression generator online',
+      'cron schedule builder',
+      'crontab generator free',
+      'cron syntax helper',
+    ],
+    relatedTools: ['cron-generator', 'cron-parser', 'unix-timestamp-converter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Cron expressions schedule recurring jobs — backups, report generation, cache warming, and CI pipelines. The syntax is compact but easy to get wrong: off-by-one errors in day-of-week fields or mixing up minute and hour positions cause silent failures.',
+      },
+      { type: 'heading', text: 'Cron field order' },
+      {
+        type: 'list',
+        items: [
+          'minute (0–59)',
+          'hour (0–23)',
+          'day of month (1–31)',
+          'month (1–12)',
+          'day of week (0–7, 0 and 7 = Sunday)',
+        ],
+      },
+      { type: 'heading', text: 'Examples' },
+      {
+        type: 'list',
+        items: [
+          '0 9 * * 1-5 — weekdays at 9:00 AM',
+          '*/15 * * * * — every 15 minutes',
+          '0 0 1 * * — first day of every month at midnight',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'cron-generator', label: 'Generate a cron expression' },
+    ],
+  },
+  'qr-code-generator-no-upload': {
+    slug: 'qr-code-generator-no-upload',
+    title: 'QR Code Generator Online — No Upload Required',
+    description:
+      'Create QR codes for URLs, WiFi, and text in your browser. Free, instant download — nothing uploaded to a server.',
+    publishedAt: '2026-03-31',
+    keywords: [
+      'qr code generator no upload',
+      'qr code generator online free',
+      'wifi qr code generator',
+      'private qr code maker',
+    ],
+    relatedTools: ['qr-code-generator', 'url-encoder', 'slug-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'QR codes encode URLs, contact cards, WiFi credentials, and plain text into scannable images. Event check-in links, restaurant menus, and product packaging all use them. Generating a QR code should be instant — and for WiFi passwords or internal URLs, it should not require uploading data to a third party.',
+      },
+      { type: 'heading', text: 'What you can encode' },
+      {
+        type: 'list',
+        items: [
+          'Website URLs and deep links',
+          'WiFi network name and password (WPA format)',
+          'Plain text messages or promo codes',
+          'Contact info (vCard format)',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'qr-code-generator', label: 'Generate a QR code' },
+    ],
+  },
+  'hmac-sha256-generator-online': {
+    slug: 'hmac-sha256-generator-online',
+    title: 'HMAC SHA-256 Generator Online (Free, Private)',
+    description:
+      'Generate HMAC-SHA256 signatures for API webhooks and authentication. Runs locally in your browser — secret keys never uploaded.',
+    publishedAt: '2026-03-31',
+    keywords: [
+      'hmac sha256 generator online',
+      'hmac generator free',
+      'webhook signature generator',
+      'hmac sha256 calculator',
+    ],
+    relatedTools: ['hmac-generator', 'hash-generator', 'jwt-decoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'HMAC (Hash-based Message Authentication Code) combines a secret key with a message to produce a signature. APIs like Stripe, Shopify, and GitHub webhooks use HMAC-SHA256 so receivers can verify requests were not tampered with.',
+      },
+      { type: 'heading', text: 'HMAC vs plain hash' },
+      {
+        type: 'paragraph',
+        text: 'A plain SHA-256 hash of a message can be recomputed by anyone who knows the message. HMAC requires the secret key — only parties with the key can produce or verify the signature.',
+      },
+      { type: 'heading', text: 'Never upload your secret key' },
+      {
+        type: 'paragraph',
+        text: 'Server-side HMAC tools receive your API secret on their servers. Utilio computes HMAC-SHA256 entirely in your browser using the Web Crypto API.',
+      },
+      { type: 'tool-cta', toolId: 'hmac-generator', label: 'Generate HMAC-SHA256' },
+    ],
+  },
+  'uuid-generator-v4-online-free': {
+    slug: 'uuid-generator-v4-online-free',
+    title: 'UUID v4 Generator Online (Free)',
+    description:
+      'Generate random UUID v4 identifiers instantly. Free, private, and browser-based — no server round-trip.',
+    publishedAt: '2026-04-01',
+    keywords: [
+      'uuid generator v4 online free',
+      'uuid v4 generator',
+      'random uuid generator',
+      'generate uuid online',
+    ],
+    relatedTools: ['uuid-generator', 'uuid-validator', 'jwt-decoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'UUID v4 identifiers are 128-bit random values used as database primary keys, session IDs, correlation IDs, and file names. RFC 4122 specifies the format: 8-4-4-4-12 hexadecimal digits with version and variant bits set.',
+      },
+      { type: 'heading', text: 'UUID versions at a glance' },
+      {
+        type: 'list',
+        items: [
+          'v4 — random (most common for general-purpose IDs)',
+          'v1 — time-based (predictable — avoid for security tokens)',
+          'v5 — deterministic hash of namespace + name',
+          'v7 — timestamp-ordered (sortable, newer standard)',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'uuid-generator', label: 'Generate UUID v4' },
+      { type: 'tool-cta', toolId: 'uuid-validator', label: 'Validate a UUID' },
+    ],
+  },
 }
 
 export function getAllGuides(): Guide[] {

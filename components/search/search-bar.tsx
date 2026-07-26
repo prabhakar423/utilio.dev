@@ -106,6 +106,7 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
             activeIndex >= 0 ? `search-result-${results[activeIndex]?.id}` : undefined
           }
           placeholder={isHero ? 'Search free tools…' : 'Search tools…'}
+          data-search-input
           value={value}
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => value && setIsOpen(true)}
@@ -113,9 +114,14 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
           autoComplete="off"
           className={cn(
             'w-full rounded-xl border border-border/80 bg-background/80 text-foreground shadow-sm transition-all placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20',
-            isHero ? 'py-4 pl-12 pr-12 text-base' : 'py-2 pl-9 pr-10 text-sm',
+            isHero ? 'py-4 pl-12 pr-12 text-base' : 'py-2 pl-9 pr-[4.5rem] text-sm',
           )}
         />
+        {!isHero && !value && (
+          <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-md border border-border/80 bg-muted/60 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
+            Ctrl K
+          </kbd>
+        )}
         {value && (
           <button
             type="button"

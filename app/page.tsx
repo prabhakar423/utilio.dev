@@ -5,6 +5,8 @@ import { GuideCard } from '@/components/cards/guide-card'
 import { ToolCard } from '@/components/cards/tool-card'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
+import { FavoriteToolsSection } from '@/components/home/favorite-tools-section'
+import { RecentToolsSection } from '@/components/home/recent-tools-section'
 import { JsonLd } from '@/components/seo/json-ld'
 import { SearchBar } from '@/components/search/search-bar'
 import { siteConfig } from '@/lib/site'
@@ -82,6 +84,10 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        <RecentToolsSection />
+
+        <FavoriteToolsSection />
 
         {/* Categories */}
         <section className="py-16 sm:py-20">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Check, Copy, Minimize2, RefreshCw, ShieldCheck, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -9,6 +9,8 @@ import {
   ToolPanel,
   ToolTextarea,
 } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+import { useToolShortcut } from '@/hooks/use-tool-shortcut'
 import { cn } from '@/lib/utils'
 
 type Mode = 'format' | 'minify' | 'validate'
@@ -16,7 +18,7 @@ type Mode = 'format' | 'minify' | 'validate'
 const EXAMPLE = `{"name":"John","age":30,"skills":["JSON","TypeScript"]}`
 
 export function JsonFormatter() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [mode, setMode] = useState<Mode>('format')
@@ -58,16 +60,7 @@ export function JsonFormatter() {
     [input, mode],
   )
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        e.preventDefault()
-        run()
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [run])
+  useToolShortcut(() => run(), 'Enter')
 
   const handleCopy = async () => {
     if (!output) return

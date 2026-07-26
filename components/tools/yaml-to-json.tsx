@@ -5,9 +5,11 @@ import { Check, Copy } from 'lucide-react'
 import { load } from 'js-yaml'
 import { Button } from '@/components/ui/button'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+import { useToolShortcut } from '@/hooks/use-tool-shortcut'
 
 export function YamlToJson() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
@@ -21,6 +23,8 @@ export function YamlToJson() {
       setOutput('')
     }
   }
+
+  useToolShortcut(convert, 'Enter')
 
   const copy = async () => {
     await navigator.clipboard.writeText(output)
@@ -40,6 +44,7 @@ export function YamlToJson() {
         <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
           {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
         </Button>
+        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to convert</span>
       </ToolActions>
     </div>
   )

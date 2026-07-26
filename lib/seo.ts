@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { withPrivacyMetaDescription } from '@/lib/privacy-copy'
 import { siteConfig } from '@/lib/site'
 import type { ToolDefinition } from '@/lib/tools'
 import { categories, getCategoryById } from '@/lib/tools'
@@ -43,9 +44,10 @@ export function createPageMetadata({
 
 export function createToolMetadata(tool: ToolDefinition): Metadata {
   const ogImage = `${siteConfig.url}/tools/${tool.id}/opengraph-image`
+  const description = withPrivacyMetaDescription(tool.longDescription ?? tool.description)
   return createPageMetadata({
     title: `${tool.title} — Free Online Tool`,
-    description: tool.longDescription ?? tool.description,
+    description,
     path: `/tools/${tool.id}`,
     keywords: tool.keywords,
     ogImage,

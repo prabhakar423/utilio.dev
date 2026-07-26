@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ToolActions, ToolStat } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+import { useToolShortcut } from '@/hooks/use-tool-shortcut'
 
 const PERMS = ['read', 'write', 'execute'] as const
 
@@ -40,7 +42,7 @@ function symbolicToOctal(symbolic: string): string | null {
 }
 
 export function ChmodCalculator() {
-  const [input, setInput] = useState('755')
+  const [input, setInput] = useShareableInput('755')
   const [mode, setMode] = useState<'octal' | 'symbolic'>('octal')
   const [result, setResult] = useState<{ octal: string; symbolic: string; breakdown: string } | null>(null)
   const [error, setError] = useState('')
@@ -84,6 +86,10 @@ export function ChmodCalculator() {
     window.setTimeout(() => setCopied(false), 2000)
   }
 
+  useToolShortcut(convert, 'Enter')
+
+  useToolShortcut(convert, 'Enter')
+
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
@@ -106,6 +112,7 @@ export function ChmodCalculator() {
         <Button type="button" variant="secondary" onClick={copy} disabled={!result}>
           {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
         </Button>
+        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to convert</span>
       </ToolActions>
       {result && (
         <>

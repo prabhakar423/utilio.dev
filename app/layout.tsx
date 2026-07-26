@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/providers/theme-provider'
+import { GlobalShortcuts } from '@/components/layout/global-shortcuts'
+import { ScrollToTop } from '@/components/layout/scroll-to-top'
 import { createPageMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 import './globals.css'
@@ -46,7 +48,11 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <GlobalShortcuts />
+          {children}
+          <ScrollToTop />
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

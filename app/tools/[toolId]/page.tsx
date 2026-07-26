@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { ToolLayout } from '@/components/layout/tool-layout'
@@ -39,7 +40,9 @@ export default async function ToolPage({ params }: PageProps) {
       <Header />
       <main id="main-content" className="flex-1">
         <ToolLayout tool={tool}>
-          <ToolComponent />
+          <Suspense fallback={null}>
+            <ToolComponent />
+          </Suspense>
         </ToolLayout>
       </main>
       <Footer />
