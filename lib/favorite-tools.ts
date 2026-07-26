@@ -1,7 +1,21 @@
-const STORAGE_KEY = 'utilio-favorite-tools'
+const STORAGE_KEY = 'utillio-favorite-tools'
+const LEGACY_STORAGE_KEY = 'utilio-favorite-tools'
 const MAX_FAVORITES = 24
 
-export const FAVORITES_CHANGED_EVENT = 'utilio-favorites-changed'
+export const FAVORITES_CHANGED_EVENT = 'utillio-favorites-changed'
+
+function readStoredFavorites(): string | null {
+  if (typeof window === 'undefined') return null
+  const current = localStorage.getItem(STORAGE_KEY)
+  if (current) return current
+  const legacy = localStorage.getItem(LEGACY_STORAGE_KEY)
+  if (legacy) {
+    localStorage.setItem(STORAGE_KEY, legacy)
+    localStorage.removeItem(LEGACY_STORAGE_KEY)
+    return legacy
+  }
+  return null
+}
 
 function notifyChange(): void {
   if (typeof window === 'undefined') return
@@ -11,7 +25,7 @@ function notifyChange(): void {
 export function getFavoriteToolIds(): string[] {
   if (typeof window === 'undefined') return []
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = readStoredFavorites()
     if (!raw) return []
     const parsed = JSON.parse(raw)
     return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string') : []
@@ -39,5 +53,6 @@ export function toggleFavoriteTool(toolId: string): boolean {
 export function clearFavoriteTools(): void {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEY)
+  localStorage.removeItem(LEGACY_STORAGE_KEY)
   notifyChange()
 }

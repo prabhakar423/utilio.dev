@@ -31,7 +31,7 @@ export default function CompareIndexPage() {
               <span className="text-sm font-medium">Privacy-first comparisons</span>
             </div>
             <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              How Utilio compares
+              How {siteConfig.name} compares
             </h1>
             <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
               Honest comparisons focused on one question: does your data leave your browser?

@@ -12,7 +12,7 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "json-formatter",
     "title": "JSON Formatter",
-    "description": "Format, validate, and minify JSON instantly",
+    "description": "Format, validate, and minify JSON with live error locations",
     "category": "text",
     "icon": "braces",
     "keywords": [
@@ -21,63 +21,72 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "validate",
       "pretty print",
       "minify",
-      "beautify"
+      "beautify",
+      "json error line"
     ],
     "categoryName": "Text Tools"
   },
   {
     "id": "base64-encoder",
     "title": "Base64 Encoder",
-    "description": "Encode plain text to Base64",
+    "description": "Encode and decode Base64 in one workbench",
     "category": "encoding",
     "icon": "binary",
     "keywords": [
       "base64",
       "encode",
+      "decode",
       "text",
-      "converter"
+      "converter",
+      "base64url"
     ],
     "categoryName": "Converters"
   },
   {
     "id": "base64-decoder",
     "title": "Base64 Decoder",
-    "description": "Decode Base64 back to plain text",
+    "description": "Decode and encode Base64 in one workbench",
     "category": "encoding",
     "icon": "binary",
     "keywords": [
       "base64",
       "decode",
+      "encode",
       "text",
-      "converter"
+      "converter",
+      "base64url"
     ],
     "categoryName": "Converters"
   },
   {
     "id": "url-encoder",
     "title": "URL Encoder",
-    "description": "Percent-encode strings for safe URLs",
+    "description": "Percent-encode and decode URLs in one workbench",
     "category": "encoding",
     "icon": "link",
     "keywords": [
       "url",
       "encode",
+      "decode",
       "percent encoding",
-      "uri"
+      "uri",
+      "urlencode"
     ],
     "categoryName": "Converters"
   },
   {
     "id": "url-decoder",
     "title": "URL Decoder",
-    "description": "Decode percent-encoded URL strings",
+    "description": "Decode and encode percent-encoded URLs",
     "category": "encoding",
     "icon": "link-2",
     "keywords": [
       "url",
       "decode",
+      "encode",
       "percent encoding",
-      "uri"
+      "uri",
+      "urldecode"
     ],
     "categoryName": "Converters"
   },
@@ -188,7 +197,7 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "jwt-decoder",
     "title": "JWT Decoder",
-    "description": "Decode and inspect JSON Web Token headers and payloads",
+    "description": "Decode, inspect, and verify JSON Web Tokens",
     "category": "developer",
     "icon": "key",
     "keywords": [
@@ -196,7 +205,8 @@ export const toolSearchIndex: ToolSearchItem[] = [
       "json web token",
       "decode jwt",
       "jwt payload",
-      "auth token"
+      "auth token",
+      "jwt verify"
     ],
     "categoryName": "Developer"
   },
@@ -343,14 +353,15 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "cron-parser",
     "title": "Cron Expression Parser",
-    "description": "Decode cron schedules into plain English",
+    "description": "Parse cron schedules and preview next run times",
     "category": "developer",
     "icon": "clock",
     "keywords": [
       "cron parser",
       "cron expression",
       "crontab",
-      "schedule parser"
+      "schedule parser",
+      "next cron run"
     ],
     "categoryName": "Developer"
   },
@@ -665,14 +676,15 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "jwt-generator",
     "title": "JWT Generator",
-    "description": "Generate unsigned JWT token structure for testing",
+    "description": "Sign and generate JWT tokens for testing",
     "category": "developer",
     "icon": "key-round",
     "keywords": [
       "jwt generator",
       "create jwt",
       "json web token generator",
-      "jwt builder"
+      "jwt builder",
+      "sign jwt"
     ],
     "categoryName": "Developer"
   },
@@ -805,14 +817,15 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "url-parser",
     "title": "URL Parser",
-    "description": "Break down URLs into components",
+    "description": "Parse URLs into components, params, and more",
     "category": "developer",
     "icon": "link",
     "keywords": [
       "url parser",
       "parse url",
       "url components",
-      "query string parser"
+      "query string parser",
+      "url breakdown"
     ],
     "categoryName": "Developer"
   },
@@ -1279,14 +1292,15 @@ export const toolSearchIndex: ToolSearchItem[] = [
   {
     "id": "cron-generator",
     "title": "Cron Expression Generator",
-    "description": "Build cron schedules with presets and custom fields",
+    "description": "Build cron schedules with presets and live preview",
     "category": "developer",
     "icon": "calendar-clock",
     "keywords": [
       "cron generator",
       "create cron expression",
       "cron builder",
-      "schedule generator"
+      "schedule generator",
+      "crontab generator"
     ],
     "categoryName": "Developer"
   },

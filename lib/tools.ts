@@ -45,19 +45,23 @@ export const tools: Record<string, ToolDefinition> = {
   'json-formatter': {
     id: 'json-formatter',
     title: 'JSON Formatter',
-    description: 'Format, validate, and minify JSON instantly',
+    description: 'Format, validate, and minify JSON with live error locations',
     longDescription:
-      'Free online JSON formatter and validator. Pretty-print JSON with syntax-aware indentation, minify for production, or validate structure before deployment.',
+      'Free online JSON formatter and validator. Pretty-print with live output, pinpoint syntax errors by line and column, preview structure, and minify for production.',
     category: 'text',
     icon: 'braces',
-    keywords: ['json', 'format', 'validate', 'pretty print', 'minify', 'beautify'],
+    keywords: ['json', 'format', 'validate', 'pretty print', 'minify', 'beautify', 'json error line'],
     type: 'static',
     addedAt: '2026-01-15',
-    relatedTools: ['base64-encoder', 'url-encoder', 'word-counter'],
+    relatedTools: ['base64-encoder', 'url-encoder', 'yaml-to-json'],
     faq: [
       {
         question: 'How do I format JSON online?',
-        answer: 'Paste your JSON into the input box and click Format. The tool validates syntax and applies readable indentation automatically.',
+        answer: 'Paste your JSON into the input box — output updates live in Format mode with readable indentation.',
+      },
+      {
+        question: 'Can this tool show where JSON syntax errors are?',
+        answer: 'Yes. Invalid JSON displays the parse error with line and column numbers when your browser provides them.',
       },
       {
         question: 'Can this tool minify JSON?',
@@ -71,64 +75,88 @@ export const tools: Record<string, ToolDefinition> = {
   'base64-encoder': {
     id: 'base64-encoder',
     title: 'Base64 Encoder',
-    description: 'Encode plain text to Base64',
+    description: 'Encode and decode Base64 in one workbench',
     longDescription:
-      'Convert text strings to Base64 encoding online. Useful for APIs, data URIs, and embedding binary data in JSON or XML.',
+      'Convert text to Base64 and back — standard or URL-safe — with live output. One workbench for encode and decode, no page switching.',
     category: 'encoding',
     icon: 'binary',
-    keywords: ['base64', 'encode', 'text', 'converter'],
+    keywords: ['base64', 'encode', 'decode', 'text', 'converter', 'base64url'],
     type: 'static',
     addedAt: '2026-01-18',
-    relatedTools: ['base64-decoder', 'url-encoder', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['base64-decoder', 'url-encoder', 'jwt-decoder'],
+    faq: [
+      {
+        question: 'What is URL-safe Base64?',
+        answer: 'URL-safe Base64 replaces + with - and / with _ and omits padding. Use it in JWTs, query strings, and filenames where standard Base64 characters cause issues.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/base64-encoder').then((mod) => ({ default: mod.Base64Encoder })),
   },
   'base64-decoder': {
     id: 'base64-decoder',
     title: 'Base64 Decoder',
-    description: 'Decode Base64 back to plain text',
+    description: 'Decode and encode Base64 in one workbench',
     longDescription:
-      'Decode Base64 strings to readable text. Handles standard Base64 input and shows clear errors for invalid payloads.',
+      'Decode Base64 strings to readable text or encode plain text — standard or URL-safe — with live output in a unified Base64 workbench.',
     category: 'encoding',
     icon: 'binary',
-    keywords: ['base64', 'decode', 'text', 'converter'],
+    keywords: ['base64', 'decode', 'encode', 'text', 'converter', 'base64url'],
     type: 'static',
     addedAt: '2026-01-18',
-    relatedTools: ['base64-encoder', 'url-decoder', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['base64-encoder', 'url-decoder', 'jwt-decoder'],
+    faq: [
+      {
+        question: 'Can I decode URL-safe Base64?',
+        answer: 'Yes. Switch to the Decode tab and select URL-safe mode. Padding is added automatically if missing.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/base64-decoder').then((mod) => ({ default: mod.Base64Decoder })),
   },
   'url-encoder': {
     id: 'url-encoder',
     title: 'URL Encoder',
-    description: 'Percent-encode strings for safe URLs',
+    description: 'Percent-encode and decode URLs in one workbench',
     longDescription:
-      'Encode special characters for use in URLs and query strings. Supports component encoding for paths, params, and form values.',
+      'Encode and decode URLs with live output, or parse them into components. Choose component encoding for query values, full URL mode, or form encoding with + for spaces.',
     category: 'encoding',
     icon: 'link',
-    keywords: ['url', 'encode', 'percent encoding', 'uri'],
+    keywords: ['url', 'encode', 'decode', 'percent encoding', 'uri', 'urlencode'],
     type: 'static',
     addedAt: '2026-01-20',
-    relatedTools: ['url-decoder', 'base64-encoder', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['url-decoder', 'url-parser', 'base64-encoder'],
+    faq: [
+      {
+        question: 'What is the difference between component and full URL encoding?',
+        answer: 'Component encoding (encodeURIComponent) escapes every special character — use for query parameter values. Full URL encoding (encodeURI) preserves :// ? # and is meant for complete URLs.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/url-encoder').then((mod) => ({ default: mod.UrlEncoder })),
   },
   'url-decoder': {
     id: 'url-decoder',
     title: 'URL Decoder',
-    description: 'Decode percent-encoded URL strings',
+    description: 'Decode and encode percent-encoded URLs',
     longDescription:
-      'Convert percent-encoded URLs back to readable text. Helpful when debugging redirects, query parameters, and encoded paths.',
+      'Decode percent-encoded strings back to readable text, or encode in the same URL workbench. Supports component, full URL, and form (+) encoding modes.',
     category: 'encoding',
     icon: 'link-2',
-    keywords: ['url', 'decode', 'percent encoding', 'uri'],
+    keywords: ['url', 'decode', 'encode', 'percent encoding', 'uri', 'urldecode'],
     type: 'static',
     addedAt: '2026-01-20',
-    relatedTools: ['url-encoder', 'base64-decoder', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['url-encoder', 'url-parser', 'base64-decoder'],
+    faq: [
+      {
+        question: 'Why does decoding fail with an error?',
+        answer: 'Malformed percent-encoding (like a trailing %) causes decode errors. Check the string was encoded correctly and matches the selected encoding mode.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/url-decoder').then((mod) => ({ default: mod.UrlDecoder })),
   },
@@ -255,19 +283,23 @@ export const tools: Record<string, ToolDefinition> = {
   'jwt-decoder': {
     id: 'jwt-decoder',
     title: 'JWT Decoder',
-    description: 'Decode and inspect JSON Web Token headers and payloads',
+    description: 'Decode, inspect, and verify JSON Web Tokens',
     longDescription:
-      'Paste a JWT to decode its header and payload JSON instantly. Useful for debugging authentication tokens, inspecting claims, and verifying token structure.',
+      'Paste a JWT to decode its header and payload, inspect standard claims, check expiry, and verify HMAC signatures (HS256/384/512) — all in your browser. One workbench for decode, verify, and sign.',
     category: 'developer',
     icon: 'key',
-    keywords: ['jwt decoder', 'json web token', 'decode jwt', 'jwt payload', 'auth token'],
+    keywords: ['jwt decoder', 'json web token', 'decode jwt', 'jwt payload', 'auth token', 'jwt verify'],
     type: 'static',
     addedAt: '2026-02-11',
-    relatedTools: ['json-formatter', 'hash-generator', 'base64-decoder'],
+    relatedTools: ['jwt-generator', 'json-formatter', 'hash-generator'],
     faq: [
       {
-        question: 'Does this tool verify JWT signatures?',
-        answer: 'No. This decoder only parses and displays the header and payload. Signature verification requires the secret key and is not performed here.',
+        question: 'Can this tool verify JWT signatures?',
+        answer: 'Yes. Open the Verify tab. For HS256/384/512, paste the HMAC secret. For RS256/384/512, paste the PEM public key (SPKI format). Verification runs locally via Web Crypto.',
+      },
+      {
+        question: 'Does this tool sign JWTs?',
+        answer: 'Yes. Use the Sign tab to build and sign test tokens with HS256, HS384, or HS512. For production auth, always sign tokens on your server.',
       },
       ...defaultFaq,
     ],
@@ -451,16 +483,22 @@ export const tools: Record<string, ToolDefinition> = {
   'cron-parser': {
     id: 'cron-parser',
     title: 'Cron Expression Parser',
-    description: 'Decode cron schedules into plain English',
+    description: 'Parse cron schedules and preview next run times',
     longDescription:
-      'Parse standard 5-field cron expressions and understand when jobs will run. Debug cron schedules for Linux, Kubernetes, and CI pipelines.',
+      'Parse standard 5-field cron expressions into plain English, see field-by-field breakdown, and preview the next 5 run times — all in one cron workbench.',
     category: 'developer',
     icon: 'clock',
-    keywords: ['cron parser', 'cron expression', 'crontab', 'schedule parser'],
+    keywords: ['cron parser', 'cron expression', 'crontab', 'schedule parser', 'next cron run'],
     type: 'static',
     addedAt: '2026-02-16',
-    relatedTools: ['unix-timestamp-converter', 'regex-tester', 'json-formatter'],
-    faq: defaultFaq,
+    relatedTools: ['cron-generator', 'unix-timestamp-converter', 'timezone-converter'],
+    faq: [
+      {
+        question: 'Does this show when a cron job will run next?',
+        answer: 'Yes. The workbench calculates the next 5 matching run times in your local timezone.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/cron-parser').then((mod) => ({ default: mod.CronParser })),
   },
@@ -845,19 +883,23 @@ export const tools: Record<string, ToolDefinition> = {
   'jwt-generator': {
     id: 'jwt-generator',
     title: 'JWT Generator',
-    description: 'Generate unsigned JWT token structure for testing',
+    description: 'Sign and generate JWT tokens for testing',
     longDescription:
-      'Build JSON Web Token header and payload structures for development and testing. Generates base64url-encoded unsigned tokens — pair with JWT Decoder for inspection.',
+      'Build JSON Web Token headers and payloads, then sign them with HMAC (HS256/384/512) for development and testing. Same workbench as the JWT Decoder — switch tabs to decode, verify, or sign.',
     category: 'developer',
     icon: 'key-round',
-    keywords: ['jwt generator', 'create jwt', 'json web token generator', 'jwt builder'],
+    keywords: ['jwt generator', 'create jwt', 'json web token generator', 'jwt builder', 'sign jwt'],
     type: 'static',
     addedAt: '2026-02-28',
-    relatedTools: ['jwt-decoder', 'json-formatter', 'hash-generator'],
+    relatedTools: ['jwt-decoder', 'json-formatter', 'hmac-generator'],
     faq: [
       {
         question: 'Is the generated JWT signed?',
-        answer: 'No. This tool generates unsigned JWT structures for testing only. Production tokens must be signed with a secret key on the server.',
+        answer: 'Yes, when you provide a secret on the Sign tab. The token is signed with the algorithm in the header (HS256, HS384, or HS512). Use the Verify tab to confirm the signature.',
+      },
+      {
+        question: 'Is it safe for production tokens?',
+        answer: 'This tool is for debugging and learning. Production tokens should always be signed on your server with secrets that never leave your backend.',
       },
       ...defaultFaq,
     ],
@@ -993,15 +1035,22 @@ export const tools: Record<string, ToolDefinition> = {
   'url-parser': {
     id: 'url-parser',
     title: 'URL Parser',
-    description: 'Break down URLs into components',
-    longDescription: 'Parse any URL into protocol, hostname, port, path, query parameters, and hash fragment. Essential for debugging redirects and API endpoints.',
+    description: 'Parse URLs into components, params, and more',
+    longDescription:
+      'Break down any URL into protocol, hostname, port, path, query parameters, and hash — in the same URL workbench as encode and decode.',
     category: 'developer',
     icon: 'link',
-    keywords: ['url parser', 'parse url', 'url components', 'query string parser'],
+    keywords: ['url parser', 'parse url', 'url components', 'query string parser', 'url breakdown'],
     type: 'static',
     addedAt: '2026-03-05',
     relatedTools: ['url-encoder', 'url-decoder', 'http-status-codes'],
-    faq: defaultFaq,
+    faq: [
+      {
+        question: 'Can I encode or decode in the same tool?',
+        answer: 'Yes. The URL workbench has Encode, Decode, and Parse tabs — switch without leaving the page.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/url-parser').then((mod) => ({ default: mod.UrlParser })),
   },
   'css-minifier': {
@@ -1469,15 +1518,22 @@ export const tools: Record<string, ToolDefinition> = {
   'cron-generator': {
     id: 'cron-generator',
     title: 'Cron Expression Generator',
-    description: 'Build cron schedules with presets and custom fields',
-    longDescription: 'Generate cron expressions visually with presets for common schedules or custom minute, hour, day, month, and weekday fields.',
+    description: 'Build cron schedules with presets and live preview',
+    longDescription:
+      'Generate cron expressions visually with presets or custom fields, then parse them and preview upcoming run times in the same cron workbench.',
     category: 'developer',
     icon: 'calendar-clock',
-    keywords: ['cron generator', 'create cron expression', 'cron builder', 'schedule generator'],
+    keywords: ['cron generator', 'create cron expression', 'cron builder', 'schedule generator', 'crontab generator'],
     type: 'static',
     addedAt: '2026-03-22',
     relatedTools: ['cron-parser', 'timezone-converter', 'unix-timestamp-converter'],
-    faq: defaultFaq,
+    faq: [
+      {
+        question: 'What cron format does this use?',
+        answer: 'Standard 5-field cron: minute hour day-of-month month day-of-week. Example: 0 9 * * 1-5 runs at 9:00 AM on weekdays.',
+      },
+      ...defaultFaq,
+    ],
     component: () => import('@/components/tools/cron-generator').then((mod) => ({ default: mod.CronGenerator })),
   },
   'levenshtein-calculator': {

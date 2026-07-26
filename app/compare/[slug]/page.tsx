@@ -83,7 +83,7 @@ export default async function ComparePage({ params }: PageProps) {
             <section className="rounded-2xl border border-primary/25 bg-primary/5 p-5">
               <h2 className="font-semibold text-primary">{siteConfig.name}</h2>
               <ul className="mt-4 space-y-3">
-                {comparison.utilioPoints.map((point) => (
+                {comparison.utillioPoints.map((point) => (
                   <li key={point} className="flex gap-2 text-sm">
                     <Check className="mt-0.5 size-4 shrink-0 text-emerald-600" />
                     <span>{point}</span>

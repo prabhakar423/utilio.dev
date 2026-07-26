@@ -10,28 +10,28 @@ export interface Comparison {
   publishedAt: string
   keywords: string[]
   intro: string
-  utilioPoints: string[]
+  utillioPoints: string[]
   competitorPoints: string[]
   verdict: string
 }
 
 export const comparisons: Record<string, Comparison> = {
-  'utilio-vs-json-formatter': {
-    slug: 'utilio-vs-json-formatter',
-    title: 'Utilio vs JSONFormatter.org — Which JSON Formatter Is Better?',
+  'utillio-vs-json-formatter': {
+    slug: 'utillio-vs-json-formatter',
+    title: 'Utillio vs JSONFormatter.org — Which JSON Formatter Is Better?',
     description: `Compare ${siteConfig.name} and JSONFormatter.org for formatting JSON online. Privacy, speed, and features compared.`,
     competitor: 'JSONFormatter.org',
     toolId: 'json-formatter',
     publishedAt: '2026-04-02',
     keywords: [
-      'utilio vs jsonformatter',
+      'utillio vs jsonformatter',
       'json formatter online comparison',
       'private json formatter',
       'json formatter no upload',
     ],
     intro:
       'Both tools format and validate JSON in the browser. The difference is privacy guarantees, extra features, and whether your data ever touches a server.',
-    utilioPoints: [
+    utillioPoints: [
       '100% client-side — JSON never uploaded or logged',
       'Format, minify, and validate in one tool',
       'Shareable links with encoded input (?q= parameter)',
@@ -45,11 +45,11 @@ export const comparisons: Record<string, Comparison> = {
       'Typically JSON-only — no integrated hash, Base64, or JWT tools',
     ],
     verdict:
-      'If you are formatting API responses, config files, or anything with sensitive keys, use a tool that processes data locally. Utilio runs entirely in your browser — paste, format, copy, done.',
+      'If you are formatting API responses, config files, or anything with sensitive keys, use a tool that processes data locally. Utillio runs entirely in your browser — paste, format, copy, done.',
   },
-  'utilio-vs-base64-encode': {
-    slug: 'utilio-vs-base64-encode',
-    title: 'Utilio vs Base64Encode.org — Private Base64 Encoding',
+  'utillio-vs-base64-encode': {
+    slug: 'utillio-vs-base64-encode',
+    title: 'Utillio vs Base64Encode.org — Private Base64 Encoding',
     description: `Compare ${siteConfig.name} with typical online Base64 encoders. Learn why browser-only processing matters for tokens and credentials.`,
     competitor: 'Typical online Base64 encoder',
     toolId: 'base64-encoder',
@@ -58,11 +58,11 @@ export const comparisons: Record<string, Comparison> = {
       'base64 encoder comparison',
       'private base64 encode',
       'base64 no upload',
-      'utilio vs base64 encoder',
+      'utillio vs base64 encoder',
     ],
     intro:
       'Base64 encoding is reversible — anyone can decode it. That makes it fine for data URIs but risky for secrets if your input is sent to a third-party server.',
-    utilioPoints: [
+    utillioPoints: [
       'Encode and decode locally — credentials stay on your device',
       'Works offline after the page loads',
       'Linked decoder tool for round-trip testing',
@@ -74,11 +74,11 @@ export const comparisons: Record<string, Comparison> = {
       'Separate sites needed for URL encoding, hashing, etc.',
     ],
     verdict:
-      'Never paste JWT tokens, API keys, or passwords into a server-side encoder. Utilio processes Base64 in JavaScript — your input never leaves the tab.',
+      'Never paste JWT tokens, API keys, or passwords into a server-side encoder. Utillio processes Base64 in JavaScript — your input never leaves the tab.',
   },
-  'utilio-vs-cron-tools': {
-    slug: 'utilio-vs-cron-tools',
-    title: 'Utilio vs Online Cron Generators — Build Schedules Privately',
+  'utillio-vs-cron-tools': {
+    slug: 'utillio-vs-cron-tools',
+    title: 'Utillio vs Online Cron Generators — Build Schedules Privately',
     description: `Compare browser-based cron expression builders. Generate cron schedules without uploading job configs to a server.`,
     competitor: 'Typical online cron generator',
     toolId: 'cron-generator',
@@ -91,7 +91,7 @@ export const comparisons: Record<string, Comparison> = {
     ],
     intro:
       'Cron generators help you build schedule expressions for backups, CI pipelines, and Kubernetes CronJobs. Your expressions may reveal internal infrastructure names or job schedules.',
-    utilioPoints: [
+    utillioPoints: [
       'Visual cron builder runs entirely in-browser',
       'Companion cron parser to explain existing expressions',
       'No data sent to servers — safe for internal job names',
@@ -103,7 +103,7 @@ export const comparisons: Record<string, Comparison> = {
       'Unclear privacy policies on server-side generators',
     ],
     verdict:
-      'Cron expressions themselves are rarely secret, but combined with job names they can expose infrastructure details. Utilio keeps everything local.',
+      'Cron expressions themselves are rarely secret, but combined with job names they can expose infrastructure details. Utillio keeps everything local.',
   },
   'browser-tools-vs-server-upload': {
     slug: 'browser-tools-vs-server-upload',
@@ -120,7 +120,7 @@ export const comparisons: Record<string, Comparison> = {
     ],
     intro:
       'Most "free online tools" send your input to a remote server, process it, and return the result. That is fine for public data — but dangerous for tokens, PII, proprietary configs, and production secrets.',
-    utilioPoints: [
+    utillioPoints: [
       'Every tool runs in your browser using JavaScript',
       'Zero upload — data never touches our servers',
       'Works offline after initial page load',
@@ -134,19 +134,19 @@ export const comparisons: Record<string, Comparison> = {
       'Requires trust in the operator\'s security practices',
     ],
     verdict:
-      'Rule of thumb: if you would not paste it in a public Slack channel, do not paste it into a server-side tool. Use browser-based alternatives like Utilio for developer data.',
+      'Rule of thumb: if you would not paste it in a public Slack channel, do not paste it into a server-side tool. Use browser-based alternatives like Utillio for developer data.',
   },
-  'utilio-vs-jwt-io': {
-    slug: 'utilio-vs-jwt-io',
-    title: 'Utilio vs JWT.io — Decode Tokens Privately',
+  'utillio-vs-jwt-io': {
+    slug: 'utillio-vs-jwt-io',
+    title: 'Utillio vs JWT.io — Decode Tokens Privately',
     description: `Compare ${siteConfig.name} with JWT.io for decoding JSON Web Tokens. Keep auth tokens off third-party servers.`,
     competitor: 'JWT.io',
     toolId: 'jwt-decoder',
     publishedAt: '2026-04-09',
-    keywords: ['utilio vs jwt.io', 'jwt decoder private', 'decode jwt no upload', 'jwt.io alternative'],
+    keywords: ['utillio vs jwt.io', 'jwt decoder private', 'decode jwt no upload', 'jwt.io alternative'],
     intro:
       'JWT.io is the most popular JWT debugger. It is excellent for learning JWT structure — but pasting production tokens into any third-party site carries risk if inputs are logged.',
-    utilioPoints: [
+    utillioPoints: [
       'Decode JWT header and payload locally in browser',
       'Companion JWT generator for test tokens',
       'No token data sent to servers',
@@ -159,19 +159,19 @@ export const comparisons: Record<string, Comparison> = {
       'Focused on JWT only',
     ],
     verdict:
-      'For learning and public sample tokens, either tool works. For staging or production JWTs with real user claims, decode locally with Utilio.',
+      'For learning and public sample tokens, either tool works. For staging or production JWTs with real user claims, decode locally with Utillio.',
   },
-  'utilio-vs-cyberchef': {
-    slug: 'utilio-vs-cyberchef',
-    title: 'Utilio vs CyberChef — Simple Encoding Without Complexity',
+  'utillio-vs-cyberchef': {
+    slug: 'utillio-vs-cyberchef',
+    title: 'Utillio vs CyberChef — Simple Encoding Without Complexity',
     description: `Compare ${siteConfig.name} with CyberChef for encoding and hashing tasks. When a focused private tool beats a kitchen sink.`,
     competitor: 'CyberChef',
     toolId: 'hash-generator',
     publishedAt: '2026-04-09',
-    keywords: ['utilio vs cyberchef', 'cyberchef alternative', 'encoding tools private', 'base64 hash online'],
+    keywords: ['utillio vs cyberchef', 'cyberchef alternative', 'encoding tools private', 'base64 hash online'],
     intro:
       'CyberChef is a powerful multi-tool for encoding, encryption, and analysis — beloved by security researchers. For everyday Base64, hashing, and formatting, a simpler private tool is often faster.',
-    utilioPoints: [
+    utillioPoints: [
       'Focused tools — no recipe builder learning curve',
       'Each tool loads fast with minimal UI',
       '100% client-side processing',
@@ -184,19 +184,19 @@ export const comparisons: Record<string, Comparison> = {
       'Steeper learning curve for casual users',
     ],
     verdict:
-      'Use CyberChef for complex multi-step forensic analysis. Use Utilio for quick, private Base64, hash, and format tasks without building a recipe.',
+      'Use CyberChef for complex multi-step forensic analysis. Use Utillio for quick, private Base64, hash, and format tasks without building a recipe.',
   },
-  'utilio-vs-crontab-guru': {
-    slug: 'utilio-vs-crontab-guru',
-    title: 'Utilio vs Crontab Guru — Private Cron Expression Builder',
+  'utillio-vs-crontab-guru': {
+    slug: 'utillio-vs-crontab-guru',
+    title: 'Utillio vs Crontab Guru — Private Cron Expression Builder',
     description: `Compare browser-based cron generators. Build and validate schedules without uploading job details.`,
     competitor: 'Crontab Guru',
     toolId: 'cron-generator',
     publishedAt: '2026-04-10',
-    keywords: ['utilio vs crontab guru', 'cron generator private', 'crontab guru alternative', 'cron expression builder'],
+    keywords: ['utillio vs crontab guru', 'cron generator private', 'crontab guru alternative', 'cron expression builder'],
     intro:
-      'Crontab Guru is a popular cron expression explainer and generator. Utilio offers similar functionality with explicit browser-only processing for infrastructure-sensitive schedules.',
-    utilioPoints: [
+      'Crontab Guru is a popular cron expression explainer and generator. Utillio offers similar functionality with explicit browser-only processing for infrastructure-sensitive schedules.',
+    utillioPoints: [
       'Visual cron builder + parser in one platform',
       'No job names or schedules uploaded',
       'Free, no account',
@@ -208,19 +208,19 @@ export const comparisons: Record<string, Comparison> = {
       'Server-side processing possible depending on implementation',
     ],
     verdict:
-      'For internal cron jobs with sensitive naming or timing, prefer a local generator. Utilio keeps expressions on your device.',
+      'For internal cron jobs with sensitive naming or timing, prefer a local generator. Utillio keeps expressions on your device.',
   },
-  'utilio-vs-hash-tools': {
-    slug: 'utilio-vs-hash-tools',
-    title: 'Utilio vs Online Hash Generators — SHA-256 Without Upload',
+  'utillio-vs-hash-tools': {
+    slug: 'utillio-vs-hash-tools',
+    title: 'Utillio vs Online Hash Generators — SHA-256 Without Upload',
     description: `Compare private browser hashing with typical online SHA-256 generators. Why input matters for hash tools.`,
     competitor: 'Typical online hash generator',
     toolId: 'hash-generator',
     publishedAt: '2026-04-10',
-    keywords: ['hash generator comparison', 'sha256 online private', 'utilio vs hash generator', 'hash no upload'],
+    keywords: ['hash generator comparison', 'sha256 online private', 'utillio vs hash generator', 'hash no upload'],
     intro:
       'Online hash generators are everywhere. Hashing passwords, API payloads, or proprietary strings on a remote server creates an unnecessary data trail — even though hashing is one-way.',
-    utilioPoints: [
+    utillioPoints: [
       'SHA-256, SHA-384, SHA-512 via Web Crypto API',
       'Input never leaves browser',
       'Companion HMAC tool for signed payloads',
@@ -232,11 +232,11 @@ export const comparisons: Record<string, Comparison> = {
       'Often MD5-focused (broken — avoid for security)',
     ],
     verdict:
-      'Hashing sensitive strings locally avoids leaking inputs to server logs. Utilio uses the browser Web Crypto API — zero upload.',
+      'Hashing sensitive strings locally avoids leaking inputs to server logs. Utillio uses the browser Web Crypto API — zero upload.',
   },
-  'utilio-vs-yaml-converters': {
-    slug: 'utilio-vs-yaml-converters',
-    title: 'Utilio vs Online YAML Converters — Kubernetes Configs Stay Local',
+  'utillio-vs-yaml-converters': {
+    slug: 'utillio-vs-yaml-converters',
+    title: 'Utillio vs Online YAML Converters — Kubernetes Configs Stay Local',
     description: `Compare private YAML-to-JSON conversion with server-side converters. Critical for K8s and CI configs with secrets.`,
     competitor: 'Typical online YAML converter',
     toolId: 'yaml-to-json',
@@ -244,7 +244,7 @@ export const comparisons: Record<string, Comparison> = {
     keywords: ['yaml to json comparison', 'yaml converter private', 'kubernetes config converter', 'yaml no upload'],
     intro:
       'YAML configs for Kubernetes, Docker Compose, and GitHub Actions often contain internal hostnames, API keys, or database URLs. Server-side conversion exposes that data.',
-    utilioPoints: [
+    utillioPoints: [
       'YAML ↔ JSON both directions locally',
       'Handles typical K8s and Docker Compose structures',
       'No config data uploaded',
@@ -256,19 +256,19 @@ export const comparisons: Record<string, Comparison> = {
       'Separate tools needed for JSON to YAML reverse',
     ],
     verdict:
-      'Never paste production Kubernetes secrets or CI configs into unknown servers. Utilio converts YAML in-browser — safe for internal infrastructure files.',
+      'Never paste production Kubernetes secrets or CI configs into unknown servers. Utillio converts YAML in-browser — safe for internal infrastructure files.',
   },
-  'utilio-vs-url-encoders': {
-    slug: 'utilio-vs-url-encoders',
-    title: 'Utilio vs Online URL Encoders — Encode Query Strings Privately',
+  'utillio-vs-url-encoders': {
+    slug: 'utillio-vs-url-encoders',
+    title: 'Utillio vs Online URL Encoders — Encode Query Strings Privately',
     description: `Compare browser-based URL encoding with server-side percent-encoders. Keep tokens and PII out of server logs.`,
     competitor: 'Typical online URL encoder',
     toolId: 'url-encoder',
     publishedAt: '2026-04-11',
-    keywords: ['url encoder comparison', 'url encode private', 'percent encoding online', 'utilio vs url encoder'],
+    keywords: ['url encoder comparison', 'url encode private', 'percent encoding online', 'utillio vs url encoder'],
     intro:
       'URL encoding converts special characters for safe use in query strings. Encoded URLs often contain session tokens, email addresses, and search terms — all sensitive in server logs.',
-    utilioPoints: [
+    utillioPoints: [
       'Encode and decode locally',
       'URL parser companion for breaking down query params',
       'No input logging',
@@ -280,7 +280,7 @@ export const comparisons: Record<string, Comparison> = {
       'No integrated URL parsing',
     ],
     verdict:
-      'Encoding URLs with auth tokens or personal data? Do it locally. Utilio percent-encodes in JavaScript — nothing hits a server.',
+      'Encoding URLs with auth tokens or personal data? Do it locally. Utillio percent-encodes in JavaScript — nothing hits a server.',
   },
 }
 

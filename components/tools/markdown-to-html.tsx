@@ -18,7 +18,7 @@ const EXAMPLE = `# Hello World
 - First item
 - Second item
 
-[Utilio](https://utiliio.com)`
+[Utillio](https://utillio.com)`
 
 function markdownToHtml(md: string): string {
   let html = md

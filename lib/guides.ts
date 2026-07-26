@@ -716,7 +716,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Why use a browser converter?' },
       {
         type: 'paragraph',
-        text: 'Server-side converters upload your config to a remote machine. For production secrets, internal hostnames, or API keys embedded in YAML, that is a security risk. Utilio converts YAML to JSON entirely in your browser — nothing is sent over the network.',
+        text: 'Server-side converters upload your config to a remote machine. For production secrets, internal hostnames, or API keys embedded in YAML, that is a security risk. Utillio converts YAML to JSON entirely in your browser — nothing is sent over the network.',
       },
       { type: 'tool-cta', toolId: 'yaml-to-json', label: 'Convert YAML to JSON now' },
     ],
@@ -932,7 +932,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Never upload your secret key' },
       {
         type: 'paragraph',
-        text: 'Server-side HMAC tools receive your API secret on their servers. Utilio computes HMAC-SHA256 entirely in your browser using the Web Crypto API.',
+        text: 'Server-side HMAC tools receive your API secret on their servers. Utillio computes HMAC-SHA256 entirely in your browser using the Web Crypto API.',
       },
       { type: 'tool-cta', toolId: 'hmac-generator', label: 'Generate HMAC-SHA256' },
     ],
@@ -1114,7 +1114,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Important security note' },
       {
         type: 'paragraph',
-        text: 'Decoding does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utilio decodes entirely in your browser.',
+        text: 'Decoding does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utillio decodes entirely in your browser.',
       },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode a JWT' },
     ],
@@ -1200,7 +1200,7 @@ export const guides: Record<string, Guide> = {
         items: [
           'Ensure the first row contains column headers',
           'Watch for commas inside quoted fields',
-          'Large files may be slow — Utilio processes locally without upload',
+          'Large files may be slow — Utillio processes locally without upload',
           'Use JSON to CSV for the reverse transformation',
         ],
       },
@@ -1780,7 +1780,7 @@ export const guides: Record<string, Guide> = {
   },
   'share-tool-links-guide': {
     slug: 'share-tool-links-guide',
-    title: 'How to Share Utilio Tool Links With Preserved Input',
+    title: 'How to Share Utillio Tool Links With Preserved Input',
     description:
       'Share JSON, JWT, regex patterns, and more via URL — input is encoded in the link and restored when opened. Nothing stored on our servers.',
     publishedAt: '2026-04-16',
@@ -1788,13 +1788,13 @@ export const guides: Record<string, Guide> = {
       'share json formatter link',
       'shareable tool url with input',
       'private online tools share state',
-      'utilio share link',
+      'utillio share link',
     ],
     relatedTools: ['json-formatter', 'jwt-decoder', 'regex-tester', 'text-diff', 'hash-generator'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'Many Utilio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
+        text: 'Many Utillio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
       },
       { type: 'heading', text: 'Tools with shareable state' },
       {
