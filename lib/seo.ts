@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { withPrivacyMetaDescription } from '@/lib/privacy-copy'
 import { siteConfig } from '@/lib/site'
 import type { ToolDefinition } from '@/lib/tools'
-import { categories, getCategoryById } from '@/lib/tools'
+import { categories, getCategoryById } from '@/lib/categories'
 
 export function createPageMetadata({
   title,

@@ -6,7 +6,7 @@ import { ChevronDown, Menu, X } from 'lucide-react'
 import { BrandLogo } from '@/components/layout/brand-logo'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { SearchBar } from '@/components/search/search-bar'
-import { categories } from '@/lib/tools'
+import { categories } from '@/lib/categories'
 import { cn } from '@/lib/utils'
 
 const primaryCategories = categories.slice(0, 5)

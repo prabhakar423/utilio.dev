@@ -4,15 +4,15 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ToolCard } from '@/components/cards/tool-card'
 import { EmptyState } from '@/components/layout/empty-state'
-import { searchTools, type ToolDefinition } from '@/lib/tools'
+import { searchToolIndex, type ToolSearchItem } from '@/lib/tool-search-index'
 
 export function SearchResults() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
-  const [results, setResults] = useState<ToolDefinition[]>([])
+  const [results, setResults] = useState<ToolSearchItem[]>([])
 
   useEffect(() => {
-    setResults(query.trim() ? searchTools(query) : [])
+    setResults(query.trim() ? searchToolIndex(query) : [])
   }, [query])
 
   return (

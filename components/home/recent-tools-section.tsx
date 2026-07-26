@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react'
 import { Clock } from 'lucide-react'
 import { ToolCard } from '@/components/cards/tool-card'
 import { getRecentToolIds } from '@/lib/recent-tools'
-import { tools, type ToolDefinition } from '@/lib/tools'
+import { getToolSearchItem, type ToolSearchItem } from '@/lib/tool-search-index'
 
 export function RecentToolsSection() {
-  const [recent, setRecent] = useState<ToolDefinition[]>([])
+  const [recent, setRecent] = useState<ToolSearchItem[]>([])
 
   useEffect(() => {
     const ids = getRecentToolIds()
-    setRecent(ids.map((id) => tools[id]).filter(Boolean))
+    setRecent(ids.map((id) => getToolSearchItem(id)).filter(Boolean) as ToolSearchItem[])
   }, [])
 
   if (recent.length === 0) return null

@@ -3,12 +3,11 @@ import { ArrowRight, Lock, Sparkles, Zap } from 'lucide-react'
 import { CategoryCard } from '@/components/cards/category-card'
 import { GuideCard } from '@/components/cards/guide-card'
 import { ToolCard } from '@/components/cards/tool-card'
+import { DeferredHomeSections } from '@/components/home/deferred-home-sections'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
-import { FavoriteToolsSection } from '@/components/home/favorite-tools-section'
-import { RecentToolsSection } from '@/components/home/recent-tools-section'
 import { JsonLd } from '@/components/seo/json-ld'
-import { SearchBar } from '@/components/search/search-bar'
+import { HeroSearchForm } from '@/components/search/hero-search-form'
 import { siteConfig } from '@/lib/site'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import { getAllGuides } from '@/lib/guides'
@@ -52,17 +51,17 @@ export default function HomePage() {
 
               <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
                 {siteConfig.hero.headline}
-                <span className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+                <span className="block text-primary [background-image:linear-gradient(to_right,var(--primary),var(--primary),var(--accent))] [-webkit-background-clip:text] [background-clip:text] [-webkit-text-fill-color:transparent] [text-fill-color:transparent] supports-[background-clip:text]:text-transparent">
                   {siteConfig.hero.highlight}
                 </span>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground text-balance">
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80 text-balance">
                 {siteConfig.description}
               </p>
 
               <div className="mx-auto mt-10 max-w-xl">
-                <SearchBar size="hero" />
+                <HeroSearchForm />
               </div>
 
               <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -77,7 +76,7 @@ export default function HomePage() {
                   >
                     <Icon className="mx-auto size-5 text-primary" />
                     <div className="mt-2 font-semibold">{label}</div>
-                    <div className="mt-0.5 text-xs text-muted-foreground">{sub}</div>
+                    <div className="mt-0.5 text-xs text-foreground/65">{sub}</div>
                   </div>
                 ))}
               </div>
@@ -85,9 +84,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <RecentToolsSection />
-
-        <FavoriteToolsSection />
+        <DeferredHomeSections />
 
         {/* Categories */}
         <section className="py-16 sm:py-20">

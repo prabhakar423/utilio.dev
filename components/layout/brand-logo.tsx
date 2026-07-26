@@ -17,7 +17,11 @@ export function BrandLogo({ showWordmark = true, size = 'md', className }: Brand
   const s = sizes[size]
 
   return (
-    <Link href="/" className={cn('group flex shrink-0 items-center gap-2.5', className)}>
+    <Link
+      href="/"
+      aria-label={`${siteConfig.name} home`}
+      className={cn('group flex shrink-0 items-center gap-2.5', className)}
+    >
       <div
         className={cn(
           'relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary via-primary to-accent font-bold text-primary-foreground shadow-sm shadow-primary/20',

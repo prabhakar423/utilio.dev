@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-import { getCategoryName } from '@/lib/tools'
+import { getCategoryName } from '@/lib/category-utils'
 import { cn, getLucideIcon } from '@/lib/utils'
 
 interface ToolCardProps {

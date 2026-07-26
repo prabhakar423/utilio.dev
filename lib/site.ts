@@ -5,7 +5,7 @@ export const siteConfig = {
   subtitle: 'Private browser utilities',
   description:
     'Utilio is a free library of 100+ browser-based tools for developers and everyday tasks. Format JSON, encode data, calculate, convert — all processed locally with zero uploads.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://utilio.dev',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://utiliio.com',
   contactEmail: 'hello@utilio.dev',
   hero: {
     badge: 'Free · private · no sign-up',

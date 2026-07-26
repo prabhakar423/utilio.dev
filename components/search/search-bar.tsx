@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
-import { getCategoryName, searchTools, type ToolDefinition } from '@/lib/tools'
+import { searchToolIndex, type ToolSearchItem } from '@/lib/tool-search-index'
 import { cn } from '@/lib/utils'
 
 interface SearchBarProps {
@@ -14,7 +14,7 @@ interface SearchBarProps {
 export function SearchBar({ size = 'default', className }: SearchBarProps) {
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [results, setResults] = useState<ToolDefinition[]>([])
+  const [results, setResults] = useState<ToolSearchItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
   const listRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
@@ -24,7 +24,7 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
     setValue(query)
     setActiveIndex(-1)
     if (query.trim()) {
-      setResults(searchTools(query).slice(0, 6))
+      setResults(searchToolIndex(query).slice(0, 6))
       setIsOpen(true)
     } else {
       setResults([])
@@ -168,7 +168,7 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
                 <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                   <span className="line-clamp-1">{tool.description}</span>
                   <span aria-hidden>·</span>
-                  <span className="shrink-0">{getCategoryName(tool.category)}</span>
+                  <span className="shrink-0">{tool.categoryName}</span>
                 </div>
               </button>
             ))}

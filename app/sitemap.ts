@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
+import { categories } from '@/lib/categories'
 import { getGuideSlugs } from '@/lib/guides'
 import { siteConfig } from '@/lib/site'
-import { categories, getToolIds } from '@/lib/tools'
+import { toolSearchIndex } from '@/lib/tool-search-index'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url
@@ -30,8 +31,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  const toolPages: MetadataRoute.Sitemap = getToolIds().map((id) => ({
-    url: `${base}/tools/${id}`,
+  const toolPages: MetadataRoute.Sitemap = toolSearchIndex.map((tool) => ({
+    url: `${base}/tools/${tool.id}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.9,
