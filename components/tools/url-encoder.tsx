@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Copy, RefreshCw } from 'lucide-react'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 export function UrlEncoder() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -13,6 +14,14 @@ export function UrlEncoder() {
     const encoded = encodeURIComponent(input)
     setOutput(encoded)
   }
+
+  useEffect(() => {
+    if (input) {
+      setOutput(encodeURIComponent(input))
+    } else {
+      setOutput('')
+    }
+  }, [input])
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output)

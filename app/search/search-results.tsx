@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { ToolCard } from '@/components/cards/tool-card'
+import { ToolCardWithFavorite } from '@/components/cards/tool-card-with-favorite'
 import { EmptyState } from '@/components/layout/empty-state'
 import { loadSearchIndex, searchLoadedIndex } from '@/lib/search-client'
 import type { ToolSearchItem } from '@/lib/tool-search-index'
@@ -41,7 +41,7 @@ export function SearchResults() {
         {results.length > 0 ? (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {results.map((tool) => (
-              <ToolCard key={tool.id} {...tool} />
+              <ToolCardWithFavorite key={tool.id} {...tool} />
             ))}
           </div>
         ) : (

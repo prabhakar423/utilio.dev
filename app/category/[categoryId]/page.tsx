@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ToolCard } from '@/components/cards/tool-card'
+import { ToolCardWithFavorite } from '@/components/cards/tool-card-with-favorite'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { EmptyState } from '@/components/layout/empty-state'
 import { Footer } from '@/components/layout/footer'
@@ -74,7 +74,14 @@ export default async function CategoryPage({ params }: PageProps) {
           {categoryTools.length > 0 ? (
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
               {categoryTools.map((tool) => (
-                <ToolCard key={tool.id} {...tool} />
+                <ToolCardWithFavorite
+                  key={tool.id}
+                  id={tool.id}
+                  title={tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                  category={tool.category}
+                />
               ))}
             </div>
           ) : (

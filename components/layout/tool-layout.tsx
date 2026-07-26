@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { AdSlot } from '@/components/layout/ad-slot'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { FaqSection } from '@/components/layout/faq-section'
@@ -5,8 +6,10 @@ import { FavoriteButton } from '@/components/layout/favorite-button'
 import { LocalProcessingBadge } from '@/components/layout/local-processing-badge'
 import { PrivacyBadge } from '@/components/layout/privacy-badge'
 import { RecentToolsTracker } from '@/components/layout/recent-tools-tracker'
+import { RelatedComparisons } from '@/components/layout/related-comparisons'
 import { RelatedGuides } from '@/components/layout/related-guides'
 import { RelatedTools } from '@/components/layout/related-tools'
+import { SharedLinkBanner } from '@/components/layout/shared-link-banner'
 import { ShareUrlProvider } from '@/components/layout/share-url-provider'
 import { ToolShareButton } from '@/components/layout/tool-share-button'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -16,6 +19,7 @@ import {
   faqJsonLd,
   toolJsonLd,
 } from '@/lib/seo'
+import { getComparisonsForTool } from '@/lib/comparisons'
 import { getGuidesForTool } from '@/lib/guides'
 import {
   getCategoryById,
@@ -34,6 +38,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
   const category = getCategoryById(tool.category)
   const related = getRelatedTools(tool)
   const relatedGuides = getGuidesForTool(tool.id)
+  const relatedComparisons = getComparisonsForTool(tool.id)
   const faq = tool.faq ?? []
   const Icon = getLucideIcon(tool.icon)
   const toolUrl = `${siteConfig.url}/tools/${tool.id}`
@@ -99,6 +104,9 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
           <div className="min-w-0">
             <PrivacyBadge />
             <div className="mt-4 rounded-2xl border border-border/70 bg-card/50 p-5 shadow-sm sm:mt-6 sm:p-8">
+              <Suspense fallback={null}>
+                <SharedLinkBanner />
+              </Suspense>
               {children}
             </div>
             <AdSlot placement="content-middle" className="mt-8" />
@@ -108,6 +116,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
       </div>
 
       <RelatedTools tools={related} />
+      <RelatedComparisons comparisons={relatedComparisons} />
       <RelatedGuides guides={relatedGuides} />
       {faq.length > 0 && <FaqSection items={faq} />}
       <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">

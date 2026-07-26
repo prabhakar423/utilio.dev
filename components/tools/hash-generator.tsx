@@ -1,11 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 type Algorithm = 'SHA-256' | 'SHA-384' | 'SHA-512'
+
+const SHARE_INITIAL = { input: '', algorithm: 'SHA-256' }
 
 async function computeHash(text: string, algorithm: Algorithm): Promise<string> {
   const data = new TextEncoder().encode(text)
@@ -16,8 +19,9 @@ async function computeHash(text: string, algorithm: Algorithm): Promise<string> 
 }
 
 export function HashGenerator() {
-  const [input, setInput] = useState('')
-  const [algorithm, setAlgorithm] = useState<Algorithm>('SHA-256')
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const input = state.input
+  const algorithm = (state.algorithm as Algorithm) || 'SHA-256'
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
@@ -36,6 +40,15 @@ export function HashGenerator() {
     }
   }
 
+  useEffect(() => {
+    if (input.trim()) {
+      void handleHash()
+    } else {
+      setOutput('')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, algorithm])
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(output)
     setCopied(true)
@@ -51,7 +64,7 @@ export function HashGenerator() {
             type="button"
             variant={algorithm === algo ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setAlgorithm(algo)}
+            onClick={() => setField('algorithm', algo)}
           >
             {algo}
           </Button>
@@ -61,7 +74,7 @@ export function HashGenerator() {
       <ToolPanel label="Input text">
         <ToolTextarea
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => setField('input', e.target.value)}
           placeholder="Enter text to hash…"
           mono={false}
         />

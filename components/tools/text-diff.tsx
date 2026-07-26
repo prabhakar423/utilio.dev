@@ -1,9 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 type DiffLine = { type: 'same' | 'added' | 'removed'; text: string }
+
+const SHARE_INITIAL = { textA: '', textB: '' }
 
 function diffLines(a: string, b: string): DiffLine[] {
   const linesA = a.split('\n')
@@ -27,8 +30,8 @@ function diffLines(a: string, b: string): DiffLine[] {
 }
 
 export function TextDiff() {
-  const [textA, setTextA] = useState('')
-  const [textB, setTextB] = useState('')
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { textA, textB } = state
 
   const diff = useMemo(() => {
     if (!textA && !textB) return null
@@ -50,7 +53,7 @@ export function TextDiff() {
         <ToolPanel label="Original text">
           <ToolTextarea
             value={textA}
-            onChange={(e) => setTextA(e.target.value)}
+            onChange={(e) => setField('textA', e.target.value)}
             placeholder="Paste original text…"
             mono={false}
           />
@@ -58,7 +61,7 @@ export function TextDiff() {
         <ToolPanel label="Changed text">
           <ToolTextarea
             value={textB}
-            onChange={(e) => setTextB(e.target.value)}
+            onChange={(e) => setField('textB', e.target.value)}
             placeholder="Paste modified text…"
             mono={false}
           />

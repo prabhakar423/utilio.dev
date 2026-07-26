@@ -13,9 +13,10 @@ import { cn } from '@/lib/utils'
 interface FavoriteButtonProps {
   toolId: string
   toolTitle: string
+  compact?: boolean
 }
 
-export function FavoriteButton({ toolId, toolTitle }: FavoriteButtonProps) {
+export function FavoriteButton({ toolId, toolTitle, compact = false }: FavoriteButtonProps) {
   const [favorited, setFavorited] = useState(false)
 
   useEffect(() => {
@@ -28,6 +29,21 @@ export function FavoriteButton({ toolId, toolTitle }: FavoriteButtonProps) {
 
   const handleToggle = () => {
     setFavorited(toggleFavoriteTool(toolId))
+  }
+
+  if (compact) {
+    return (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="size-8 bg-background/80 shadow-sm backdrop-blur-sm hover:bg-background"
+        onClick={handleToggle}
+        aria-label={favorited ? `Remove ${toolTitle} from favorites` : `Save ${toolTitle} to favorites`}
+        aria-pressed={favorited}
+      >
+        <Star className={cn('size-4', favorited && 'fill-amber-400 text-amber-400')} />
+      </Button>
+    )
   }
 
   return (

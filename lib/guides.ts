@@ -1265,6 +1265,555 @@ export const guides: Record<string, Guide> = {
       { type: 'tool-cta', toolId: 'text-diff', label: 'Compare two texts' },
     ],
   },
+  'sql-formatter-pretty-print-online-free': {
+    slug: 'sql-formatter-pretty-print-online-free',
+    title: 'SQL Formatter & Pretty Print Online (Free, Private)',
+    description:
+      'Format and beautify SQL queries online for free. Runs in your browser — no upload, no sign-up.',
+    publishedAt: '2026-04-09',
+    keywords: [
+      'sql formatter pretty print online free',
+      'format sql online',
+      'sql beautifier private',
+      'pretty print sql query',
+    ],
+    relatedTools: ['sql-formatter', 'json-formatter', 'csv-to-json'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'SQL from ORMs, log dumps, and legacy scripts often arrives as one unreadable line. Pretty-printing adds indentation and line breaks so you can review joins, spot missing WHERE clauses, and share queries with teammates.',
+      },
+      { type: 'heading', text: 'When to format SQL' },
+      {
+        type: 'list',
+        items: [
+          'Reviewing queries before running on production',
+          'Debugging ORM-generated SQL in development',
+          'Documenting queries in README or wiki pages',
+          'Comparing two query versions side by side',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'sql-formatter', label: 'Format SQL now' },
+    ],
+  },
+  'qr-code-generator-no-upload-online': {
+    slug: 'qr-code-generator-no-upload-online',
+    title: 'QR Code Generator Online — No Upload Required',
+    description:
+      'Create QR codes for URLs, WiFi, and text in your browser. Free, instant, nothing sent to a server.',
+    publishedAt: '2026-04-09',
+    keywords: [
+      'qr code generator no upload online',
+      'qr code maker free private',
+      'wifi qr code generator',
+      'generate qr code browser',
+    ],
+    relatedTools: ['qr-code-generator', 'url-encoder', 'slug-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'QR codes turn URLs, WiFi credentials, and contact info into scannable images. For internal URLs or WiFi passwords, server-side generators are a privacy risk — your data passes through someone else\'s infrastructure.',
+      },
+      { type: 'heading', text: 'What you can encode' },
+      {
+        type: 'list',
+        items: [
+          'Website and app deep links',
+          'WiFi SSID and password (WPA format)',
+          'Plain text promo codes or event check-in links',
+          'vCard contact details for business cards',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'qr-code-generator', label: 'Generate a QR code' },
+    ],
+  },
+  'timezone-converter-online-free': {
+    slug: 'timezone-converter-online-free',
+    title: 'Timezone Converter Online (Free)',
+    description:
+      'Convert date and time between world timezones instantly. Free browser-based tool — no upload required.',
+    publishedAt: '2026-04-10',
+    keywords: [
+      'timezone converter online free',
+      'convert time zones online',
+      'world clock converter',
+      'utc time converter online',
+    ],
+    relatedTools: ['timezone-converter', 'unix-timestamp-converter', 'date-difference-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Remote teams schedule meetings across UTC, US, Europe, and Asia. A timezone converter prevents the classic "is that 9 AM your time or mine?" mistake — especially around daylight saving transitions.',
+      },
+      { type: 'heading', text: 'Common use cases' },
+      {
+        type: 'list',
+        items: [
+          'Scheduling calls across distributed teams',
+          'Converting log timestamps to local time',
+          'Planning deployment windows in UTC vs local',
+          'Checking market hours for global trading apps',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'timezone-converter', label: 'Convert a timezone' },
+    ],
+  },
+  'gst-calculator-online-free-india': {
+    slug: 'gst-calculator-online-free-india',
+    title: 'GST Calculator Online Free (India)',
+    description:
+      'Calculate GST inclusive and exclusive amounts for invoicing. Free online calculator — runs locally in your browser.',
+    publishedAt: '2026-04-10',
+    keywords: [
+      'gst calculator online free india',
+      'calculate gst online',
+      'gst inclusive exclusive calculator',
+      'goods and services tax calculator',
+    ],
+    relatedTools: ['gst-calculator', 'vat-calculator', 'discount-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'GST (Goods and Services Tax) in India applies at rates like 5%, 12%, 18%, and 28% depending on the product or service category. Invoices must show tax breakdown clearly for compliance.',
+      },
+      { type: 'heading', text: 'Inclusive vs exclusive GST' },
+      {
+        type: 'list',
+        items: [
+          'Exclusive: GST added on top of base price',
+          'Inclusive: GST already embedded in the listed price',
+          'Use exclusive when quoting B2B before tax',
+          'Use inclusive for consumer-facing retail prices',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'gst-calculator', label: 'Calculate GST' },
+    ],
+  },
+  'vat-calculator-online-free': {
+    slug: 'vat-calculator-online-free',
+    title: 'VAT Calculator Online (Free, Private)',
+    description:
+      'Calculate Value Added Tax for invoices and receipts. Free browser-based VAT calculator — no data uploaded.',
+    publishedAt: '2026-04-11',
+    keywords: [
+      'vat calculator online free',
+      'value added tax calculator',
+      'vat inclusive calculator',
+      'calculate vat online',
+    ],
+    relatedTools: ['vat-calculator', 'gst-calculator', 'margin-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'VAT is used across the EU, UK, and many other regions for invoicing. Calculating net, tax, and gross amounts correctly prevents accounting errors and customer disputes.',
+      },
+      { type: 'heading', text: 'Typical VAT rates' },
+      {
+        type: 'list',
+        items: ['Standard rates vary by country (e.g. 20% UK, 19% Germany)', 'Reduced rates apply to food, books, and essentials in some regions', 'Always verify current rate for your jurisdiction', 'B2B reverse charge rules may apply cross-border'],
+      },
+      { type: 'tool-cta', toolId: 'vat-calculator', label: 'Calculate VAT' },
+    ],
+  },
+  'cidr-calculator-subnet-online-free': {
+    slug: 'cidr-calculator-subnet-online-free',
+    title: 'CIDR Calculator & Subnet Mask Online (Free)',
+    description:
+      'Calculate subnet ranges, network addresses, and host counts from CIDR notation. Free, browser-based networking tool.',
+    publishedAt: '2026-04-11',
+    keywords: [
+      'cidr calculator subnet online free',
+      'subnet calculator cidr',
+      'ip subnet calculator online',
+      'network cidr calculator',
+    ],
+    relatedTools: ['cidr-calculator', 'ip-converter', 'mac-address-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'CIDR notation (e.g. 192.168.1.0/24) defines IP address ranges for cloud VPCs, office networks, and Docker containers. A calculator saves manual binary math when planning subnets.',
+      },
+      { type: 'heading', text: 'What CIDR tells you' },
+      {
+        type: 'list',
+        items: [
+          'Network address and broadcast address',
+          'First and last usable host IPs',
+          'Total number of host addresses',
+          'Subnet mask in dotted decimal form',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'cidr-calculator', label: 'Calculate a subnet' },
+    ],
+  },
+  'meta-tag-generator-seo-online-free': {
+    slug: 'meta-tag-generator-seo-online-free',
+    title: 'Meta Tag Generator for SEO Online (Free)',
+    description:
+      'Generate title, description, Open Graph, and Twitter Card meta tags for your website. Free, private, browser-based.',
+    publishedAt: '2026-04-12',
+    keywords: [
+      'meta tag generator seo online free',
+      'open graph tag generator',
+      'twitter card generator',
+      'seo meta tags generator',
+    ],
+    relatedTools: ['meta-tag-generator', 'slug-generator', 'reading-time-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Meta tags control how your page appears in Google search results and when shared on social media. Missing or duplicate tags hurt click-through rates and social previews.',
+      },
+      { type: 'heading', text: 'Essential tags to generate' },
+      {
+        type: 'list',
+        items: ['title — shown in browser tab and search results', 'meta description — search snippet text', 'og:title, og:description, og:image — Facebook/LinkedIn previews', 'twitter:card and twitter:image — X/Twitter previews'],
+      },
+      { type: 'tool-cta', toolId: 'meta-tag-generator', label: 'Generate meta tags' },
+    ],
+  },
+  'password-strength-checker-online-free': {
+    slug: 'password-strength-checker-online-free',
+    title: 'Password Strength Checker Online (Free, Private)',
+    description:
+      'Check password strength with a visual score and feedback. Runs locally — your password never leaves your browser.',
+    publishedAt: '2026-04-12',
+    keywords: [
+      'password strength checker online free',
+      'check password strength',
+      'password meter online private',
+      'how strong is my password',
+    ],
+    relatedTools: ['password-strength-checker', 'password-generator', 'hash-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Weak passwords are the top cause of account breaches. A strength checker evaluates length, character diversity, and common patterns — but only trust tools that process locally when testing real passwords.',
+      },
+      { type: 'heading', text: 'What makes a password strong' },
+      {
+        type: 'list',
+        items: ['16+ characters for important accounts', 'Mix of upper, lower, numbers, and symbols', 'Not based on dictionary words or personal info', 'Unique per site — never reused'],
+      },
+      { type: 'tool-cta', toolId: 'password-strength-checker', label: 'Check password strength' },
+    ],
+  },
+  'xml-formatter-pretty-print-online-free': {
+    slug: 'xml-formatter-pretty-print-online-free',
+    title: 'XML Formatter & Pretty Print Online (Free)',
+    description:
+      'Format and beautify XML documents online. Free, private XML formatter — runs in your browser, no upload.',
+    publishedAt: '2026-04-13',
+    keywords: [
+      'xml formatter pretty print online free',
+      'format xml online',
+      'xml beautifier private',
+      'pretty print xml online',
+    ],
+    relatedTools: ['xml-formatter', 'json-formatter', 'html-beautifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'XML remains common in enterprise APIs, SOAP services, Android layouts, and config files. Minified XML from logs is hard to read — formatting reveals structure and helps catch mismatched tags.',
+      },
+      { type: 'heading', text: 'When to format XML' },
+      {
+        type: 'list',
+        items: ['Debugging SOAP or RSS feed responses', 'Reviewing Android layout or plist files', 'Validating config before deployment', 'Converting between XML and JSON workflows'],
+      },
+      { type: 'tool-cta', toolId: 'xml-formatter', label: 'Format XML now' },
+    ],
+  },
+  'hex-encoder-decoder-online-free': {
+    slug: 'hex-encoder-decoder-online-free',
+    title: 'Hex Encoder & Decoder Online (Free, Private)',
+    description:
+      'Convert text to hexadecimal and back online. Free browser-based hex converter — nothing uploaded to servers.',
+    publishedAt: '2026-04-13',
+    keywords: [
+      'hex encoder decoder online free',
+      'text to hex online',
+      'hexadecimal converter private',
+      'decode hex string online',
+    ],
+    relatedTools: ['hex-encoder', 'binary-converter', 'ascii-converter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Hexadecimal encoding represents bytes as pairs of 0-9 and A-F characters. Developers use it for color codes, binary dumps, cryptographic keys, and debugging raw data streams.',
+      },
+      { type: 'heading', text: 'Common hex use cases' },
+      {
+        type: 'list',
+        items: ['CSS color values (#FF5733)', 'Inspecting binary data in logs', 'Encoding short binary payloads as text', 'Debugging serial protocol messages'],
+      },
+      { type: 'tool-cta', toolId: 'hex-encoder', label: 'Convert to hex' },
+    ],
+  },
+  'jwt-generator-online-free': {
+    slug: 'jwt-generator-online-free',
+    title: 'JWT Generator Online (Free, Private)',
+    description:
+      'Create and sign JSON Web Tokens locally in your browser. Free JWT generator — secrets never uploaded to a server.',
+    publishedAt: '2026-04-14',
+    keywords: [
+      'jwt generator online free',
+      'create jwt token online',
+      'json web token generator private',
+      'sign jwt browser',
+    ],
+    relatedTools: ['jwt-generator', 'jwt-decoder', 'base64-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'JWTs carry authenticated claims between services. Generating test tokens for local development requires setting header, payload, and signing secret — but production secrets must never go to server-side generators.',
+      },
+      { type: 'heading', text: 'JWT structure' },
+      {
+        type: 'list',
+        items: ['Header — algorithm and token type', 'Payload — claims like sub, exp, and roles', 'Signature — verifies integrity with a shared secret or key', 'Use decoder tool to inspect existing tokens'],
+      },
+      { type: 'tool-cta', toolId: 'jwt-generator', label: 'Generate a JWT' },
+    ],
+  },
+  'compound-interest-calculator-online-free': {
+    slug: 'compound-interest-calculator-online-free',
+    title: 'Compound Interest Calculator Online (Free)',
+    description:
+      'Calculate compound interest and future value for savings and investments. Free, private, browser-based calculator.',
+    publishedAt: '2026-04-14',
+    keywords: [
+      'compound interest calculator online free',
+      'calculate compound interest',
+      'investment calculator online',
+      'future value calculator',
+    ],
+    relatedTools: ['compound-interest-calculator', 'sip-calculator', 'simple-interest-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Compound interest earns returns on both principal and accumulated interest — the foundation of long-term investing. Understanding the formula helps compare savings accounts, FDs, and mutual fund projections.',
+      },
+      { type: 'heading', text: 'Key variables' },
+      {
+        type: 'list',
+        items: ['Principal — initial amount invested', 'Rate — annual interest percentage', 'Time — number of years or months', 'Compounding frequency — monthly vs yearly makes a big difference'],
+      },
+      { type: 'tool-cta', toolId: 'compound-interest-calculator', label: 'Calculate compound interest' },
+    ],
+  },
+  'css-minifier-online-free': {
+    slug: 'css-minifier-online-free',
+    title: 'CSS Minifier Online (Free, Private)',
+    description:
+      'Minify CSS by removing whitespace and comments online. Free browser-based minifier — your stylesheets never uploaded.',
+    publishedAt: '2026-04-15',
+    keywords: [
+      'css minifier online free',
+      'minify css online',
+      'compress css private',
+      'css minify tool browser',
+    ],
+    relatedTools: ['css-minifier', 'javascript-minifier', 'html-beautifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Minified CSS removes unnecessary whitespace and comments to reduce file size for production. Smaller stylesheets mean faster page loads — especially on mobile networks.',
+      },
+      { type: 'heading', text: 'When to minify CSS' },
+      {
+        type: 'list',
+        items: ['Before deploying to production', 'Embedding critical CSS inline', 'Reducing bundle size for static sites', 'Pair with beautifier for development formatting'],
+      },
+      { type: 'tool-cta', toolId: 'css-minifier', label: 'Minify CSS now' },
+    ],
+  },
+  'emi-calculator-home-loan-online-free': {
+    slug: 'emi-calculator-home-loan-online-free',
+    title: 'EMI Calculator for Home Loan Online (Free)',
+    description:
+      'Calculate monthly EMI for home, car, and personal loans. Free online calculator — runs locally, no data shared.',
+    publishedAt: '2026-04-15',
+    keywords: [
+      'emi calculator home loan online free',
+      'loan emi calculator online',
+      'monthly emi calculator india',
+      'calculate emi online private',
+    ],
+    relatedTools: ['emi-calculator', 'sip-calculator', 'compound-interest-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'EMI (Equated Monthly Installment) is the fixed payment you make on a loan each month. It depends on principal, annual interest rate, and tenure — adjusting any variable changes your monthly burden significantly.',
+      },
+      { type: 'heading', text: 'What the calculator shows' },
+      {
+        type: 'list',
+        items: ['Monthly EMI amount', 'Total interest payable over tenure', 'Total amount paid (principal + interest)', 'Compare tenures to find affordable monthly payments'],
+      },
+      { type: 'tool-cta', toolId: 'emi-calculator', label: 'Calculate EMI' },
+    ],
+  },
+  'html-beautifier-online-free': {
+    slug: 'html-beautifier-online-free',
+    title: 'HTML Beautifier Online (Free, Private)',
+    description:
+      'Format and beautify HTML with proper indentation online. Free browser-based formatter — your markup never leaves your device.',
+    publishedAt: '2026-04-16',
+    keywords: [
+      'html beautifier online free',
+      'format html online',
+      'pretty print html private',
+      'html formatter browser',
+    ],
+    relatedTools: ['html-beautifier', 'html-minifier', 'css-minifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Minified or messy HTML from templates, CMS exports, or email clients is hard to debug. Beautifying adds readable indentation so you can spot unclosed tags, nested structure issues, and accessibility problems before shipping.',
+      },
+      { type: 'heading', text: 'When to beautify HTML' },
+      {
+        type: 'list',
+        items: [
+          'Reviewing scraped or exported HTML before editing',
+          'Debugging layout issues in email templates',
+          'Learning HTML structure from minified production pages',
+          'Pair with minifier for dev vs production workflows',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'html-beautifier', label: 'Beautify HTML now' },
+    ],
+  },
+  'lorem-ipsum-generator-online-free': {
+    slug: 'lorem-ipsum-generator-online-free',
+    title: 'Lorem Ipsum Generator Online (Free)',
+    description:
+      'Generate placeholder Lorem Ipsum text for mockups and prototypes. Free, instant, runs in your browser.',
+    publishedAt: '2026-04-16',
+    keywords: [
+      'lorem ipsum generator online free',
+      'placeholder text generator',
+      'dummy text for design mockups',
+      'lorem ipsum paragraphs online',
+    ],
+    relatedTools: ['lorem-ipsum-generator', 'markdown-preview', 'html-beautifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Lorem Ipsum is standard filler text for wireframes, landing page mockups, and design reviews. It looks like readable prose without distracting stakeholders with real copy before content is ready.',
+      },
+      { type: 'heading', text: 'How much placeholder text do you need?' },
+      {
+        type: 'list',
+        items: [
+          'A few words for button or nav labels',
+          'One paragraph for card or hero sections',
+          'Multiple paragraphs for blog or article layouts',
+          'Adjust length to match your component grid',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'lorem-ipsum-generator', label: 'Generate Lorem Ipsum' },
+    ],
+  },
+  'json-to-csv-converter-online-free': {
+    slug: 'json-to-csv-converter-online-free',
+    title: 'JSON to CSV Converter Online (Free, Private)',
+    description:
+      'Convert JSON arrays to CSV spreadsheets online. Free, private converter — data processed locally in your browser.',
+    publishedAt: '2026-04-16',
+    keywords: [
+      'json to csv converter online free',
+      'convert json array to csv',
+      'json csv export private',
+      'json spreadsheet converter browser',
+    ],
+    relatedTools: ['json-to-csv', 'csv-to-json', 'json-formatter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'API responses and database exports often arrive as JSON arrays of objects. Spreadsheets, BI tools, and finance teams expect CSV. Converting locally avoids uploading sensitive customer or financial data to third-party converters.',
+      },
+      { type: 'heading', text: 'JSON to CSV tips' },
+      {
+        type: 'list',
+        items: [
+          'Input should be a JSON array of flat objects',
+          'Nested objects may need flattening first',
+          'Column headers come from object keys',
+          'Validate JSON syntax before converting',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON to CSV' },
+    ],
+  },
+  'color-converter-hex-rgb-online-free': {
+    slug: 'color-converter-hex-rgb-online-free',
+    title: 'Color Converter: Hex to RGB Online (Free)',
+    description:
+      'Convert colors between HEX, RGB, and HSL online. Free color converter — instant results in your browser.',
+    publishedAt: '2026-04-16',
+    keywords: [
+      'hex to rgb converter online free',
+      'color converter hex rgb hsl',
+      'convert hex color online',
+      'css color converter private',
+    ],
+    relatedTools: ['color-converter', 'css-minifier', 'html-beautifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Designers work in HEX (#3B82F6) while some APIs and graphics libraries expect RGB or HSL. A quick converter saves manual math and prevents off-by-one channel errors in production CSS.',
+      },
+      { type: 'heading', text: 'Common color formats' },
+      {
+        type: 'list',
+        items: [
+          'HEX — six-digit web standard (#RRGGBB)',
+          'RGB — red, green, blue channels (0–255)',
+          'HSL — hue, saturation, lightness for theming',
+          'Use the same format across your design system tokens',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'color-converter', label: 'Convert colors' },
+    ],
+  },
+  'share-tool-links-guide': {
+    slug: 'share-tool-links-guide',
+    title: 'How to Share Utilio Tool Links With Preserved Input',
+    description:
+      'Share JSON, JWT, regex patterns, and more via URL — input is encoded in the link and restored when opened. Nothing stored on our servers.',
+    publishedAt: '2026-04-16',
+    keywords: [
+      'share json formatter link',
+      'shareable tool url with input',
+      'private online tools share state',
+      'utilio share link',
+    ],
+    relatedTools: ['json-formatter', 'jwt-decoder', 'regex-tester', 'text-diff', 'hash-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Many Utilio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
+      },
+      { type: 'heading', text: 'Tools with shareable state' },
+      {
+        type: 'list',
+        items: [
+          'JSON Formatter, YAML to JSON, Base64 Encoder',
+          'Hash Generator, JWT Decoder, URL Encoder',
+          'Regex Tester and Text Diff (pattern + text preserved)',
+          'Click Share on any supported tool page to copy the link',
+        ],
+      },
+      { type: 'heading', text: 'Privacy note' },
+      {
+        type: 'paragraph',
+        text: 'Shared links contain your input in the URL. Anyone with the link can read it. Do not share production secrets, API keys, or personal data — use test tokens and redacted samples instead.',
+      },
+      { type: 'tool-cta', toolId: 'json-formatter', label: 'Try shareable JSON Formatter' },
+    ],
+  },
 }
 
 export function getAllGuides(): Guide[] {

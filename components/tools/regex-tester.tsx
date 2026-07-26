@@ -1,12 +1,14 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { pattern: '', flags: 'g', text: '' }
 
 export function RegexTester() {
-  const [pattern, setPattern] = useState('')
-  const [flags, setFlags] = useState('g')
-  const [text, setText] = useState('')
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { pattern, flags, text } = state
 
   const { result, error } = useMemo(() => {
     if (!pattern || !text) return { result: null, error: '' }
@@ -41,8 +43,9 @@ export function RegexTester() {
   ]
 
   const toggleFlag = (flag: string) => {
-    setFlags((current) =>
-      current.includes(flag) ? current.replace(flag, '') : current + flag,
+    setField(
+      'flags',
+      flags.includes(flag) ? flags.replace(flag, '') : flags + flag,
     )
   }
 
@@ -54,7 +57,7 @@ export function RegexTester() {
           <input
             type="text"
             value={pattern}
-            onChange={(e) => setPattern(e.target.value)}
+            onChange={(e) => setField('pattern', e.target.value)}
             placeholder="e.g. \d+"
             className="w-full rounded-xl border border-border/80 bg-background/80 px-4 py-2.5 font-mono text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
@@ -83,7 +86,7 @@ export function RegexTester() {
       <ToolPanel label="Test string">
         <ToolTextarea
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => setField('text', e.target.value)}
           placeholder="Enter text to test against…"
           mono={false}
         />

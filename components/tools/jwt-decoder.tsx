@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function decodePart(part: string): unknown {
   const padded = part.replace(/-/g, '+').replace(/_/g, '/')
@@ -15,12 +16,12 @@ function decodePart(part: string): unknown {
 }
 
 export function JwtDecoder() {
-  const [token, setToken] = useState('')
+  const [token, setToken] = useShareableInput('')
   const [header, setHeader] = useState('')
   const [payload, setPayload] = useState('')
   const [error, setError] = useState('')
 
-  const handleDecode = () => {
+  const handleDecode = useCallback(() => {
     setError('')
     setHeader('')
     setPayload('')
@@ -40,7 +41,13 @@ export function JwtDecoder() {
     } catch {
       setError('Failed to decode JWT. Check that the token is valid Base64URL-encoded JSON.')
     }
-  }
+  }, [token])
+
+  useEffect(() => {
+    if (token.trim()) {
+      handleDecode()
+    }
+  }, [token, handleDecode])
 
   return (
     <div className="grid gap-5">

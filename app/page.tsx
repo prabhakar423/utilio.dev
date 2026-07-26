@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Lock, Sparkles, Zap } from 'lucide-react'
+import { ArrowRight, Lock, Scale, Sparkles, Zap } from 'lucide-react'
 import { CategoryCard } from '@/components/cards/category-card'
 import { GuideCard } from '@/components/cards/guide-card'
 import { ToolCard } from '@/components/cards/tool-card'
@@ -11,6 +11,7 @@ import { HeroSearchForm } from '@/components/search/hero-search-form'
 import { siteConfig } from '@/lib/site'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import { getAllGuides } from '@/lib/guides'
+import { getAllComparisons } from '@/lib/comparisons'
 import {
   categories,
   getAllTools,
@@ -28,6 +29,7 @@ export default function HomePage() {
   const guides = allGuides
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, 4)
+  const comparisons = getAllComparisons().slice(0, 3)
   const previewTools = [...allTools]
     .sort((a, b) => a.title.localeCompare(b.title))
     .slice(0, 12)
@@ -83,6 +85,57 @@ export default function HomePage() {
         </section>
 
         <DeferredHomeSections />
+
+        {/* Why private tools */}
+        <section className="border-b border-border/60 bg-muted/20 py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                  <Lock className="size-3.5" />
+                  Why {siteConfig.name}?
+                </div>
+                <h2 className="mt-4 text-3xl font-bold tracking-tight">
+                  Most online tools upload your data. We don&apos;t.
+                </h2>
+                <p className="mt-4 text-muted-foreground leading-relaxed">
+                  Every tool runs in your browser using JavaScript. Your JSON, tokens, configs, and
+                  passwords never touch our servers — no account, no logs, no upload.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    href="/compare/browser-tools-vs-server-upload"
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    <Scale className="size-4" />
+                    Browser vs server tools
+                  </Link>
+                  <Link
+                    href="/compare"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border/70 px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                  >
+                    All comparisons
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </div>
+              </div>
+              <div className="grid gap-3">
+                {comparisons.map((comparison) => (
+                  <Link
+                    key={comparison.slug}
+                    href={`/compare/${comparison.slug}`}
+                    className="group rounded-xl border border-border/70 bg-card/60 p-4 transition-colors hover:border-primary/30 hover:bg-card"
+                  >
+                    <p className="font-medium group-hover:text-primary">{comparison.title}</p>
+                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                      {comparison.description}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Categories */}
         <section className="py-16 sm:py-20">
