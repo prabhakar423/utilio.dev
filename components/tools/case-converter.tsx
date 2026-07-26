@@ -1,9 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import { Copy, Check } from 'lucide-react'
+import { useMemo } from 'react'
+import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function toTitleCase(text: string) {
   return text.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
@@ -35,9 +38,24 @@ const transforms = {
 
 type TransformKey = keyof typeof transforms
 
+function CaseResultRow({ label, value }: { label: string; value: string }) {
+  const { copied, copy } = useCopyToClipboard()
+
+  return (
+    <div className="flex items-start justify-between gap-3 rounded-xl border border-border/70 bg-muted/20 p-4">
+      <div className="min-w-0 flex-1">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</div>
+        <div className="mt-1 break-words font-mono text-sm">{value}</div>
+      </div>
+      <Button type="button" variant="ghost" size="sm" onClick={() => void copy(value)}>
+        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+      </Button>
+    </div>
+  )
+}
+
 export function CaseConverter() {
-  const [input, setInput] = useState('')
-  const [copied, setCopied] = useState<string | null>(null)
+  const [input, setInput] = useShareableInput('')
 
   const results = useMemo(() => {
     if (!input) return null
@@ -47,12 +65,6 @@ export function CaseConverter() {
       value: fn(input),
     }))
   }, [input])
-
-  const copy = async (text: string, key: string) => {
-    await navigator.clipboard.writeText(text)
-    setCopied(key)
-    window.setTimeout(() => setCopied(null), 2000)
-  }
 
   return (
     <div className="grid gap-5">
@@ -68,23 +80,14 @@ export function CaseConverter() {
       {results && (
         <div className="grid gap-3">
           {results.map(({ key, label, value }) => (
-            <div
-              key={key}
-              className="flex items-start justify-between gap-3 rounded-xl border border-border/70 bg-muted/20 p-4"
-            >
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  {label}
-                </div>
-                <div className="mt-1 break-words font-mono text-sm">{value}</div>
-              </div>
-              <Button type="button" variant="ghost" size="sm" onClick={() => copy(value, key)}>
-                {copied === key ? <Check className="size-4" /> : <Copy className="size-4" />}
-              </Button>
-            </div>
+            <CaseResultRow key={key} label={label} value={value} />
           ))}
         </div>
       )}
+
+      <ToolActions>
+        <ToolClearButton onClear={() => setInput('')} />
+      </ToolActions>
     </div>
   )
 }

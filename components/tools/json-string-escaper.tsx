@@ -1,54 +1,72 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { input: '', mode: 'escape' }
 
 export function JsonStringEscaper() {
-  const [input, setInput] = useState('')
-  const [mode, setMode] = useState<'escape' | 'unescape'>('escape')
-  const [output, setOutput] = useState('')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { input } = state
+  const mode = state.mode === 'unescape' ? 'unescape' : 'escape'
 
-  const convert = () => {
-    setError('')
+  const { output, error } = useMemo(() => {
+    if (!input) return { output: '', error: '' }
     try {
       if (mode === 'escape') {
-        setOutput(JSON.stringify(input).slice(1, -1))
-      } else {
-        setOutput(JSON.parse(`"${input.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`))
+        return { output: JSON.stringify(input).slice(1, -1), error: '' }
+      }
+      return {
+        output: JSON.parse(`"${input.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`),
+        error: '',
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid escaped string')
-      setOutput('')
+      return {
+        output: '',
+        error: err instanceof Error ? err.message : 'Invalid escaped string',
+      }
     }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [input, mode])
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button type="button" size="sm" variant={mode === 'escape' ? 'default' : 'outline'} onClick={() => setMode('escape')}>Escape</Button>
-        <Button type="button" size="sm" variant={mode === 'unescape' ? 'default' : 'outline'} onClick={() => setMode('unescape')}>Unescape</Button>
-      </div>
-      <ToolPanel label="Input">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder={mode === 'escape' ? 'Line with "quotes" and\nnewlines' : 'Line with \"quotes\" and\\nnewlines'} />
-      </ToolPanel>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
-      <ToolActions>
-        <Button type="button" onClick={convert}>{mode === 'escape' ? 'Escape string' : 'Unescape string'}</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <Button type="button" size="sm" variant={mode === 'escape' ? 'default' : 'outline'} onClick={() => setField('mode', 'escape')}>
+          Escape
         </Button>
+        <Button type="button" size="sm" variant={mode === 'unescape' ? 'default' : 'outline'} onClick={() => setField('mode', 'unescape')}>
+          Unescape
+        </Button>
+      </div>
+
+      <ToolPanel label="Input">
+        <ToolTextarea
+          value={input}
+          onChange={(e) => setField('input', e.target.value)}
+          placeholder={mode === 'escape' ? 'Line with "quotes" and newlines' : 'Line with \"quotes\" and\\nnewlines'}
+        />
+      </ToolPanel>
+
+      {error && <ToolError message={error} />}
+
+      {output && (
+        <ToolPanel label="Output">
+          <ToolTextarea value={output} readOnly />
+        </ToolPanel>
+      )}
+
+      <ToolActions>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
-      {output && <ToolPanel label="Output"><ToolTextarea value={output} readOnly /></ToolPanel>}
     </div>
   )
 }

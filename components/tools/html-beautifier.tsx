@@ -1,9 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+
+const EXAMPLE = '<div class="card"><h1>Title</h1><p>Hello world</p></div>'
 
 function beautifyHtml(html: string): string {
   let formatted = ''
@@ -20,31 +28,33 @@ function beautifyHtml(html: string): string {
 }
 
 export function HtmlBeautifier() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const beautify = () => {
-    setOutput(beautifyHtml(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => (input.trim() ? beautifyHtml(input) : ''), [input])
 
   return (
     <div className="grid gap-5">
-      <ToolPanel label="HTML input"><ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} className="min-h-40" /></ToolPanel>
+      <ToolPanel label="HTML input">
+        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} className="min-h-40" />
+      </ToolPanel>
+
+      {output && (
+        <ToolPanel label="Formatted HTML">
+          <ToolTextarea value={output} readOnly className="min-h-48" />
+        </ToolPanel>
+      )}
+
       <ToolActions>
-        <Button type="button" onClick={beautify}>Beautify HTML</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
+        <Button type="button" variant="outline" onClick={() => setInput(EXAMPLE)}>
+          Load example
         </Button>
       </ToolActions>
-      {output && <ToolPanel label="Formatted HTML"><ToolTextarea value={output} readOnly className="min-h-48" /></ToolPanel>}
+
+      <ToolExample>
+        <p className="font-mono">{EXAMPLE}</p>
+      </ToolExample>
     </div>
   )
 }

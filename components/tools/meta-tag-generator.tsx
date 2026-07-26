@@ -1,76 +1,94 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolInput, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { title: '', description: '', url: '', image: '' }
+
+function escapeAttr(value: string) {
+  return value.replace(/"/g, '&quot;')
+}
 
 export function MetaTagGenerator() {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [url, setUrl] = useState('')
-  const [image, setImage] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { title, description, url, image } = state
 
-  const generate = () => {
+  const output = useMemo(() => {
     const tags = [
       title && `<title>${title}</title>`,
-      description && `<meta name="description" content="${description.replace(/"/g, '&quot;')}" />`,
-      title && `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`,
-      description && `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`,
+      description && `<meta name="description" content="${escapeAttr(description)}" />`,
+      title && `<meta property="og:title" content="${escapeAttr(title)}" />`,
+      description && `<meta property="og:description" content="${escapeAttr(description)}" />`,
       url && `<meta property="og:url" content="${url}" />`,
       image && `<meta property="og:image" content="${image}" />`,
       `<meta property="og:type" content="website" />`,
       title && `<meta name="twitter:card" content="summary_large_image" />`,
-      title && `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`,
-      description && `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`,
+      title && `<meta name="twitter:title" content="${escapeAttr(title)}" />`,
+      description && `<meta name="twitter:description" content="${escapeAttr(description)}" />`,
       image && `<meta name="twitter:image" content="${image}" />`,
     ].filter(Boolean)
 
-    setOutput(tags.join('\n'))
-    setCopied(false)
-  }
+    return tags.length > 1 ? tags.join('\n') : ''
+  }, [title, description, url, image])
 
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
+  const clearAll = () => {
+    setField('title', '')
+    setField('description', '')
+    setField('url', '')
+    setField('image', '')
   }
 
   return (
     <div className="grid gap-5">
       <div className="grid gap-4">
-        <div>
-          <label className="mb-2 block text-sm font-medium">Page title</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="My Page Title"
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
-        </div>
-        <div>
-          <label className="mb-2 block text-sm font-medium">Description</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A brief description of the page…" rows={3}
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
-        </div>
+        <ToolPanel label="Page title">
+          <ToolInput
+            type="text"
+            value={title}
+            onChange={(e) => setField('title', e.target.value)}
+            placeholder="My Page Title"
+          />
+        </ToolPanel>
+        <ToolPanel label="Description">
+          <ToolTextarea
+            value={description}
+            onChange={(e) => setField('description', e.target.value)}
+            placeholder="A brief description of the page…"
+            rows={3}
+            className="min-h-0"
+            mono={false}
+          />
+        </ToolPanel>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-sm font-medium">URL</label>
-            <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/page"
-              className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium">OG image URL</label>
-            <input type="url" value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://example.com/og.jpg"
-              className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </div>
+          <ToolPanel label="URL">
+            <ToolInput
+              type="url"
+              value={url}
+              onChange={(e) => setField('url', e.target.value)}
+              placeholder="https://example.com/page"
+            />
+          </ToolPanel>
+          <ToolPanel label="OG image URL">
+            <ToolInput
+              type="url"
+              value={image}
+              onChange={(e) => setField('image', e.target.value)}
+              placeholder="https://example.com/og.jpg"
+            />
+          </ToolPanel>
         </div>
       </div>
+
+      <ToolPanel label="HTML output">
+        <ToolTextarea value={output} readOnly placeholder="Meta tags appear here as you type…" />
+      </ToolPanel>
+
       <ToolActions>
-        <Button type="button" onClick={generate}>Generate meta tags</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={clearAll} />
       </ToolActions>
-      {output && <ToolPanel label="HTML output"><ToolTextarea value={output} readOnly /></ToolPanel>}
     </div>
   )
 }

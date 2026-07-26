@@ -3,6 +3,7 @@ import { ArrowRight, Lock, Scale, Sparkles, Zap } from 'lucide-react'
 import { CategoryCard } from '@/components/cards/category-card'
 import { GuideCard } from '@/components/cards/guide-card'
 import { ToolCard } from '@/components/cards/tool-card'
+import { ToolCardWithFavorite } from '@/components/cards/tool-card-with-favorite'
 import { DeferredHomeSections } from '@/components/home/deferred-home-sections'
 import { Footer } from '@/components/layout/footer'
 import { HomeHeader } from '@/components/layout/home-header'
@@ -174,7 +175,14 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {trendingTools.map((tool) => (
-                <ToolCard key={tool.id} {...tool} />
+                <ToolCardWithFavorite
+                  key={tool.id}
+                  id={tool.id}
+                  title={tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                  category={tool.category}
+                />
               ))}
             </div>
           </div>
@@ -189,7 +197,14 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {recentTools.map((tool) => (
-                <ToolCard key={tool.id} {...tool} />
+                <ToolCardWithFavorite
+                  key={tool.id}
+                  id={tool.id}
+                  title={tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                  category={tool.category}
+                />
               ))}
             </div>
           </div>

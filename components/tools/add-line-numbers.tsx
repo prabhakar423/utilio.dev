@@ -1,46 +1,52 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolInput, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { input: '', startAt: '1' }
 
 export function AddLineNumbers() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [startAt, setStartAt] = useState(1)
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const startAt = Math.max(0, Number(state.startAt) || 1)
 
-  const addNumbers = () => {
-    const lines = input.split('\n')
+  const output = useMemo(() => {
+    if (!state.input) return ''
+    const lines = state.input.split('\n')
     const pad = String(startAt + lines.length - 1).length
-    setOutput(lines.map((line, i) => `${String(startAt + i).padStart(pad, ' ')}  ${line}`).join('\n'))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+    return lines.map((line, i) => `${String(startAt + i).padStart(pad, ' ')}  ${line}`).join('\n')
+  }, [state.input, startAt])
 
   return (
     <div className="grid gap-5">
-      <div>
-        <label className="mb-2 block text-sm font-medium">Start numbering at</label>
-        <input type="number" min="0" value={startAt} onChange={(e) => setStartAt(Number(e.target.value))}
-          className="w-32 rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
-      </div>
-      <ToolPanel label="Input text">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Line one&#10;Line two&#10;Line three" />
+      <ToolPanel label="Start numbering at">
+        <ToolInput
+          type="number"
+          min={0}
+          value={startAt}
+          onChange={(e) => setField('startAt', e.target.value)}
+          className="w-32"
+        />
       </ToolPanel>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Input text">
+          <ToolTextarea
+            value={state.input}
+            onChange={(e) => setField('input', e.target.value)}
+            placeholder="Line one&#10;Line two&#10;Line three"
+          />
+        </ToolPanel>
+        <ToolPanel label="Numbered output">
+          <ToolTextarea value={output} readOnly placeholder="Numbered text appears here…" />
+        </ToolPanel>
+      </div>
+
       <ToolActions>
-        <Button type="button" onClick={addNumbers}>Add line numbers</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
-      {output && <ToolPanel label="Numbered output"><ToolTextarea value={output} readOnly /></ToolPanel>}
     </div>
   )
 }

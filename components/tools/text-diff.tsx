@@ -1,7 +1,8 @@
 'use client'
 
 import { useMemo } from 'react'
-import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
 import { useShareableJson } from '@/hooks/use-shareable-json'
 
 type DiffLine = { type: 'same' | 'added' | 'removed'; text: string }
@@ -99,6 +100,15 @@ export function TextDiff() {
           </div>
         </ToolPanel>
       )}
+
+      <ToolActions>
+        <ToolClearButton
+          onClear={() => {
+            setField('textA', '')
+            setField('textB', '')
+          }}
+        />
+      </ToolActions>
     </div>
   )
 }

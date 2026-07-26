@@ -1,59 +1,78 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolError, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { input: '1234567', mode: 'to-sci' }
 
 export function ScientificNotationConverter() {
-  const [input, setInput] = useState('1234567')
-  const [mode, setMode] = useState<'to-sci' | 'from-sci'>('to-sci')
-  const [output, setOutput] = useState('')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const mode = state.mode === 'from-sci' ? 'from-sci' : 'to-sci'
 
-  const convert = () => {
-    setError('')
+  const { output, error } = useMemo(() => {
+    if (!state.input.trim()) return { output: '', error: '' }
     try {
       if (mode === 'to-sci') {
-        const num = Number(input.replace(/,/g, ''))
+        const num = Number(state.input.replace(/,/g, ''))
         if (Number.isNaN(num)) throw new Error('Invalid number')
-        setOutput(num.toExponential(6).replace(/e\+?/, ' × 10^'))
-      } else {
-        const normalized = input.replace(/×10\^/i, 'e').replace(/\s/g, '')
-        const num = Number(normalized)
-        if (Number.isNaN(num)) throw new Error('Invalid scientific notation')
-        setOutput(String(num))
+        return { output: num.toExponential(6).replace(/e\+?/, ' × 10^'), error: '' }
       }
+      const normalized = state.input.replace(/×10\^/i, 'e').replace(/\s/g, '')
+      const num = Number(normalized)
+      if (Number.isNaN(num)) throw new Error('Invalid scientific notation')
+      return { output: String(num), error: '' }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Conversion failed')
-      setOutput('')
+      return {
+        output: '',
+        error: err instanceof Error ? err.message : 'Conversion failed',
+      }
     }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [state.input, mode])
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button type="button" size="sm" variant={mode === 'to-sci' ? 'default' : 'outline'} onClick={() => setMode('to-sci')}>Number → Scientific</Button>
-        <Button type="button" size="sm" variant={mode === 'from-sci' ? 'default' : 'outline'} onClick={() => setMode('from-sci')}>Scientific → Number</Button>
-      </div>
-      <ToolPanel label="Input">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder={mode === 'to-sci' ? '1234567' : '1.23 × 10^6'} className="min-h-24" />
-      </ToolPanel>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
-      <ToolActions>
-        <Button type="button" onClick={convert}>Convert</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'to-sci' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'to-sci')}
+        >
+          Number → Scientific
         </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'from-sci' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'from-sci')}
+        >
+          Scientific → Number
+        </Button>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Input">
+          <ToolTextarea
+            value={state.input}
+            onChange={(e) => setField('input', e.target.value)}
+            placeholder={mode === 'to-sci' ? '1234567' : '1.23 × 10^6'}
+            className="min-h-24"
+          />
+        </ToolPanel>
+        <ToolPanel label="Output">
+          <ToolTextarea value={output} readOnly className="min-h-24" placeholder="Result appears here…" />
+        </ToolPanel>
+      </div>
+
+      {error && <ToolError message={error} />}
+
+      <ToolActions>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
-      {output && <ToolPanel label="Output"><ToolTextarea value={output} readOnly className="min-h-24" /></ToolPanel>}
     </div>
   )
 }

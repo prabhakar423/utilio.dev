@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ToolCardWithFavorite } from '@/components/cards/tool-card-with-favorite'
+import { CategoryToolGrid } from '@/components/category/category-tool-grid'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { EmptyState } from '@/components/layout/empty-state'
 import { Footer } from '@/components/layout/footer'
@@ -72,18 +73,15 @@ export default async function CategoryPage({ params }: PageProps) {
 
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           {categoryTools.length > 0 ? (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {categoryTools.map((tool) => (
-                <ToolCardWithFavorite
-                  key={tool.id}
-                  id={tool.id}
-                  title={tool.title}
-                  description={tool.description}
-                  icon={tool.icon}
-                  category={tool.category}
-                />
-              ))}
-            </div>
+            <CategoryToolGrid
+              tools={categoryTools.map((tool) => ({
+                id: tool.id,
+                title: tool.title,
+                description: tool.description,
+                icon: tool.icon,
+                category: tool.category,
+              }))}
+            />
           ) : (
             <EmptyState
               title="No tools yet"

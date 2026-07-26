@@ -1,6 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolExample, ToolPanel, ToolResult, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function isPalindrome(text: string, ignoreCase: boolean, ignoreSpaces: boolean): boolean {
   let s = text
@@ -11,37 +14,61 @@ function isPalindrome(text: string, ignoreCase: boolean, ignoreSpaces: boolean):
 }
 
 export function PalindromeChecker() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [ignoreCase, setIgnoreCase] = useState(true)
   const [ignoreSpaces, setIgnoreSpaces] = useState(true)
-  const [result, setResult] = useState<boolean | null>(null)
 
-  const check = () => {
-    if (!input.trim()) { setResult(null); return }
-    setResult(isPalindrome(input, ignoreCase, ignoreSpaces))
-  }
+  const result = useMemo(() => {
+    if (!input.trim()) return null
+    return isPalindrome(input, ignoreCase, ignoreSpaces)
+  }, [input, ignoreCase, ignoreSpaces])
 
   return (
     <div className="grid gap-5">
-      <div>
-        <label className="mb-2 block text-sm font-medium">Text or phrase</label>
-        <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="A man a plan a canal Panama"
-          className="min-h-24 w-full rounded-xl border border-border/80 px-4 py-3 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
+      <ToolPanel label="Text or phrase">
+        <ToolTextarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="A man, a plan, a canal: Panama"
+          mono={false}
+          className="min-h-24"
+        />
+      </ToolPanel>
+
+      <div className="flex flex-wrap gap-3">
+        {[
+          { key: 'case' as const, label: 'Ignore case', checked: ignoreCase, set: setIgnoreCase },
+          { key: 'spaces' as const, label: 'Ignore spaces', checked: ignoreSpaces, set: setIgnoreSpaces },
+        ].map(({ key, label, checked, set }) => (
+          <label
+            key={key}
+            className="flex cursor-pointer items-center gap-2 rounded-xl border border-border/70 bg-card/50 px-4 py-2.5 text-sm"
+          >
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={(e) => set(e.target.checked)}
+              className="size-4 rounded border-border accent-primary"
+            />
+            {label}
+          </label>
+        ))}
       </div>
-      <div className="flex gap-4 text-sm">
-        <label className="flex items-center gap-2"><input type="checkbox" checked={ignoreCase} onChange={(e) => setIgnoreCase(e.target.checked)} /> Ignore case</label>
-        <label className="flex items-center gap-2"><input type="checkbox" checked={ignoreSpaces} onChange={(e) => setIgnoreSpaces(e.target.checked)} /> Ignore spaces</label>
-      </div>
-      <button type="button" onClick={check}
-        className="w-fit rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-        Check palindrome
-      </button>
+
       {result !== null && (
-        <div className={`rounded-xl border p-6 text-center ${result ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-orange-500/30 bg-orange-500/10'}`}>
-          <div className="text-2xl">{result ? '✓' : '✗'}</div>
-          <div className="mt-2 font-semibold">{result ? 'This is a palindrome!' : 'Not a palindrome'}</div>
-        </div>
+        <ToolResult
+          variant={result ? 'success' : 'warning'}
+          title={result ? 'This is a palindrome' : 'Not a palindrome'}
+        />
       )}
+
+      <ToolActions>
+        <ToolClearButton onClear={() => setInput('')} />
+      </ToolActions>
+
+      <ToolExample>
+        <p>Try: <span className="font-mono">racecar</span> or <span className="font-mono">A man a plan a canal Panama</span></p>
+      </ToolExample>
     </div>
   )
 }

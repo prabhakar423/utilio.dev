@@ -10,10 +10,11 @@ import { cn } from '@/lib/utils'
 interface SearchBarProps {
   size?: 'default' | 'hero'
   className?: string
+  defaultQuery?: string
 }
 
-export function SearchBar({ size = 'default', className }: SearchBarProps) {
-  const [value, setValue] = useState('')
+export function SearchBar({ size = 'default', className, defaultQuery = '' }: SearchBarProps) {
+  const [value, setValue] = useState(defaultQuery)
   const [isOpen, setIsOpen] = useState(false)
   const [results, setResults] = useState<ToolSearchItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -82,6 +83,13 @@ export function SearchBar({ size = 'default', className }: SearchBarProps) {
       setActiveIndex(-1)
     }
   }
+
+  useEffect(() => {
+    setValue(defaultQuery)
+    if (defaultQuery.trim()) {
+      void handleSearch(defaultQuery)
+    }
+  }, [defaultQuery, handleSearch])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

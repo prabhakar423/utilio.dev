@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function htmlToMarkdown(html: string): string {
   let md = html
@@ -36,20 +36,9 @@ function htmlToMarkdown(html: string): string {
 }
 
 export function HtmlToMarkdown() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const convert = () => {
-    setOutput(htmlToMarkdown(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => (input ? htmlToMarkdown(input) : ''), [input])
 
   return (
     <div className="grid gap-5">
@@ -65,11 +54,10 @@ export function HtmlToMarkdown() {
           <ToolTextarea value={output} readOnly mono={false} placeholder="Markdown appears here…" />
         </ToolPanel>
       </div>
+
       <ToolActions>
-        <Button type="button" onClick={convert}>Convert to Markdown</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
       </ToolActions>
     </div>
   )

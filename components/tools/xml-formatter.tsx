@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+
+const EXAMPLE = '<root><item>value</item><item>two</item></root>'
 
 function formatXml(xml: string): string {
   const trimmed = xml.replace(/>\s*</g, '><').trim()
@@ -20,43 +29,48 @@ function formatXml(xml: string): string {
 }
 
 export function XmlFormatter() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const format = () => {
-    setError('')
+  const { output, error } = useMemo(() => {
+    if (!input.trim()) return { output: '', error: '' }
     try {
       const parser = new DOMParser()
       const doc = parser.parseFromString(input, 'application/xml')
       if (doc.querySelector('parsererror')) throw new Error('Invalid XML')
-      setOutput(formatXml(input))
+      return { output: formatXml(input), error: '' }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid XML')
-      setOutput('')
+      return {
+        output: '',
+        error: err instanceof Error ? err.message : 'Invalid XML',
+      }
     }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [input])
 
   return (
     <div className="grid gap-5">
       <ToolPanel label="XML input">
         <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="<root><item>value</item></root>" />
       </ToolPanel>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
+
+      {error && <ToolError message={error} />}
+
+      {output && (
+        <ToolPanel label="Formatted XML">
+          <ToolTextarea value={output} readOnly className="min-h-48" />
+        </ToolPanel>
+      )}
+
       <ToolActions>
-        <Button type="button" onClick={format}>Format XML</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
+        <Button type="button" variant="outline" onClick={() => setInput(EXAMPLE)}>
+          Load example
         </Button>
       </ToolActions>
-      {output && <ToolPanel label="Formatted XML"><ToolTextarea value={output} readOnly className="min-h-48" /></ToolPanel>}
+
+      <ToolExample>
+        <p className="font-mono">{EXAMPLE}</p>
+      </ToolExample>
     </div>
   )
 }

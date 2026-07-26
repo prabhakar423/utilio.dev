@@ -16,7 +16,11 @@ const SearchBar = dynamic(
   },
 )
 
-export function DeferredSearchBar() {
+interface DeferredSearchBarProps {
+  defaultQuery?: string
+}
+
+export function DeferredSearchBar({ defaultQuery }: DeferredSearchBarProps) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -37,5 +41,5 @@ export function DeferredSearchBar() {
     )
   }
 
-  return <SearchBar />
+  return <SearchBar defaultQuery={defaultQuery} />
 }

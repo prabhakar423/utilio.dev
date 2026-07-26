@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolError, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
 import { useShareableJson } from '@/hooks/use-shareable-json'
 
 type Algorithm = 'SHA-256' | 'SHA-384' | 'SHA-512'
@@ -24,35 +24,26 @@ export function HashGenerator() {
   const algorithm = (state.algorithm as Algorithm) || 'SHA-256'
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
-
-  const handleHash = async () => {
-    setError('')
-    setCopied(false)
-    if (!input) {
-      setOutput('')
-      return
-    }
-    try {
-      setOutput(await computeHash(input, algorithm))
-    } catch {
-      setError('Failed to compute hash. Your browser may not support Web Crypto.')
-    }
-  }
 
   useEffect(() => {
-    if (input.trim()) {
-      void handleHash()
-    } else {
+    if (!input.trim()) {
       setOutput('')
+      setError('')
+      return
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    void computeHash(input, algorithm)
+      .then(setOutput)
+      .catch(() => {
+        setError('Failed to compute hash. Your browser may not support Web Crypto.')
+        setOutput('')
+      })
   }, [input, algorithm])
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
+  const clear = () => {
+    setField('input', '')
+    setOutput('')
+    setError('')
   }
 
   return (
@@ -80,28 +71,17 @@ export function HashGenerator() {
         />
       </ToolPanel>
 
-      {error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ToolError message={error} />}
 
       {output && (
         <ToolPanel label={`${algorithm} hash`}>
-          <div className="rounded-xl border border-border/70 bg-muted/30 p-4">
-            <code className="break-all font-mono text-sm">{output}</code>
-          </div>
+          <ToolTextarea value={output} readOnly className="min-h-20 font-mono" />
         </ToolPanel>
       )}
 
       <ToolActions>
-        <Button type="button" onClick={handleHash}>
-          Generate hash
-        </Button>
-        <Button type="button" variant="secondary" onClick={handleCopy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-          {copied ? 'Copied' : 'Copy hash'}
-        </Button>
+        <ToolCopyButton text={output} label="Copy hash" disabled={!output} />
+        <ToolClearButton onClear={clear} />
       </ToolActions>
     </div>
   )

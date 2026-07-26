@@ -1673,12 +1673,12 @@ export function searchTools(query: string): ToolDefinition[] {
 
 export function getTrendingTools(): ToolDefinition[] {
   return [
-    'meta-tag-generator',
-    'css-gradient-generator',
-    'naming-convention-converter',
-    'margin-calculator',
-    'random-color-generator',
-    'uuid-validator',
+    'json-formatter',
+    'jwt-decoder',
+    'hash-generator',
+    'regex-tester',
+    'base64-encoder',
+    'password-generator',
   ]
     .map((id) => tools[id])
     .filter(Boolean)

@@ -1,44 +1,46 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 const URL_REGEX = /https?:\/\/[^\s<>"{}|\\^`[\]]+/gi
 
 export function ExtractUrls() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [count, setCount] = useState(0)
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const extract = () => {
+  const { output, count } = useMemo(() => {
+    if (!input.trim()) return { output: '', count: 0 }
     const matches = [...new Set(input.match(URL_REGEX) ?? [])]
-    setOutput(matches.join('\n'))
-    setCount(matches.length)
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+    return { output: matches.join('\n'), count: matches.length }
+  }, [input])
 
   return (
     <div className="grid gap-5">
-      <ToolPanel label="Text containing URLs">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Visit https://example.com and https://github.com…" mono={false} />
-      </ToolPanel>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Text containing URLs">
+          <ToolTextarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Visit https://example.com and https://github.com…"
+            mono={false}
+          />
+        </ToolPanel>
+        <ToolPanel label="Extracted URLs">
+          <ToolTextarea value={output} readOnly mono={false} className="min-h-32" placeholder="URLs appear here…" />
+          {count > 0 && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Found {count} unique URL{count !== 1 ? 's' : ''}
+            </p>
+          )}
+        </ToolPanel>
+      </div>
+
       <ToolActions>
-        <Button type="button" onClick={extract}>Extract URLs</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
       </ToolActions>
-      {output && <p className="text-sm text-muted-foreground">Found {count} unique URL{count !== 1 ? 's' : ''}</p>}
-      {output && <ToolPanel label="Extracted URLs"><ToolTextarea value={output} readOnly mono={false} className="min-h-32" /></ToolPanel>}
     </div>
   )
 }

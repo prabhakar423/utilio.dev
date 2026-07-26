@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolStat } from '@/components/tools/tool-ui'
-import { useShareableInput } from '@/hooks/use-shareable-input'
-import { useToolShortcut } from '@/hooks/use-tool-shortcut'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolError, ToolInput, ToolStat } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 const PERMS = ['read', 'write', 'execute'] as const
+
+const SHARE_INITIAL = { input: '755', mode: 'octal' }
 
 function parseOctal(octal: string) {
   const value = parseInt(octal, 8)
@@ -42,78 +43,81 @@ function symbolicToOctal(symbolic: string): string | null {
 }
 
 export function ChmodCalculator() {
-  const [input, setInput] = useShareableInput('755')
-  const [mode, setMode] = useState<'octal' | 'symbolic'>('octal')
-  const [result, setResult] = useState<{ octal: string; symbolic: string; breakdown: string } | null>(null)
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const mode = state.mode === 'symbolic' ? 'symbolic' : 'octal'
 
-  const convert = () => {
-    setError('')
+  const { result, error } = useMemo(() => {
+    if (!state.input.trim()) return { result: null, error: '' }
+
     if (mode === 'octal') {
-      const symbolic = octalToSymbolic(input)
-      const parts = parseOctal(input)
+      const symbolic = octalToSymbolic(state.input)
+      const parts = parseOctal(state.input)
       if (!symbolic || !parts) {
-        setError('Enter a valid octal value (000–777)')
-        setResult(null)
-        return
+        return { result: null, error: 'Enter a valid octal value (000–777)' }
       }
-      setResult({
-        octal: input.padStart(3, '0').slice(-3),
-        symbolic,
-        breakdown: `Owner: ${digitToSymbolic(parts[0])} · Group: ${digitToSymbolic(parts[1])} · Others: ${digitToSymbolic(parts[2])}`,
-      })
-    } else {
-      const octal = symbolicToOctal(input)
-      if (!octal) {
-        setError('Enter valid symbolic notation (e.g. rwxr-xr-x)')
-        setResult(null)
-        return
+      return {
+        result: {
+          octal: state.input.padStart(3, '0').slice(-3),
+          symbolic,
+          breakdown: `Owner: ${digitToSymbolic(parts[0])} · Group: ${digitToSymbolic(parts[1])} · Others: ${digitToSymbolic(parts[2])}`,
+        },
+        error: '',
       }
-      const parts = parseOctal(octal)!
-      setResult({
-        octal,
-        symbolic: input,
-        breakdown: `Owner: ${digitToSymbolic(parts[0])} · Group: ${digitToSymbolic(parts[1])} · Others: ${digitToSymbolic(parts[2])}`,
-      })
     }
-  }
 
-  const copy = async () => {
-    if (!result) return
-    await navigator.clipboard.writeText(`${result.octal} ${result.symbolic}`)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+    const octal = symbolicToOctal(state.input)
+    if (!octal) {
+      return { result: null, error: 'Enter valid symbolic notation (e.g. rwxr-xr-x)' }
+    }
+    const parts = parseOctal(octal)!
+    return {
+      result: {
+        octal,
+        symbolic: state.input,
+        breakdown: `Owner: ${digitToSymbolic(parts[0])} · Group: ${digitToSymbolic(parts[1])} · Others: ${digitToSymbolic(parts[2])}`,
+      },
+      error: '',
+    }
+  }, [state.input, mode])
 
-  useToolShortcut(convert, 'Enter')
-
-  useToolShortcut(convert, 'Enter')
+  const copyText = result ? `${result.octal} ${result.symbolic}` : ''
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button type="button" size="sm" variant={mode === 'octal' ? 'default' : 'outline'} onClick={() => setMode('octal')}>Octal → Symbolic</Button>
-        <Button type="button" size="sm" variant={mode === 'symbolic' ? 'default' : 'outline'} onClick={() => setMode('symbolic')}>Symbolic → Octal</Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'octal' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'octal')}
+        >
+          Octal → Symbolic
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'symbolic' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'symbolic')}
+        >
+          Symbolic → Octal
+        </Button>
       </div>
+
       <div>
-        <label className="mb-2 block text-sm font-medium">{mode === 'octal' ? 'Octal permissions' : 'Symbolic permissions'}</label>
-        <input
+        <label className="mb-2 block text-sm font-medium">
+          {mode === 'octal' ? 'Octal permissions' : 'Symbolic permissions'}
+        </label>
+        <ToolInput
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={state.input}
+          onChange={(e) => setField('input', e.target.value)}
           placeholder={mode === 'octal' ? '755' : 'rwxr-xr-x'}
-          className="w-full rounded-xl border border-border/80 px-4 py-2.5 font-mono text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="font-mono"
         />
       </div>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
-      <ToolActions>
-        <Button type="button" onClick={convert}>Convert</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!result}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
-        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to convert</span>
-      </ToolActions>
+
+      {error && <ToolError message={error} />}
+
       {result && (
         <>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -123,6 +127,11 @@ export function ChmodCalculator() {
           <p className="text-sm text-muted-foreground">{result.breakdown}</p>
         </>
       )}
+
+      <ToolActions>
+        <ToolCopyButton text={copyText} disabled={!copyText} label="Copy result" />
+        <ToolClearButton onClear={() => setField('input', '')} />
+      </ToolActions>
     </div>
   )
 }

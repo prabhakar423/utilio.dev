@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolError, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function parseCsv(text: string): string[][] {
   const rows: string[][] = []
@@ -50,42 +50,43 @@ function formatCsv(rows: string[][]): string {
 }
 
 export function CsvFormatter() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const format = () => {
-    setError('')
+  const { output, error } = useMemo(() => {
+    if (!input.trim()) return { output: '', error: '' }
     try {
       const rows = parseCsv(input)
       if (rows.length === 0) throw new Error('No CSV data found')
-      setOutput(formatCsv(rows))
+      return { output: formatCsv(rows), error: '' }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to format CSV')
-      setOutput('')
+      return {
+        output: '',
+        error: err instanceof Error ? err.message : 'Failed to format CSV',
+      }
     }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [input])
 
   return (
     <div className="grid gap-5">
-      <ToolPanel label="CSV input">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="name,age,city&#10;Alice,30,NYC&#10;Bob,25,LA" />
-      </ToolPanel>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="CSV input">
+          <ToolTextarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="name,age,city&#10;Alice,30,NYC&#10;Bob,25,LA"
+          />
+        </ToolPanel>
+        <ToolPanel label="Aligned output">
+          <ToolTextarea value={output} readOnly placeholder="Formatted CSV appears here…" />
+        </ToolPanel>
+      </div>
+
+      {error && <ToolError message={error} />}
+
       <ToolActions>
-        <Button type="button" onClick={format}>Format CSV</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
       </ToolActions>
-      {output && <ToolPanel label="Aligned output"><ToolTextarea value={output} readOnly /></ToolPanel>}
     </div>
   )
 }

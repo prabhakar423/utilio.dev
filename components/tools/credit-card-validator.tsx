@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { ToolPanel } from '@/components/tools/tool-ui'
+import { useMemo, useState } from 'react'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolInput, ToolPanel, ToolResult } from '@/components/tools/tool-ui'
 
 function luhnCheck(num: string): boolean {
   const digits = num.replace(/\D/g, '')
@@ -10,7 +11,10 @@ function luhnCheck(num: string): boolean {
   let alt = false
   for (let i = digits.length - 1; i >= 0; i--) {
     let n = parseInt(digits[i], 10)
-    if (alt) { n *= 2; if (n > 9) n -= 9 }
+    if (alt) {
+      n *= 2
+      if (n > 9) n -= 9
+    }
     sum += n
     alt = !alt
   }
@@ -28,31 +32,47 @@ function detectType(num: string): string {
 
 export function CreditCardValidator() {
   const [input, setInput] = useState('')
-  const [result, setResult] = useState<{ valid: boolean; type: string } | null>(null)
 
-  const validate = () => {
+  const result = useMemo(() => {
     const digits = input.replace(/\D/g, '')
-    setResult({ valid: luhnCheck(digits), type: detectType(digits) })
-  }
+    if (!digits) return null
+    return { valid: luhnCheck(digits), type: detectType(digits), digits }
+  }, [input])
 
   return (
     <div className="grid gap-5">
       <ToolPanel label="Card number">
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
+        <ToolInput
+          type="text"
+          inputMode="numeric"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="4111 1111 1111 1111"
-          className="w-full rounded-xl border border-border/80 px-4 py-2.5 font-mono text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          className="font-mono"
+          autoComplete="off"
+        />
       </ToolPanel>
-      <button type="button" onClick={validate}
-        className="w-fit rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-        Validate card number
-      </button>
-      {result && (
-        <div className={`rounded-xl border p-4 ${result.valid ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-destructive/30 bg-destructive/10'}`}>
-          <div className="font-semibold">{result.valid ? '✓ Valid card number' : '✗ Invalid card number'}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Detected type: {result.type}</div>
-          <p className="mt-2 text-xs text-muted-foreground">Luhn check only — does not verify if the card is active or has funds.</p>
-        </div>
+
+      {result && result.digits.length >= 13 && (
+        <ToolResult
+          variant={result.valid ? 'success' : 'error'}
+          title={result.valid ? 'Valid card number (Luhn check passed)' : 'Invalid card number'}
+        >
+          <p>Detected type: {result.type}</p>
+          <p className="mt-2 text-xs">
+            Luhn algorithm check only — does not verify if the card is active or has funds. Never
+            enter real card details on untrusted sites.
+          </p>
+        </ToolResult>
       )}
+
+      {result && result.digits.length > 0 && result.digits.length < 13 && (
+        <p className="text-sm text-muted-foreground">Enter at least 13 digits to validate.</p>
+      )}
+
+      <ToolActions>
+        <ToolClearButton onClear={() => setInput('')} />
+      </ToolActions>
     </div>
   )
 }

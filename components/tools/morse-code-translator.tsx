@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 const MORSE: Record<string, string> = {
   A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....',
@@ -22,38 +23,54 @@ function decodeMorse(code: string) {
   return code.split(/\s+/).map((w) => (w === '/' ? ' ' : REVERSE[w] ?? '')).join('')
 }
 
+const SHARE_INITIAL = { input: '', mode: 'encode' }
+
 export function MorseCodeTranslator() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [mode, setMode] = useState<'encode' | 'decode'>('encode')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const mode = state.mode === 'decode' ? 'decode' : 'encode'
 
-  const convert = () => {
-    setOutput(mode === 'encode' ? encodeMorse(input) : decodeMorse(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => {
+    if (!state.input) return ''
+    return mode === 'encode' ? encodeMorse(state.input) : decodeMorse(state.input)
+  }, [state.input, mode])
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button type="button" size="sm" variant={mode === 'encode' ? 'default' : 'outline'} onClick={() => setMode('encode')}>Text → Morse</Button>
-        <Button type="button" size="sm" variant={mode === 'decode' ? 'default' : 'outline'} onClick={() => setMode('decode')}>Morse → Text</Button>
-      </div>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ToolPanel label="Input"><ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder={mode === 'encode' ? 'SOS' : '... --- ...'} /></ToolPanel>
-        <ToolPanel label="Output"><ToolTextarea value={output} readOnly /></ToolPanel>
-      </div>
-      <ToolActions>
-        <Button type="button" onClick={convert}>Translate</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'encode' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'encode')}
+        >
+          Text → Morse
         </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={mode === 'decode' ? 'default' : 'outline'}
+          onClick={() => setField('mode', 'decode')}
+        >
+          Morse → Text
+        </Button>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Input">
+          <ToolTextarea
+            value={state.input}
+            onChange={(e) => setField('input', e.target.value)}
+            placeholder={mode === 'encode' ? 'SOS' : '... --- ...'}
+          />
+        </ToolPanel>
+        <ToolPanel label="Output">
+          <ToolTextarea value={output} readOnly placeholder="Translation appears here…" />
+        </ToolPanel>
+      </div>
+
+      <ToolActions>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
     </div>
   )

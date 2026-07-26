@@ -1,91 +1,57 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Copy, RefreshCw } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
 import { useShareableInput } from '@/hooks/use-shareable-input'
+
+const EXAMPLE_INPUT = 'hello world?'
+const EXAMPLE_OUTPUT = 'hello%20world%3F'
 
 export function UrlEncoder() {
   const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
-
-  const handleEncode = () => {
-    setCopied(false)
-    const encoded = encodeURIComponent(input)
-    setOutput(encoded)
-  }
 
   useEffect(() => {
-    if (input) {
-      setOutput(encodeURIComponent(input))
-    } else {
-      setOutput('')
-    }
+    setOutput(input ? encodeURIComponent(input) : '')
   }, [input])
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const handleClear = () => {
+  const clear = () => {
     setInput('')
     setOutput('')
   }
 
   return (
-    <div className="grid gap-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Raw URL</label>
-          <textarea
+    <div className="grid gap-5">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Raw text or URL">
+          <ToolTextarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder='Enter text or URL to encode...'
-            className="w-full h-64 p-3 font-mono text-sm border border-border rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            placeholder="Enter text or URL to encode…"
+            mono={false}
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Encoded URL</label>
-          <textarea
-            value={output}
-            readOnly
-            placeholder='Encoded URL will appear here...'
-            className="w-full h-64 p-3 font-mono text-sm border border-border rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground focus:outline-none resize-none"
-          />
-        </div>
+        </ToolPanel>
+        <ToolPanel label="Encoded output">
+          <ToolTextarea value={output} readOnly placeholder="Encoded output appears here…" />
+        </ToolPanel>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={handleEncode}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
-        >
-          Encode
-        </button>
-        <button
-          onClick={handleCopy}
-          disabled={!output}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <Copy className="w-4 h-4" />
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-        <button
-          onClick={handleClear}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Clear
-        </button>
-      </div>
+      <ToolActions>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={clear} />
+      </ToolActions>
 
-      <div className="p-4 rounded-lg bg-card border border-border">
-        <h3 className="font-semibold text-sm mb-2">Example:</h3>
-        <p className="text-xs text-muted-foreground mb-2">Input: hello world?</p>
-        <p className="text-xs text-muted-foreground">Output: hello%20world%3F</p>
-      </div>
+      <ToolExample>
+        <p>Input: {EXAMPLE_INPUT}</p>
+        <p>Output: {EXAMPLE_OUTPUT}</p>
+      </ToolExample>
     </div>
   )
 }

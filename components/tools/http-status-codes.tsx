@@ -1,6 +1,8 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolInput, ToolPanel } from '@/components/tools/tool-ui'
 
 const STATUS_CODES = [
   { code: 100, name: 'Continue', desc: 'Server received request headers; client should continue.' },
@@ -41,19 +43,35 @@ export function HttpStatusCodes() {
     const q = query.toLowerCase()
     if (!q) return STATUS_CODES
     return STATUS_CODES.filter(
-      (s) => String(s.code).includes(q) || s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q),
+      (s) =>
+        String(s.code).includes(q) ||
+        s.name.toLowerCase().includes(q) ||
+        s.desc.toLowerCase().includes(q),
     )
   }, [query])
 
   return (
     <div className="grid gap-5">
-      <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search status codes…"
-        className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20" />
+      <ToolPanel label="Search status codes">
+        <ToolInput
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by code, name, or description…"
+        />
+      </ToolPanel>
+
+      <p className="text-sm text-muted-foreground">
+        {filtered.length} code{filtered.length !== 1 ? 's' : ''} shown
+      </p>
+
       <div className="grid gap-2">
         {filtered.map((s) => (
-          <div key={s.code} className="rounded-xl border border-border/70 p-4">
-            <div className="flex items-center gap-3">
-              <span className="rounded-lg bg-primary/10 px-2.5 py-1 font-mono text-sm font-bold text-primary">{s.code}</span>
+          <div key={s.code} className="rounded-xl border border-border/70 bg-card/50 p-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-lg bg-primary/10 px-2.5 py-1 font-mono text-sm font-bold text-primary">
+                {s.code}
+              </span>
               <span className="font-semibold">{s.name}</span>
               <span className="ml-auto text-xs text-muted-foreground">{category(s.code)}</span>
             </div>
@@ -61,6 +79,10 @@ export function HttpStatusCodes() {
           </div>
         ))}
       </div>
+
+      <ToolActions>
+        <ToolClearButton onClear={() => setQuery('')} />
+      </ToolActions>
     </div>
   )
 }

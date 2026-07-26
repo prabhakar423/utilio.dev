@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolStat } from '@/components/tools/tool-ui'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolError, ToolInput, ToolPanel, ToolStat } from '@/components/tools/tool-ui'
 
 type Operation = 'add' | 'subtract' | 'multiply' | 'divide'
 
@@ -23,7 +24,7 @@ function gcd(a: number, b: number): number {
   return b === 0 ? Math.abs(a) : gcd(b, a % b)
 }
 
-function simplify(num: number, den: number): { num: number; den: number } {
+function simplify(num: number, den: number) {
   if (den < 0) {
     num = -num
     den = -den
@@ -50,76 +51,52 @@ export function FractionCalculator() {
   const [first, setFirst] = useState('1/2')
   const [second, setSecond] = useState('1/4')
   const [operation, setOperation] = useState<Operation>('add')
-  const [result, setResult] = useState<string | null>(null)
-  const [error, setError] = useState('')
 
-  const calculate = () => {
-    setError('')
+  const { result, error } = useMemo(() => {
     const a = parseFraction(first)
     const b = parseFraction(second)
-    if (!a || !b) {
-      setError('Enter valid fractions like 3/4 or whole numbers like 2')
-      setResult(null)
-      return
-    }
+    if (!first.trim() || !second.trim()) return { result: null, error: '' }
+    if (!a || !b) return { result: null, error: 'Enter valid fractions like 3/4 or whole numbers like 2' }
     const value = operate(a, b, operation)
-    if (!value) {
-      setError('Cannot divide by zero')
-      setResult(null)
-      return
+    if (!value) return { result: null, error: 'Cannot divide by zero' }
+    return {
+      result: value.den === 1 ? `${value.num}` : `${value.num}/${value.den}`,
+      error: '',
     }
-    setResult(value.den === 1 ? `${value.num}` : `${value.num}/${value.den}`)
-  }
+  }, [first, second, operation])
 
   return (
     <div className="grid gap-5">
       <div className="flex flex-wrap gap-2">
-        {([
-          ['add', '+ Add'],
-          ['subtract', '− Subtract'],
-          ['multiply', '× Multiply'],
-          ['divide', '÷ Divide'],
-        ] as const).map(([op, label]) => (
-          <Button
-            key={op}
-            type="button"
-            variant={operation === op ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setOperation(op)}
-          >
+        {(
+          [
+            ['add', '+ Add'],
+            ['subtract', '− Subtract'],
+            ['multiply', '× Multiply'],
+            ['divide', '÷ Divide'],
+          ] as const
+        ).map(([op, label]) => (
+          <Button key={op} type="button" variant={operation === op ? 'default' : 'outline'} size="sm" onClick={() => setOperation(op)}>
             {label}
           </Button>
         ))}
       </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-2 block text-sm font-medium">First fraction</label>
-          <input
-            type="text"
-            value={first}
-            onChange={(e) => setFirst(e.target.value)}
-            placeholder="1/2"
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 font-mono text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-        <div>
-          <label className="mb-2 block text-sm font-medium">Second fraction</label>
-          <input
-            type="text"
-            value={second}
-            onChange={(e) => setSecond(e.target.value)}
-            placeholder="1/4"
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 font-mono text-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
+        <ToolPanel label="First fraction">
+          <ToolInput type="text" value={first} onChange={(e) => setFirst(e.target.value)} placeholder="1/2" className="font-mono" />
+        </ToolPanel>
+        <ToolPanel label="Second fraction">
+          <ToolInput type="text" value={second} onChange={(e) => setSecond(e.target.value)} placeholder="1/4" className="font-mono" />
+        </ToolPanel>
       </div>
-      {error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
-      <Button type="button" onClick={calculate}>Calculate</Button>
+
+      {error && <ToolError message={error} />}
       {result && <ToolStat label="Result" value={result} accent />}
+
+      <ToolActions>
+        <ToolClearButton onClear={() => { setFirst('1/2'); setSecond('1/4'); setOperation('add') }} />
+      </ToolActions>
     </div>
   )
 }

@@ -1,11 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ToolCardWithFavorite } from '@/components/cards/tool-card-with-favorite'
 import { EmptyState } from '@/components/layout/empty-state'
+import { DeferredSearchBar } from '@/components/search/deferred-search-bar'
 import { loadSearchIndex, searchLoadedIndex } from '@/lib/search-client'
 import type { ToolSearchItem } from '@/lib/tool-search-index'
+
+const POPULAR_TOOLS = [
+  { id: 'json-formatter', label: 'JSON Formatter' },
+  { id: 'jwt-decoder', label: 'JWT Decoder' },
+  { id: 'hash-generator', label: 'Hash Generator' },
+  { id: 'regex-tester', label: 'Regex Tester' },
+  { id: 'base64-encoder', label: 'Base64 Encoder' },
+  { id: 'password-generator', label: 'Password Generator' },
+]
 
 export function SearchResults() {
   const searchParams = useSearchParams()
@@ -32,8 +43,11 @@ export function SearchResults() {
           <p className="mt-2 text-muted-foreground">
             {query
               ? `${results.length} tool${results.length !== 1 ? 's' : ''} found`
-              : 'Enter a search term to find tools by name, category, or keyword.'}
+              : 'Find tools by name, category, or keyword.'}
           </p>
+          <div className="mt-6 max-w-xl">
+            <DeferredSearchBar defaultQuery={query} />
+          </div>
         </div>
       </div>
 
@@ -45,16 +59,32 @@ export function SearchResults() {
             ))}
           </div>
         ) : (
-          <EmptyState
-            title={query ? 'No tools found' : 'Start searching'}
-            description={
-              query
-                ? 'Try a different keyword, or browse tools by category from the homepage.'
-                : 'Search by tool name, description, or category.'
-            }
-            actionLabel="Browse categories"
-            actionHref="/"
-          />
+          <div className="space-y-8">
+            <EmptyState
+              title={query ? 'No tools found' : 'Start searching'}
+              description={
+                query
+                  ? 'Try a different keyword, or pick one of the popular tools below.'
+                  : 'Search by tool name, description, or category.'
+              }
+              actionLabel="Browse categories"
+              actionHref="/"
+            />
+            <div>
+              <h2 className="text-sm font-medium text-muted-foreground">Popular tools</h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {POPULAR_TOOLS.map((tool) => (
+                  <Link
+                    key={tool.id}
+                    href={`/tools/${tool.id}`}
+                    className="rounded-full border border-border/70 bg-card/60 px-3 py-1.5 text-sm transition-colors hover:border-primary/30 hover:bg-card hover:text-primary"
+                  >
+                    {tool.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </>

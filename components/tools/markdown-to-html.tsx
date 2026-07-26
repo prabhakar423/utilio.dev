@@ -1,9 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+
+const EXAMPLE = `# Hello World
+
+**Bold** and *italic* text.
+
+- First item
+- Second item
+
+[Utilio](https://utiliio.com)`
 
 function markdownToHtml(md: string): string {
   let html = md
@@ -26,20 +41,9 @@ function markdownToHtml(md: string): string {
 }
 
 export function MarkdownToHtml() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const convert = () => {
-    setOutput(markdownToHtml(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => (input.trim() ? markdownToHtml(input) : ''), [input])
 
   return (
     <div className="grid gap-5">
@@ -48,7 +52,7 @@ export function MarkdownToHtml() {
           <ToolTextarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="# Heading&#10;&#10;**Bold** and *italic* text&#10;&#10;- List item"
+            placeholder="# Heading\n\n**Bold** text"
             mono={false}
           />
         </ToolPanel>
@@ -56,16 +60,6 @@ export function MarkdownToHtml() {
           <ToolTextarea value={output} readOnly placeholder="HTML appears here…" />
         </ToolPanel>
       </div>
-
-      <ToolActions>
-        <Button type="button" onClick={convert}>
-          Convert to HTML
-        </Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-          Copy HTML
-        </Button>
-      </ToolActions>
 
       {output && (
         <ToolPanel label="Preview">
@@ -75,6 +69,18 @@ export function MarkdownToHtml() {
           />
         </ToolPanel>
       )}
+
+      <ToolActions>
+        <ToolCopyButton text={output} label="Copy HTML" disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
+        <Button type="button" variant="outline" onClick={() => setInput(EXAMPLE)}>
+          Load example
+        </Button>
+      </ToolActions>
+
+      <ToolExample>
+        <p>Supports headings, bold, italic, links, lists, and inline code.</p>
+      </ToolExample>
     </div>
   )
 }

@@ -1,152 +1,184 @@
 'use client'
 
-import { useState } from 'react'
-import { Copy, RefreshCw } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolStat,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
 
-function generatePassword(length: number, options: {
-  uppercase: boolean
-  lowercase: boolean
-  numbers: boolean
-  symbols: boolean
-}): string {
-  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  const lowercase = 'abcdefghijklmnopqrstuvwxyz'
-  const numbers = '0123456789'
-  const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?'
+const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz'
+const NUMBERS = '0123456789'
+const SYMBOLS = '!@#$%^&*()_+-=[]{}|;:,.<>?'
 
-  let chars = ''
-  if (options.uppercase) chars += uppercase
-  if (options.lowercase) chars += lowercase
-  if (options.numbers) chars += numbers
-  if (options.symbols) chars += symbols
+function securePick(charset: string): string {
+  const array = new Uint32Array(1)
+  crypto.getRandomValues(array)
+  return charset[array[0] % charset.length]
+}
 
-  if (!chars) return ''
+function generatePassword(
+  length: number,
+  options: { uppercase: boolean; lowercase: boolean; numbers: boolean; symbols: boolean },
+): string {
+  let charset = ''
+  const required: string[] = []
 
-  let password = ''
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length))
+  if (options.uppercase) {
+    charset += UPPERCASE
+    required.push(securePick(UPPERCASE))
   }
-  return password
+  if (options.lowercase) {
+    charset += LOWERCASE
+    required.push(securePick(LOWERCASE))
+  }
+  if (options.numbers) {
+    charset += NUMBERS
+    required.push(securePick(NUMBERS))
+  }
+  if (options.symbols) {
+    charset += SYMBOLS
+    required.push(securePick(SYMBOLS))
+  }
+
+  if (!charset) return ''
+
+  const chars = [...required]
+  for (let i = chars.length; i < length; i++) {
+    chars.push(securePick(charset))
+  }
+
+  for (let i = chars.length - 1; i > 0; i--) {
+    const array = new Uint32Array(1)
+    crypto.getRandomValues(array)
+    const j = array[0] % (i + 1)
+    ;[chars[i], chars[j]] = [chars[j], chars[i]]
+  }
+
+  return chars.join('')
+}
+
+function strengthLabel(
+  length: number,
+  options: { uppercase: boolean; lowercase: boolean; numbers: boolean; symbols: boolean },
+): string {
+  const types = [options.uppercase, options.lowercase, options.numbers, options.symbols].filter(
+    Boolean,
+  ).length
+  if (length >= 20 && types >= 3) return 'Very strong'
+  if (length >= 16 && types >= 3) return 'Strong'
+  if (length >= 12 && types >= 2) return 'Good'
+  if (length >= 8) return 'Fair'
+  return 'Weak'
+}
+
+const defaultOptions = {
+  uppercase: true,
+  lowercase: true,
+  numbers: true,
+  symbols: true,
 }
 
 export function PasswordGenerator() {
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(16)
-  const [copied, setCopied] = useState(false)
-  const [options, setOptions] = useState({
-    uppercase: true,
-    lowercase: true,
-    numbers: true,
-    symbols: true,
-  })
+  const [options, setOptions] = useState(defaultOptions)
 
   const handleGenerate = () => {
-    const newPassword = generatePassword(length, options)
-    setPassword(newPassword)
-    setCopied(false)
+    setPassword(generatePassword(length, options))
   }
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(password)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  useEffect(() => {
+    handleGenerate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const toggle = (key: keyof typeof options) => {
+    setOptions((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  const handleToggle = (key: keyof typeof options) => {
-    setOptions(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }))
-  }
-
-  const handleClear = () => {
-    setPassword('')
-  }
+  const hasCharset = Object.values(options).some(Boolean)
 
   return (
-    <div className="grid gap-4">
-      <div className="space-y-4 p-4 rounded-lg bg-card border border-border">
-        <div>
-          <label className="block text-sm font-medium mb-2">Password Length: {length}</label>
-          <input
-            type="range"
-            min="4"
-            max="128"
-            value={length}
-            onChange={(e) => setLength(parseInt(e.target.value))}
-            className="w-full"
-          />
-        </div>
+    <div className="grid gap-5">
+      <ToolPanel label={`Password length: ${length}`}>
+        <input
+          type="range"
+          min={8}
+          max={128}
+          value={length}
+          onChange={(e) => setLength(parseInt(e.target.value, 10))}
+          className="w-full accent-primary"
+        />
+      </ToolPanel>
 
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { key: 'uppercase' as const, label: 'Uppercase (A-Z)' },
-            { key: 'lowercase' as const, label: 'Lowercase (a-z)' },
-            { key: 'numbers' as const, label: 'Numbers (0-9)' },
-            { key: 'symbols' as const, label: 'Symbols (!@#$...)' },
-          ].map(({ key, label }) => (
-            <label key={key} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={options[key]}
-                onChange={() => handleToggle(key)}
-                className="w-4 h-4 rounded border-border"
-              />
-              <span className="text-sm">{label}</span>
-            </label>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {[
+          { key: 'uppercase' as const, label: 'Uppercase (A–Z)' },
+          { key: 'lowercase' as const, label: 'Lowercase (a–z)' },
+          { key: 'numbers' as const, label: 'Numbers (0–9)' },
+          { key: 'symbols' as const, label: 'Symbols (!@#$…)' },
+        ].map(({ key, label }) => (
+          <label
+            key={key}
+            className="flex cursor-pointer items-center gap-2 rounded-xl border border-border/70 bg-card/50 px-4 py-3 text-sm"
+          >
+            <input
+              type="checkbox"
+              checked={options[key]}
+              onChange={() => toggle(key)}
+              className="size-4 rounded border-border accent-primary"
+            />
+            {label}
+          </label>
+        ))}
       </div>
 
       {password && (
-        <div className="p-4 rounded-lg bg-secondary border border-border">
-          <div className="flex items-center justify-between">
-            <code className="text-sm font-mono text-foreground break-all">{password}</code>
-            <button
-              onClick={handleCopy}
-              className="ml-2 p-2 hover:bg-primary/20 rounded transition-colors"
-              title="Copy"
-            >
-              <Copy className="w-4 h-4 text-primary" />
-            </button>
+        <>
+          <ToolPanel label="Generated password">
+            <ToolTextarea value={password} readOnly className="min-h-20 font-mono" />
+          </ToolPanel>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <ToolStat label="Length" value={password.length} />
+            <ToolStat
+              label="Strength"
+              value={strengthLabel(length, options)}
+              accent={length >= 16}
+            />
+            <ToolStat
+              label="Entropy"
+              value={`~${Math.round(password.length * Math.log2(Object.values(options).filter(Boolean).length * 26))} bits`}
+            />
           </div>
-          {copied && <p className="text-xs text-primary mt-2">Copied to clipboard!</p>}
-        </div>
+        </>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={handleGenerate}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
-        >
+      <ToolActions>
+        <Button type="button" onClick={handleGenerate} disabled={!hasCharset}>
           Generate
-        </button>
-        <button
-          onClick={handleCopy}
-          disabled={!password}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <Copy className="w-4 h-4" />
-          Copy
-        </button>
-        <button
-          onClick={handleClear}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Clear
-        </button>
-      </div>
+        </Button>
+        <ToolCopyButton text={password} label="Copy password" disabled={!password} />
+        <ToolClearButton onClear={() => setPassword('')} />
+      </ToolActions>
 
-      <div className="p-4 rounded-lg bg-card border border-border">
-        <h3 className="font-semibold text-sm mb-2">Tips for Strong Passwords:</h3>
-        <ul className="text-xs text-muted-foreground space-y-1">
-          <li>• Use at least 12 characters</li>
-          <li>• Mix uppercase, lowercase, numbers, and symbols</li>
-          <li>• Avoid personal information</li>
-          <li>• Use unique passwords for each account</li>
+      {!hasCharset && (
+        <p className="text-sm text-destructive">Select at least one character set.</p>
+      )}
+
+      <ToolExample title="Tips for strong passwords">
+        <ul className="list-inside list-disc space-y-1">
+          <li>Use at least 16 characters for important accounts</li>
+          <li>Mix character types — uppercase, lowercase, numbers, symbols</li>
+          <li>Use a unique password for every account</li>
+          <li>Store passwords in a reputable password manager</li>
         </ul>
-      </div>
+      </ToolExample>
     </div>
   )
 }

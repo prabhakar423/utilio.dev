@@ -1,51 +1,56 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { load } from 'js-yaml'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
 import { useShareableInput } from '@/hooks/use-shareable-input'
-import { useToolShortcut } from '@/hooks/use-tool-shortcut'
+import { load } from 'js-yaml'
+
+const EXAMPLE = 'name: John\nage: 30\nskills:\n  - YAML\n  - JSON'
 
 export function YamlToJson() {
   const [input, setInput] = useShareableInput('')
-  const [output, setOutput] = useState('')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
 
-  const convert = () => {
-    setError('')
+  const { output, error } = useMemo(() => {
+    if (!input.trim()) return { output: '', error: '' }
     try {
-      setOutput(JSON.stringify(load(input), null, 2))
+      return { output: JSON.stringify(load(input), null, 2), error: '' }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid YAML')
-      setOutput('')
+      return { output: '', error: err instanceof Error ? err.message : 'Invalid YAML' }
     }
-  }
-
-  useToolShortcut(convert, 'Enter')
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [input])
 
   return (
     <div className="grid gap-5">
       <div className="grid gap-4 lg:grid-cols-2">
-        <ToolPanel label="YAML input"><ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="name: John&#10;age: 30" /></ToolPanel>
-        <ToolPanel label="JSON output"><ToolTextarea value={output} readOnly /></ToolPanel>
+        <ToolPanel label="YAML input">
+          <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="name: John&#10;age: 30" />
+        </ToolPanel>
+        <ToolPanel label="JSON output">
+          <ToolTextarea value={output} readOnly placeholder="JSON appears here…" />
+        </ToolPanel>
       </div>
-      {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>}
+
+      {error && <ToolError message={error} />}
+
       <ToolActions>
-        <Button type="button" onClick={convert}>Convert to JSON</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
+        <Button type="button" variant="outline" onClick={() => setInput(EXAMPLE)}>
+          Load example
         </Button>
-        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to convert</span>
       </ToolActions>
+
+      <ToolExample>
+        <pre className="font-mono whitespace-pre-wrap">{EXAMPLE}</pre>
+      </ToolExample>
     </div>
   )
 }

@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy, RefreshCw } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 const entityMap: Record<string, string> = {
   '&': '&amp;',
@@ -13,50 +19,36 @@ const entityMap: Record<string, string> = {
   "'": '&#39;',
 }
 
+const SHARE_INITIAL = { input: '', mode: 'encode' }
+
 function encodeHtml(text: string) {
   return text.replace(/[&<>"']/g, (char) => entityMap[char] ?? char)
 }
 
 function decodeHtml(text: string) {
+  if (typeof document === 'undefined') return text
   const textarea = document.createElement('textarea')
   textarea.innerHTML = text
   return textarea.value
 }
 
 export function HtmlEncoder() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [mode, setMode] = useState<'encode' | 'decode'>('encode')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { input } = state
+  const mode = state.mode === 'decode' ? 'decode' : 'encode'
 
-  const run = () => {
-    setCopied(false)
-    setOutput(mode === 'encode' ? encodeHtml(input) : decodeHtml(input))
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => {
+    if (!input) return ''
+    return mode === 'encode' ? encodeHtml(input) : decodeHtml(input)
+  }, [input, mode])
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button
-          type="button"
-          variant={mode === 'encode' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setMode('encode')}
-        >
+        <Button type="button" variant={mode === 'encode' ? 'default' : 'outline'} size="sm" onClick={() => setField('mode', 'encode')}>
           Encode
         </Button>
-        <Button
-          type="button"
-          variant={mode === 'decode' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setMode('decode')}
-        >
+        <Button type="button" variant={mode === 'decode' ? 'default' : 'outline'} size="sm" onClick={() => setField('mode', 'decode')}>
           Decode
         </Button>
       </div>
@@ -65,7 +57,7 @@ export function HtmlEncoder() {
         <ToolPanel label="Input">
           <ToolTextarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setField('input', e.target.value)}
             placeholder={mode === 'encode' ? 'Enter HTML or text…' : 'Enter HTML entities…'}
           />
         </ToolPanel>
@@ -75,25 +67,13 @@ export function HtmlEncoder() {
       </div>
 
       <ToolActions>
-        <Button type="button" onClick={run}>
-          {mode === 'encode' ? 'Encode HTML' : 'Decode HTML'}
-        </Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-          Copy
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            setInput('')
-            setOutput('')
-          }}
-        >
-          <RefreshCw className="size-4" />
-          Clear
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
+
+      <ToolExample>
+        <p>Encode: <span className="font-mono">&lt;div&gt;</span> → <span className="font-mono">&amp;lt;div&amp;gt;</span></p>
+      </ToolExample>
     </div>
   )
 }

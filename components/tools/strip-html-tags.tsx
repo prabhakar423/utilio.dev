@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useMemo } from 'react'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function stripHtml(html: string): string {
   const doc = new DOMParser().parseFromString(html, 'text/html')
@@ -11,46 +11,29 @@ function stripHtml(html: string): string {
 }
 
 export function StripHtmlTags() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const run = () => {
-    setOutput(stripHtml(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => (input ? stripHtml(input) : ''), [input])
 
   return (
     <div className="grid gap-5">
-      <ToolPanel label="HTML input">
-        <ToolTextarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="<p>Hello <strong>world</strong></p>"
-        />
-      </ToolPanel>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="HTML input">
+          <ToolTextarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="<p>Hello <strong>world</strong></p>"
+          />
+        </ToolPanel>
+        <ToolPanel label="Plain text">
+          <ToolTextarea value={output} readOnly mono={false} placeholder="Plain text appears here…" />
+        </ToolPanel>
+      </div>
 
       <ToolActions>
-        <Button type="button" onClick={run}>
-          Strip HTML tags
-        </Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-          Copy plain text
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
       </ToolActions>
-
-      {output && (
-        <ToolPanel label="Plain text">
-          <ToolTextarea value={output} readOnly mono={false} />
-        </ToolPanel>
-      )}
     </div>
   )
 }

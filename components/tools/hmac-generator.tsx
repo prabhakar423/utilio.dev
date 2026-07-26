@@ -1,17 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 type Algorithm = 'SHA-256' | 'SHA-384' | 'SHA-512'
 
-async function computeHmac(
-  key: string,
-  message: string,
-  algorithm: Algorithm,
-): Promise<string> {
+const SHARE_INITIAL = { key: '', message: '', algorithm: 'SHA-256' }
+
+async function computeHmac(key: string, message: string, algorithm: Algorithm): Promise<string> {
   const encoder = new TextEncoder()
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
@@ -27,33 +31,25 @@ async function computeHmac(
 }
 
 export function HmacGenerator() {
-  const [key, setKey] = useState('')
-  const [message, setMessage] = useState('')
-  const [algorithm, setAlgorithm] = useState<Algorithm>('SHA-256')
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { key, message } = state
+  const algorithm = (state.algorithm as Algorithm) || 'SHA-256'
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
 
-  const generate = async () => {
-    setError('')
-    setCopied(false)
-    if (!key || !message) {
+  useEffect(() => {
+    if (!key.trim() || !message.trim()) {
       setOutput('')
+      setError('')
       return
     }
-    try {
-      setOutput(await computeHmac(key, message, algorithm))
-    } catch {
-      setError('Failed to compute HMAC. Your browser may not support Web Crypto.')
-      setOutput('')
-    }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+    void computeHmac(key, message, algorithm)
+      .then(setOutput)
+      .catch(() => {
+        setError('Failed to compute HMAC. Your browser may not support Web Crypto.')
+        setOutput('')
+      })
+  }, [key, message, algorithm])
 
   return (
     <div className="grid gap-5">
@@ -64,47 +60,55 @@ export function HmacGenerator() {
             type="button"
             variant={algorithm === algo ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setAlgorithm(algo)}
+            onClick={() => setField('algorithm', algo)}
           >
             HMAC-{algo.replace('SHA-', '')}
           </Button>
         ))}
       </div>
+
       <ToolPanel label="Secret key">
         <ToolTextarea
           value={key}
-          onChange={(e) => setKey(e.target.value)}
+          onChange={(e) => setField('key', e.target.value)}
           placeholder="your-secret-key"
           className="min-h-20"
           mono={false}
         />
       </ToolPanel>
+
       <ToolPanel label="Message">
         <ToolTextarea
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setField('message', e.target.value)}
           placeholder="Message to authenticate…"
           mono={false}
         />
       </ToolPanel>
-      {error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+
+      {error && <ToolError message={error} />}
+
       {output && (
         <ToolPanel label={`HMAC-${algorithm.replace('SHA-', '')} output`}>
-          <div className="rounded-xl border border-border/70 bg-muted/30 p-4">
-            <code className="break-all font-mono text-sm">{output}</code>
-          </div>
+          <ToolTextarea value={output} readOnly className="min-h-20 font-mono" />
         </ToolPanel>
       )}
+
       <ToolActions>
-        <Button type="button" onClick={generate}>Generate HMAC</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
+        <ToolCopyButton text={output} label="Copy HMAC" disabled={!output} />
+        <ToolClearButton
+          onClear={() => {
+            setField('key', '')
+            setField('message', '')
+            setOutput('')
+            setError('')
+          }}
+        />
       </ToolActions>
+
+      <p className="text-xs text-muted-foreground">
+        Do not share production secrets via URL links. Use test keys only when sharing.
+      </p>
     </div>
   )
 }

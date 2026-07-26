@@ -1,76 +1,75 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo } from 'react'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolPanel,
+  ToolStat,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+
+function computeStats(text: string) {
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0
+  const lines = text ? text.split('\n').length : 0
+  const characters = text.length
+  const charactersNoSpaces = text.replace(/\s/g, '').length
+  const sentences = text ? text.split(/[.!?]+/).filter((s) => s.trim()).length : 0
+  const paragraphs = text ? text.split(/\n\n+/).filter((p) => p.trim()).length : 0
+
+  return {
+    characters,
+    charactersNoSpaces,
+    words,
+    lines,
+    sentences,
+    paragraphs,
+    avgWordsPerLine: lines > 0 ? (words / lines).toFixed(1) : '0',
+    avgCharsPerWord: words > 0 ? (charactersNoSpaces / words).toFixed(1) : '0',
+    readingMinutes: Math.max(1, Math.ceil(words / 200)),
+  }
+}
 
 export function WordCounter() {
-  const [text, setText] = useState('')
+  const [text, setText] = useShareableInput('')
 
-  const stats = {
-    characters: text.length,
-    charactersNoSpaces: text.replace(/\s/g, '').length,
-    words: text.trim() ? text.trim().split(/\s+/).length : 0,
-    lines: text ? text.split('\n').length : 0,
-    sentences: text ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0,
-    paragraphs: text ? text.split(/\n\n+/).filter(p => p.trim()).length : 0,
-  }
-
-  const avgWordsPerLine = stats.lines > 0 ? (stats.words / stats.lines).toFixed(2) : '0.00'
-  const avgCharsPerWord = stats.words > 0 ? (stats.charactersNoSpaces / stats.words).toFixed(2) : '0.00'
+  const stats = useMemo(() => computeStats(text), [text])
 
   return (
-    <div className="grid gap-4">
-      <div>
-        <label className="block text-sm font-medium mb-2">Enter Text</label>
-        <textarea
+    <div className="grid gap-5">
+      <ToolPanel label="Your text">
+        <ToolTextarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder='Paste or type your text here...'
-          className="w-full h-64 p-3 font-mono text-sm border border-border rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+          placeholder="Paste or type your text here…"
+          mono={false}
+          className="min-h-48"
+        />
+      </ToolPanel>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <ToolStat label="Words" value={stats.words} accent />
+        <ToolStat label="Characters" value={stats.characters} />
+        <ToolStat label="No spaces" value={stats.charactersNoSpaces} />
+        <ToolStat label="Lines" value={stats.lines} />
+        <ToolStat label="Sentences" value={stats.sentences} />
+        <ToolStat label="Paragraphs" value={stats.paragraphs} />
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <ToolStat label="Avg words / line" value={stats.avgWordsPerLine} />
+        <ToolStat label="Avg chars / word" value={stats.avgCharsPerWord} />
+        <ToolStat
+          label="Reading time"
+          value={stats.words > 0 ? `${stats.readingMinutes} min` : '—'}
+          accent
         />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.characters}</div>
-          <div className="text-xs text-muted-foreground mt-1">Characters</div>
-        </div>
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.charactersNoSpaces}</div>
-          <div className="text-xs text-muted-foreground mt-1">Chars (no spaces)</div>
-        </div>
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.words}</div>
-          <div className="text-xs text-muted-foreground mt-1">Words</div>
-        </div>
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.lines}</div>
-          <div className="text-xs text-muted-foreground mt-1">Lines</div>
-        </div>
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.sentences}</div>
-          <div className="text-xs text-muted-foreground mt-1">Sentences</div>
-        </div>
-        <div className="p-4 rounded-lg bg-card border border-border">
-          <div className="text-2xl font-bold text-primary">{stats.paragraphs}</div>
-          <div className="text-xs text-muted-foreground mt-1">Paragraphs</div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-card border border-border">
-        <div>
-          <div className="text-lg font-bold text-primary">{avgWordsPerLine}</div>
-          <div className="text-xs text-muted-foreground mt-1">Avg Words/Line</div>
-        </div>
-        <div>
-          <div className="text-lg font-bold text-primary">{avgCharsPerWord}</div>
-          <div className="text-xs text-muted-foreground mt-1">Avg Chars/Word</div>
-        </div>
-      </div>
-
-      <div className="p-4 rounded-lg bg-card border border-border">
-        <h3 className="font-semibold text-sm mb-2">Reading Time (assuming 200 wpm):</h3>
-        <div className="text-2xl font-bold text-primary">{Math.ceil(stats.words / 200)} min</div>
-      </div>
+      <ToolActions>
+        <ToolClearButton onClear={() => setText('')} />
+      </ToolActions>
     </div>
   )
 }

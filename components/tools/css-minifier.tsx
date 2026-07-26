@@ -1,9 +1,20 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
+
+const EXAMPLE = `.card {
+  color: red;
+  padding: 1rem;
+}`
 
 function minifyCss(css: string) {
   return css
@@ -14,38 +25,39 @@ function minifyCss(css: string) {
 }
 
 export function CssMinifier() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useShareableInput('')
 
-  const minify = () => {
-    setOutput(minifyCss(input))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const output = useMemo(() => (input.trim() ? minifyCss(input) : ''), [input])
+  const saved = input.length > 0 && output ? input.length - output.length : 0
 
   return (
     <div className="grid gap-5">
-      <ToolPanel label="CSS input"><ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder=".class { color: red; }" /></ToolPanel>
-      <ToolActions>
-        <Button type="button" onClick={minify}>Minify CSS</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-        </Button>
-      </ToolActions>
+      <ToolPanel label="CSS input">
+        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder=".class { color: red; }" />
+      </ToolPanel>
+
       {output && (
         <ToolPanel label="Minified CSS">
           <ToolTextarea value={output} readOnly />
-          <p className="mt-2 text-xs text-muted-foreground">
-            Saved {input.length - output.length} characters ({Math.round((1 - output.length / input.length) * 100)}% reduction)
-          </p>
+          {saved > 0 && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Saved {saved} characters ({Math.round((saved / input.length) * 100)}% reduction)
+            </p>
+          )}
         </ToolPanel>
       )}
+
+      <ToolActions>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setInput('')} />
+        <Button type="button" variant="outline" onClick={() => setInput(EXAMPLE)}>
+          Load example
+        </Button>
+      </ToolActions>
+
+      <ToolExample>
+        <pre className="font-mono whitespace-pre-wrap">{EXAMPLE}</pre>
+      </ToolExample>
     </div>
   )
 }

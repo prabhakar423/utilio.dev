@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy, RefreshCw } from 'lucide-react'
+import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolExample,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
+
+const SHARE_INITIAL = { input: '', mode: 'encode' }
 
 function encodeHex(text: string) {
   return Array.from(new TextEncoder().encode(text))
@@ -24,46 +33,29 @@ function decodeHex(hex: string) {
 }
 
 export function HexEncoder() {
-  const [input, setInput] = useState('')
-  const [output, setOutput] = useState('')
-  const [mode, setMode] = useState<'encode' | 'decode'>('encode')
-  const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
+  const { input } = state
+  const mode = state.mode === 'decode' ? 'decode' : 'encode'
 
-  const run = () => {
-    setError('')
-    setCopied(false)
+  const { output, error } = useMemo(() => {
+    if (!input.trim()) return { output: '', error: '' }
     try {
-      setOutput(mode === 'encode' ? encodeHex(input) : decodeHex(input))
+      return {
+        output: mode === 'encode' ? encodeHex(input) : decodeHex(input),
+        error: '',
+      }
     } catch {
-      setError('Invalid hex input. Use pairs of hexadecimal characters (0-9, a-f).')
-      setOutput('')
+      return { output: '', error: 'Invalid hex input. Use pairs of hexadecimal characters (0-9, a-f).' }
     }
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  }, [input, mode])
 
   return (
     <div className="grid gap-5">
       <div className="flex gap-2">
-        <Button
-          type="button"
-          variant={mode === 'encode' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setMode('encode')}
-        >
+        <Button type="button" variant={mode === 'encode' ? 'default' : 'outline'} size="sm" onClick={() => setField('mode', 'encode')}>
           Text → Hex
         </Button>
-        <Button
-          type="button"
-          variant={mode === 'decode' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setMode('decode')}
-        >
+        <Button type="button" variant={mode === 'decode' ? 'default' : 'outline'} size="sm" onClick={() => setField('mode', 'decode')}>
           Hex → Text
         </Button>
       </div>
@@ -72,7 +64,7 @@ export function HexEncoder() {
         <ToolPanel label="Input">
           <ToolTextarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setField('input', e.target.value)}
             placeholder={mode === 'encode' ? 'Enter text…' : 'Enter hex (e.g. 48656c6c6f)…'}
           />
         </ToolPanel>
@@ -81,33 +73,16 @@ export function HexEncoder() {
         </ToolPanel>
       </div>
 
-      {error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ToolError message={error} />}
 
       <ToolActions>
-        <Button type="button" onClick={run}>
-          Convert
-        </Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-          Copy
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            setInput('')
-            setOutput('')
-            setError('')
-          }}
-        >
-          <RefreshCw className="size-4" />
-          Clear
-        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={() => setField('input', '')} />
       </ToolActions>
+
+      <ToolExample>
+        <p className="font-mono">Hello → 48656c6c6f</p>
+      </ToolExample>
     </div>
   )
 }

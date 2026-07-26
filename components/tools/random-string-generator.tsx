@@ -1,16 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolPanel } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolInput, ToolPanel, ToolSelect, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableJson } from '@/hooks/use-shareable-json'
 
 const CHARSETS = {
   alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
   hex: '0123456789abcdef',
   alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
   symbols: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*',
-}
+} as const
+
+type CharsetKey = keyof typeof CHARSETS
+
+const SHARE_INITIAL = { length: '16', type: 'alphanumeric', count: '1' }
 
 function randomString(length: number, charset: string) {
   const arr = new Uint32Array(length)
@@ -19,56 +24,68 @@ function randomString(length: number, charset: string) {
 }
 
 export function RandomStringGenerator() {
-  const [length, setLength] = useState(16)
-  const [type, setType] = useState<keyof typeof CHARSETS>('alphanumeric')
-  const [count, setCount] = useState(1)
+  const [state, , setField] = useShareableJson(SHARE_INITIAL)
   const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+
+  const length = Math.min(128, Math.max(4, Number(state.length) || 16))
+  const count = Math.min(50, Math.max(1, Number(state.count) || 1))
+  const type = (state.type in CHARSETS ? state.type : 'alphanumeric') as CharsetKey
 
   const generate = () => {
     setOutput(Array.from({ length: count }, () => randomString(length, CHARSETS[type])).join('\n'))
-    setCopied(false)
   }
 
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  const settingsSummary = useMemo(
+    () => `${length} chars · ${count} string${count !== 1 ? 's' : ''} · ${type}`,
+    [length, count, type],
+  )
 
   return (
     <div className="grid gap-5">
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label className="mb-2 block text-sm font-medium">Length: {length}</label>
-          <input type="range" min="4" max="128" value={length} onChange={(e) => setLength(Number(e.target.value))} className="w-full" />
+          <input
+            type="range"
+            min="4"
+            max="128"
+            value={length}
+            onChange={(e) => setField('length', e.target.value)}
+            className="w-full"
+          />
         </div>
-        <div>
-          <label className="mb-2 block text-sm font-medium">Count</label>
-          <input type="number" min="1" max="50" value={count} onChange={(e) => setCount(Math.min(50, Math.max(1, Number(e.target.value))))}
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm" />
-        </div>
-        <div>
-          <label className="mb-2 block text-sm font-medium">Character set</label>
-          <select value={type} onChange={(e) => setType(e.target.value as keyof typeof CHARSETS)}
-            className="w-full rounded-xl border border-border/80 px-4 py-2.5 text-sm">
+        <ToolPanel label="Count">
+          <ToolInput
+            type="number"
+            min={1}
+            max={50}
+            value={count}
+            onChange={(e) => setField('count', e.target.value)}
+          />
+        </ToolPanel>
+        <ToolPanel label="Character set">
+          <ToolSelect value={type} onChange={(e) => setField('type', e.target.value)}>
             <option value="alphanumeric">Alphanumeric</option>
             <option value="hex">Hex</option>
             <option value="alpha">Letters only</option>
             <option value="symbols">With symbols</option>
-          </select>
-        </div>
+          </ToolSelect>
+        </ToolPanel>
       </div>
-      <Button type="button" onClick={generate}>Generate</Button>
+
+      <p className="text-sm text-muted-foreground">{settingsSummary}</p>
+
+      <ToolActions>
+        <Button type="button" onClick={generate}>
+          Generate
+        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+      </ToolActions>
+
       {output && (
-        <>
-          <ToolPanel label="Generated strings">
-            <div className="rounded-xl border border-border/70 bg-muted/30 p-4 font-mono text-sm break-all">{output}</div>
-          </ToolPanel>
-          <Button type="button" variant="secondary" onClick={copy}>
-            {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
-          </Button>
-        </>
+        <ToolPanel label="Generated strings">
+          <ToolTextarea value={output} readOnly className="min-h-24" />
+        </ToolPanel>
       )}
     </div>
   )

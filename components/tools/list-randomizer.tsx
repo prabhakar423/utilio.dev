@@ -1,34 +1,31 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
 import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
-function shuffleLines(lines: string[]): string[] {
+function shuffleLines(lines: string[], seed: number): string[] {
   const result = [...lines]
+  let s = seed
   for (let i = result.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
+    s = (s * 1103515245 + 12345) & 0x7fffffff
+    const j = s % (i + 1)
     ;[result[i], result[j]] = [result[j], result[i]]
   }
   return result
 }
 
 export function ListRandomizer() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [seed, setSeed] = useState(1)
 
   const randomize = () => {
     const lines = input.split('\n').filter((line) => line.trim())
-    setOutput(shuffleLines(lines).join('\n'))
-    setCopied(false)
-  }
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
+    setSeed((s) => s + 1)
+    setOutput(shuffleLines(lines, seed + 1).join('\n'))
   }
 
   return (
@@ -41,12 +38,20 @@ export function ListRandomizer() {
           mono={false}
         />
       </ToolPanel>
+
       <ToolActions>
-        <Button type="button" onClick={randomize}>Shuffle list</Button>
-        <Button type="button" variant="secondary" onClick={copy} disabled={!output}>
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />} Copy
+        <Button type="button" onClick={randomize} disabled={!input.trim()}>
+          Shuffle list
         </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton
+          onClear={() => {
+            setInput('')
+            setOutput('')
+          }}
+        />
       </ToolActions>
+
       {output && (
         <ToolPanel label="Shuffled output">
           <ToolTextarea value={output} readOnly mono={false} />

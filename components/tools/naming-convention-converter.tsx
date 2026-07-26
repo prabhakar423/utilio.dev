@@ -1,9 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton } from '@/components/tools/tool-action-buttons'
+import { ToolActions, ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useShareableInput } from '@/hooks/use-shareable-input'
 
 function toWords(text: string): string[] {
   return text
@@ -27,9 +30,24 @@ const transforms = {
   'dot.case': (words: string[]) => words.join('.'),
 } as const
 
+function NamingResultRow({ name, value }: { name: string; value: string }) {
+  const { copied, copy } = useCopyToClipboard()
+
+  return (
+    <div className="flex items-start justify-between gap-3 rounded-xl border border-border/70 bg-muted/20 p-4">
+      <div className="min-w-0 flex-1">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{name}</div>
+        <div className="mt-1 break-all font-mono text-sm">{value}</div>
+      </div>
+      <Button type="button" variant="ghost" size="sm" onClick={() => void copy(value)}>
+        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+      </Button>
+    </div>
+  )
+}
+
 export function NamingConventionConverter() {
-  const [input, setInput] = useState('myVariableName')
-  const [copied, setCopied] = useState<string | null>(null)
+  const [input, setInput] = useShareableInput('myVariableName')
 
   const results = useMemo(() => {
     if (!input.trim()) return null
@@ -40,32 +58,28 @@ export function NamingConventionConverter() {
     }))
   }, [input])
 
-  const copy = async (text: string, key: string) => {
-    await navigator.clipboard.writeText(text)
-    setCopied(key)
-    window.setTimeout(() => setCopied(null), 2000)
-  }
-
   return (
     <div className="grid gap-5">
       <ToolPanel label="Variable or identifier">
-        <ToolTextarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="my_variable_name" className="min-h-20" />
+        <ToolTextarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="my_variable_name"
+          className="min-h-20"
+        />
       </ToolPanel>
+
       {results && (
         <div className="grid gap-3">
           {results.map(({ key, value }) => (
-            <div key={key} className="flex items-start justify-between gap-3 rounded-xl border border-border/70 bg-muted/20 p-4">
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{key}</div>
-                <div className="mt-1 break-all font-mono text-sm">{value}</div>
-              </div>
-              <Button type="button" variant="ghost" size="sm" onClick={() => copy(value, key)}>
-                {copied === key ? <Check className="size-4" /> : <Copy className="size-4" />}
-              </Button>
-            </div>
+            <NamingResultRow key={key} name={key} value={value} />
           ))}
         </div>
       )}
+
+      <ToolActions>
+        <ToolClearButton onClear={() => setInput('')} />
+      </ToolActions>
     </div>
   )
 }

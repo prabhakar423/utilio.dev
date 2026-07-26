@@ -1,91 +1,88 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, RefreshCw } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolError,
+  ToolExample,
+  ToolPanel,
+  ToolShortcutHint,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
 import { useShareableInput } from '@/hooks/use-shareable-input'
 import { useToolShortcut } from '@/hooks/use-tool-shortcut'
+
+const EXAMPLE_INPUT = 'Hello World'
+const EXAMPLE_OUTPUT = 'SGVsbG8gV29ybGQ='
 
 export function Base64Encoder() {
   const [input, setInput] = useShareableInput('')
   const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [error, setError] = useState('')
 
   const handleEncode = () => {
-    setCopied(false)
-    try {
-      const encoded = btoa(unescape(encodeURIComponent(input)))
-      setOutput(encoded)
-    } catch (err) {
-      setOutput('Error encoding')
+    setError('')
+    if (!input) {
+      setOutput('')
+      return
     }
-  }
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const handleClear = () => {
-    setInput('')
-    setOutput('')
+    try {
+      setOutput(btoa(unescape(encodeURIComponent(input))))
+    } catch {
+      setError('Failed to encode input. Check for invalid characters.')
+      setOutput('')
+    }
   }
 
   useToolShortcut(handleEncode, 'Enter')
 
+  const clear = () => {
+    setInput('')
+    setOutput('')
+    setError('')
+  }
+
+  const loadExample = () => {
+    setInput(EXAMPLE_INPUT)
+    setOutput('')
+    setError('')
+  }
+
   return (
-    <div className="grid gap-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Plain Text</label>
-          <textarea
+    <div className="grid gap-5">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ToolPanel label="Plain text">
+          <ToolTextarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder='Enter text to encode...'
-            className="w-full h-64 p-3 font-mono text-sm border border-border rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            placeholder="Enter text to encode…"
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Base64 Output</label>
-          <textarea
-            value={output}
-            readOnly
-            placeholder='Base64 encoded text will appear here...'
-            className="w-full h-64 p-3 font-mono text-sm border border-border rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground focus:outline-none resize-none"
-          />
-        </div>
+        </ToolPanel>
+        <ToolPanel label="Base64 output">
+          <ToolTextarea value={output} readOnly placeholder="Encoded output appears here…" />
+        </ToolPanel>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={handleEncode}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
-        >
+      {error && <ToolError message={error} />}
+
+      <ToolActions>
+        <Button type="button" onClick={handleEncode}>
           Encode
-        </button>
-        <button
-          onClick={handleCopy}
-          disabled={!output}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <Copy className="w-4 h-4" />
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-        <button
-          onClick={handleClear}
-          className="px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 transition-colors font-medium text-sm inline-flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Clear
-        </button>
-        <span className="self-center text-xs text-muted-foreground">Ctrl+Enter to encode</span>
-      </div>
+        </Button>
+        <ToolCopyButton text={output} disabled={!output} />
+        <ToolClearButton onClear={clear} />
+        <Button type="button" variant="outline" onClick={loadExample}>
+          Load example
+        </Button>
+        <ToolShortcutHint action="encode" />
+      </ToolActions>
 
-      <div className="p-4 rounded-lg bg-card border border-border">
-        <h3 className="font-semibold text-sm mb-2">Example:</h3>
-        <p className="text-xs text-muted-foreground mb-2">Input: Hello World</p>
-        <p className="text-xs text-muted-foreground">Output: SGVsbG8gV29ybGQ=</p>
-      </div>
+      <ToolExample>
+        <p>Input: {EXAMPLE_INPUT}</p>
+        <p>Output: {EXAMPLE_OUTPUT}</p>
+      </ToolExample>
     </div>
   )
 }

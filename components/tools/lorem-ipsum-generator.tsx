@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ToolPanel, ToolTextarea } from '@/components/tools/tool-ui'
+import { ToolClearButton, ToolCopyButton } from '@/components/tools/tool-action-buttons'
+import {
+  ToolActions,
+  ToolExample,
+  ToolInput,
+  ToolPanel,
+  ToolTextarea,
+} from '@/components/tools/tool-ui'
 
 const WORDS = [
   'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
@@ -16,26 +22,31 @@ const WORDS = [
   'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum',
 ]
 
+function secureIndex(max: number) {
+  const array = new Uint32Array(1)
+  crypto.getRandomValues(array)
+  return array[0] % max
+}
+
 function randomWord() {
-  return WORDS[Math.floor(Math.random() * WORDS.length)]
+  return WORDS[secureIndex(WORDS.length)]
 }
 
 function generateSentence() {
-  const length = 6 + Math.floor(Math.random() * 10)
+  const length = 6 + secureIndex(10)
   const words = Array.from({ length }, randomWord)
   words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1)
   return `${words.join(' ')}.`
 }
 
 function generateParagraph() {
-  return Array.from({ length: 4 + Math.floor(Math.random() * 3) }, generateSentence).join(' ')
+  return Array.from({ length: 4 + secureIndex(3) }, generateSentence).join(' ')
 }
 
 export function LoremIpsumGenerator() {
   const [count, setCount] = useState(3)
   const [type, setType] = useState<'paragraphs' | 'sentences' | 'words'>('paragraphs')
   const [output, setOutput] = useState('')
-  const [copied, setCopied] = useState(false)
 
   const generate = () => {
     if (type === 'paragraphs') {
@@ -47,16 +58,15 @@ export function LoremIpsumGenerator() {
     }
   }
 
-  const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2000)
-  }
+  useEffect(() => {
+    generate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="grid gap-5">
-      <div className="flex flex-wrap gap-4">
-        <div className="flex gap-2">
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex flex-wrap gap-2">
           {(['paragraphs', 'sentences', 'words'] as const).map((t) => (
             <Button
               key={t}
@@ -69,34 +79,34 @@ export function LoremIpsumGenerator() {
             </Button>
           ))}
         </div>
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium">Count:</label>
-          <input
+        <ToolPanel label="Count" className="w-28">
+          <ToolInput
             type="number"
             min={1}
             max={50}
             value={count}
             onChange={(e) => setCount(Math.min(50, Math.max(1, Number(e.target.value))))}
-            className="w-20 rounded-lg border border-border/80 px-3 py-1.5 text-sm"
           />
-        </div>
+        </ToolPanel>
       </div>
 
-      <Button type="button" onClick={generate}>
-        Generate Lorem Ipsum
-      </Button>
-
       {output && (
-        <>
-          <ToolPanel label="Generated text">
-            <ToolTextarea value={output} readOnly className="min-h-48" mono={false} />
-          </ToolPanel>
-          <Button type="button" variant="secondary" onClick={copy}>
-            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-            {copied ? 'Copied' : 'Copy text'}
-          </Button>
-        </>
+        <ToolPanel label="Generated text">
+          <ToolTextarea value={output} readOnly className="min-h-48" mono={false} />
+        </ToolPanel>
       )}
+
+      <ToolActions>
+        <Button type="button" onClick={generate}>
+          Generate
+        </Button>
+        <ToolCopyButton text={output} label="Copy text" disabled={!output} />
+        <ToolClearButton onClear={() => setOutput('')} />
+      </ToolActions>
+
+      <ToolExample>
+        <p>Standard placeholder text for mockups, wireframes, and design reviews.</p>
+      </ToolExample>
     </div>
   )
 }
