@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { categories } from '@/lib/categories'
+import { getComparisonSlugs } from '@/lib/comparisons'
 import { getGuideSlugs } from '@/lib/guides'
 import { siteConfig } from '@/lib/site'
 import { toolSearchIndex } from '@/lib/tool-search-index'
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/search`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/guides`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/compare`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
@@ -22,6 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
+  }))
+
+  const comparisonPages: MetadataRoute.Sitemap = getComparisonSlugs().map((slug) => ({
+    url: `${base}/compare/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.72,
   }))
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
@@ -38,5 +47,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }))
 
-  return [...staticPages, ...guidePages, ...categoryPages, ...toolPages]
+  return [...staticPages, ...guidePages, ...comparisonPages, ...categoryPages, ...toolPages]
 }

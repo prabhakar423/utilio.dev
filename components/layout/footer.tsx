@@ -39,6 +39,11 @@ export function Footer() {
                   Guides ({guideCount})
                 </Link>
               </li>
+              <li>
+                <Link href="/compare" className="text-muted-foreground transition-colors hover:text-foreground">
+                  Compare
+                </Link>
+              </li>
             </ul>
           </div>
 

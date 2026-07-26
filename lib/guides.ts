@@ -969,6 +969,302 @@ export const guides: Record<string, Guide> = {
       { type: 'tool-cta', toolId: 'uuid-validator', label: 'Validate a UUID' },
     ],
   },
+  'json-formatter-pretty-print-online-free': {
+    slug: 'json-formatter-pretty-print-online-free',
+    title: 'JSON Formatter & Pretty Print Online (Free, Private)',
+    description:
+      'Pretty-print, minify, and validate JSON online for free. Runs in your browser — no upload, no sign-up.',
+    publishedAt: '2026-04-04',
+    keywords: [
+      'json formatter pretty print online free',
+      'pretty print json online',
+      'format json online private',
+      'json beautifier free',
+    ],
+    relatedTools: ['json-formatter', 'json-to-yaml', 'csv-to-json'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Raw JSON from APIs is often minified — one long line that is hard to read and debug. Pretty-printing adds indentation so you can inspect nested objects, spot missing commas, and compare payloads before deployment.',
+      },
+      { type: 'heading', text: 'When to pretty-print JSON' },
+      {
+        type: 'list',
+        items: [
+          'Debugging REST or GraphQL API responses',
+          'Reviewing config files before commit',
+          'Validating JSON syntax before sending to production',
+          'Sharing formatted output with teammates via shareable link',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'json-formatter', label: 'Format JSON now' },
+    ],
+  },
+  'password-generator-strong-online-free': {
+    slug: 'password-generator-strong-online-free',
+    title: 'Strong Password Generator Online (Free, Private)',
+    description:
+      'Generate secure random passwords locally in your browser. Free, instant, and never uploaded to a server.',
+    publishedAt: '2026-04-04',
+    keywords: [
+      'password generator strong online free',
+      'secure password generator',
+      'random password generator private',
+      'strong password maker',
+    ],
+    relatedTools: ['password-generator', 'password-strength-checker', 'uuid-generator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Strong passwords use length and character diversity to resist brute-force and dictionary attacks. A good generator produces cryptographically random strings — not predictable patterns.',
+      },
+      { type: 'heading', text: 'What makes a strong password' },
+      {
+        type: 'list',
+        items: [
+          'At least 16 characters for important accounts',
+          'Mix of uppercase, lowercase, numbers, and symbols',
+          'Unique per site — never reuse passwords',
+          'Generated randomly, not based on personal info',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'password-generator', label: 'Generate a password' },
+    ],
+  },
+  'regex-tester-online-javascript-free': {
+    slug: 'regex-tester-online-javascript-free',
+    title: 'Regex Tester Online (JavaScript, Free)',
+    description:
+      'Test regular expressions online with live match highlighting. Free JavaScript regex tester — runs locally, no upload.',
+    publishedAt: '2026-04-05',
+    keywords: [
+      'regex tester online javascript free',
+      'test regular expression online',
+      'javascript regex tester',
+      'regex matcher online',
+    ],
+    relatedTools: ['regex-tester', 'find-and-replace', 'text-diff'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Regular expressions match patterns in text — emails, URLs, log lines, and validation rules. Testing interactively saves time compared to editing code and re-running scripts.',
+      },
+      { type: 'heading', text: 'Common regex use cases' },
+      {
+        type: 'list',
+        items: [
+          'Validate email or phone number formats',
+          'Extract data from log files',
+          'Find-and-replace with pattern matching',
+          'Debug form validation rules before deployment',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'regex-tester', label: 'Test a regex pattern' },
+    ],
+  },
+  'hash-generator-sha256-online-free': {
+    slug: 'hash-generator-sha256-online-free',
+    title: 'SHA-256 Hash Generator Online (Free, Private)',
+    description:
+      'Generate SHA-256, SHA-384, and SHA-512 hashes from any text. Browser-based — your input never leaves your device.',
+    publishedAt: '2026-04-05',
+    keywords: [
+      'sha256 hash generator online free',
+      'hash generator online',
+      'sha256 calculator private',
+      'generate hash browser',
+    ],
+    relatedTools: ['hash-generator', 'hmac-generator', 'base64-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Cryptographic hashes produce a fixed-length fingerprint of input data. SHA-256 is widely used for checksums, integrity verification, and blockchain — but remember hashing is one-way, not encryption.',
+      },
+      { type: 'heading', text: 'When to use SHA-256' },
+      {
+        type: 'list',
+        items: [
+          'Verify file integrity with checksums',
+          'Compare whether two strings produce the same hash',
+          'Debug API signature workflows (with HMAC for secrets)',
+          'Generate deterministic IDs from content',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'hash-generator', label: 'Generate a hash' },
+    ],
+  },
+  'jwt-decoder-online-free': {
+    slug: 'jwt-decoder-online-free',
+    title: 'JWT Decoder Online (Free, Private)',
+    description:
+      'Decode JSON Web Tokens online without uploading them to a server. Inspect header and payload locally in your browser.',
+    publishedAt: '2026-04-06',
+    keywords: [
+      'jwt decoder online free',
+      'decode jwt token',
+      'jwt parser online',
+      'inspect jwt private',
+    ],
+    relatedTools: ['jwt-decoder', 'jwt-generator', 'base64-decoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'JWTs are Base64URL-encoded JSON with three parts: header, payload, and signature. Decoding lets you inspect claims like exp, sub, and roles — essential for debugging auth flows.',
+      },
+      { type: 'heading', text: 'Important security note' },
+      {
+        type: 'paragraph',
+        text: 'Decoding does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utilio decodes entirely in your browser.',
+      },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode a JWT' },
+    ],
+  },
+  'unix-timestamp-converter-online': {
+    slug: 'unix-timestamp-converter-online',
+    title: 'Unix Timestamp Converter Online (Free)',
+    description:
+      'Convert Unix timestamps to human-readable dates and back. Free online converter — runs locally in your browser.',
+    publishedAt: '2026-04-06',
+    keywords: [
+      'unix timestamp converter online',
+      'epoch converter online free',
+      'timestamp to date online',
+      'convert unix time',
+    ],
+    relatedTools: ['unix-timestamp-converter', 'timezone-converter', 'date-difference-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Unix timestamps count seconds (or milliseconds) since January 1, 1970 UTC. APIs, databases, and logs often use them — converting to local time makes debugging much easier.',
+      },
+      { type: 'heading', text: 'Seconds vs milliseconds' },
+      {
+        type: 'list',
+        items: [
+          '10-digit values are usually seconds (e.g. 1710000000)',
+          '13-digit values are usually milliseconds',
+          'JavaScript Date.now() returns milliseconds',
+          'Python time.time() returns seconds as a float',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'unix-timestamp-converter', label: 'Convert a timestamp' },
+    ],
+  },
+  'markdown-to-html-converter-online-free': {
+    slug: 'markdown-to-html-converter-online-free',
+    title: 'Markdown to HTML Converter Online (Free)',
+    description:
+      'Convert Markdown to HTML instantly in your browser. Free, private, and no upload required.',
+    publishedAt: '2026-04-07',
+    keywords: [
+      'markdown to html converter online free',
+      'convert markdown html',
+      'markdown html generator',
+      'md to html online',
+    ],
+    relatedTools: ['markdown-to-html', 'markdown-preview', 'html-beautifier'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Markdown is the standard format for README files, documentation sites, and blog posts. Converting to HTML lets you preview output, embed in CMS systems, or paste into email templates.',
+      },
+      { type: 'heading', text: 'Supported Markdown features' },
+      {
+        type: 'list',
+        items: ['Headings, bold, italic, and links', 'Code blocks and inline code', 'Ordered and unordered lists', 'Blockquotes and horizontal rules'],
+      },
+      { type: 'tool-cta', toolId: 'markdown-to-html', label: 'Convert Markdown to HTML' },
+    ],
+  },
+  'csv-to-json-converter-online-free': {
+    slug: 'csv-to-json-converter-online-free',
+    title: 'CSV to JSON Converter Online (Free, Private)',
+    description:
+      'Convert CSV spreadsheets to JSON arrays online. Free browser-based converter — your data stays on your device.',
+    publishedAt: '2026-04-07',
+    keywords: [
+      'csv to json converter online free',
+      'convert csv json online',
+      'csv json converter private',
+      'spreadsheet to json',
+    ],
+    relatedTools: ['csv-to-json', 'json-to-csv', 'json-formatter'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'CSV is universal for spreadsheets and exports; JSON is standard for APIs and JavaScript apps. Converting between them is a daily task for data engineers and frontend developers.',
+      },
+      { type: 'heading', text: 'Tips for clean conversion' },
+      {
+        type: 'list',
+        items: [
+          'Ensure the first row contains column headers',
+          'Watch for commas inside quoted fields',
+          'Large files may be slow — Utilio processes locally without upload',
+          'Use JSON to CSV for the reverse transformation',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Convert CSV to JSON' },
+    ],
+  },
+  'url-encode-decode-online-free': {
+    slug: 'url-encode-decode-online-free',
+    title: 'URL Encode and Decode Online (Free, Private)',
+    description:
+      'Encode and decode URL strings and query parameters online. Free, browser-based — nothing uploaded to a server.',
+    publishedAt: '2026-04-08',
+    keywords: [
+      'url encode decode online free',
+      'url encoder online',
+      'decode url online',
+      'percent encoding online',
+    ],
+    relatedTools: ['url-encoder', 'url-decoder', 'url-parser'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'URL encoding (percent-encoding) converts special characters like spaces and ampersands into safe ASCII for query strings and path segments. Essential when building API requests or debugging broken links.',
+      },
+      { type: 'heading', text: 'Common encoded characters' },
+      {
+        type: 'list',
+        items: ['Space → %20', 'Ampersand & → %26', 'Equals = → %3D', 'Plus + → %2B'],
+      },
+      { type: 'tool-cta', toolId: 'url-encoder', label: 'Encode a URL' },
+      { type: 'tool-cta', toolId: 'url-decoder', label: 'Decode a URL' },
+    ],
+  },
+  'text-diff-compare-online-free': {
+    slug: 'text-diff-compare-online-free',
+    title: 'Text Diff Compare Online (Free, Private)',
+    description:
+      'Compare two texts side-by-side and highlight differences. Free online diff tool — runs locally, no upload.',
+    publishedAt: '2026-04-08',
+    keywords: [
+      'text diff compare online free',
+      'compare text online',
+      'text difference checker',
+      'diff tool online private',
+    ],
+    relatedTools: ['text-diff', 'find-and-replace', 'levenshtein-calculator'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'Text diff tools highlight insertions, deletions, and changes between two versions of code, config, or prose. Faster than reading both files line by line.',
+      },
+      { type: 'heading', text: 'When to use a diff tool' },
+      {
+        type: 'list',
+        items: [
+          'Compare config file versions before deploy',
+          'Review copy changes in documentation',
+          'Debug unexpected API response differences',
+          'Check plagiarism or duplicate content',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'text-diff', label: 'Compare two texts' },
+    ],
+  },
 }
 
 export function getAllGuides(): Guide[] {
@@ -981,4 +1277,11 @@ export function getGuideSlugs(): string[] {
 
 export function getGuideBySlug(slug: string): Guide | undefined {
   return guides[slug]
+}
+
+export function getGuidesForTool(toolId: string, limit = 3): Guide[] {
+  return getAllGuides()
+    .filter((guide) => guide.relatedTools.includes(toolId))
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, limit)
 }

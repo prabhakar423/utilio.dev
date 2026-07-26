@@ -5,6 +5,7 @@ import { FavoriteButton } from '@/components/layout/favorite-button'
 import { LocalProcessingBadge } from '@/components/layout/local-processing-badge'
 import { PrivacyBadge } from '@/components/layout/privacy-badge'
 import { RecentToolsTracker } from '@/components/layout/recent-tools-tracker'
+import { RelatedGuides } from '@/components/layout/related-guides'
 import { RelatedTools } from '@/components/layout/related-tools'
 import { ShareUrlProvider } from '@/components/layout/share-url-provider'
 import { ToolShareButton } from '@/components/layout/tool-share-button'
@@ -15,6 +16,7 @@ import {
   faqJsonLd,
   toolJsonLd,
 } from '@/lib/seo'
+import { getGuidesForTool } from '@/lib/guides'
 import {
   getCategoryById,
   getCategoryName,
@@ -31,6 +33,7 @@ interface ToolLayoutProps {
 export function ToolLayout({ tool, children }: ToolLayoutProps) {
   const category = getCategoryById(tool.category)
   const related = getRelatedTools(tool)
+  const relatedGuides = getGuidesForTool(tool.id)
   const faq = tool.faq ?? []
   const Icon = getLucideIcon(tool.icon)
   const toolUrl = `${siteConfig.url}/tools/${tool.id}`
@@ -105,6 +108,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
       </div>
 
       <RelatedTools tools={related} />
+      <RelatedGuides guides={relatedGuides} />
       {faq.length > 0 && <FaqSection items={faq} />}
       <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
         <AdSlot placement="content-bottom" />
