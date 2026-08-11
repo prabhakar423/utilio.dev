@@ -7,7 +7,7 @@ export const MARKDOWN_EXAMPLE = `# Hello World
 - First item
 - Second item
 
-[Utillio](https://utillio.com)`
+[Utiliio](https://utiliio.com)`
 
 export const HTML_EXAMPLE = `<h1>Hello World</h1>
 <p>Paragraph with <strong>bold</strong> and <em>italic</em>.</p>

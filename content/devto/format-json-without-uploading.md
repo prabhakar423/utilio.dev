@@ -2,7 +2,7 @@
 title: How to Format JSON Online (Without Uploading Your Data)
 published: false
 tags: json, webdev, privacy, javascript
-canonical_url: https://utillio.com/guides/how-to-format-json
+canonical_url: https://utiliio.com/guides/how-to-format-json
 ---
 
 Raw JSON from APIs is often minified — one long line that's painful to read. You need to pretty-print it, validate syntax, or minify before sending to production. The catch: most online formatters upload your payload to their servers.
@@ -14,9 +14,9 @@ API responses frequently contain emails, tokens, internal IDs, or PII. Pasting t
 ## Steps to format JSON
 
 1. Copy your JSON string (from DevTools, Postman, or a log file)
-2. Paste into a [JSON formatter that runs locally](https://utillio.com/tools/json-formatter)
+2. Paste into a [JSON formatter that runs locally](https://utiliio.com/tools/json-formatter)
 3. Choose **Format** for readable indentation, **Validate** to check syntax, or **Minify** for production
-4. Copy the result or share a link — Utillio encodes input in the URL so teammates can open the same payload
+4. Copy the result or share a link — Utiliio encodes input in the URL so teammates can open the same payload
 
 ## Common errors
 
@@ -34,8 +34,8 @@ API responses frequently contain emails, tokens, internal IDs, or PII. Pasting t
 
 ## Try it free
 
-[Utillio JSON Formatter](https://utillio.com/tools/json-formatter) — no sign-up, no upload, shareable links.
+[Utiliio JSON Formatter](https://utiliio.com/tools/json-formatter) — no sign-up, no upload, shareable links.
 
 ---
 
-*Originally published on [Utillio Guides](https://utillio.com/guides/how-to-format-json).*
+*Originally published on [Utiliio Guides](https://utiliio.com/guides/how-to-format-json).*

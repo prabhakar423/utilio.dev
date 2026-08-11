@@ -2,7 +2,7 @@ export type HashAlgorithm = 'SHA-256' | 'SHA-384' | 'SHA-512'
 export type CryptoHashTab = 'hash' | 'hmac'
 
 export const HASH_EXAMPLE = {
-  input: 'Hello, Utillio!',
+  input: 'Hello, Utiliio!',
   key: 'webhook-secret',
   message: 'payload={"event":"order.created"}',
 } as const

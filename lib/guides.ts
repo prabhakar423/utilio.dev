@@ -66,7 +66,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Standard vs URL-safe Base64' },
       {
         type: 'paragraph',
-        text: 'Standard Base64 uses + and / which break in URLs. URL-safe Base64 replaces them with - and _ and often omits padding — the format JWTs use. Utillio\'s Base64 workbench supports both modes with live encode/decode on one page.',
+        text: 'Standard Base64 uses + and / which break in URLs. URL-safe Base64 replaces them with - and _ and often omits padding — the format JWTs use. Utiliio\'s Base64 workbench supports both modes with live encode/decode on one page.',
       },
       { type: 'heading', text: 'Example' },
       {
@@ -106,7 +106,7 @@ export const guides: Record<string, Guide> = {
           'Comparing two JSON payloads side by side',
         ],
       },
-      { type: 'heading', text: 'How to format JSON in Utillio' },
+      { type: 'heading', text: 'How to format JSON in Utiliio' },
       {
         type: 'list',
         items: [
@@ -144,9 +144,9 @@ export const guides: Record<string, Guide> = {
       },
       {
         type: 'paragraph',
-        text: 'The Utillio JSON Formatter shows the exact parse error with line and column context, making it easy to locate and fix syntax issues quickly.',
+        text: 'The Utiliio JSON Formatter shows the exact parse error with line and column context, making it easy to locate and fix syntax issues quickly.',
       },
-      { type: 'compare-cta', slug: 'utillio-vs-json-formatter', label: 'Compare Utillio vs JSONFormatter.org' },
+      { type: 'compare-cta', slug: 'utiliio-vs-json-formatter', label: 'Compare Utiliio vs JSONFormatter.org' },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode JWT tokens' },
     ],
   },
@@ -154,7 +154,7 @@ export const guides: Record<string, Guide> = {
     slug: 'what-is-jwt',
     title: 'What Is a JWT (JSON Web Token)?',
     description:
-      'Understand JSON Web Tokens — structure, decode, verify, and sign — with Utillio\'s free browser-based JWT workbench.',
+      'Understand JSON Web Tokens — structure, decode, verify, and sign — with Utiliio\'s free browser-based JWT workbench.',
     publishedAt: '2026-02-15',
     updatedAt: '2026-07-26',
     keywords: ['jwt', 'json web token', 'what is jwt', 'jwt authentication', 'jwt verify', 'jwt sign'],
@@ -199,7 +199,7 @@ export const guides: Record<string, Guide> = {
           'Set short expiration times and use refresh tokens for long sessions',
         ],
       },
-      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+      { type: 'compare-cta', slug: 'utiliio-vs-jwt-io', label: 'Compare Utiliio vs jwt.io' },
       { type: 'tool-cta', toolId: 'jwt-generator', label: 'Sign a JWT' },
     ],
   },
@@ -252,7 +252,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Seconds vs milliseconds' },
       {
         type: 'paragraph',
-        text: 'Most systems use seconds (10 digits, e.g. 1700000000). JavaScript and some APIs use milliseconds (13 digits). Utillio auto-detects the format and shows which was used.',
+        text: 'Most systems use seconds (10 digits, e.g. 1700000000). JavaScript and some APIs use milliseconds (13 digits). Utiliio auto-detects the format and shows which was used.',
       },
       { type: 'heading', text: 'Timestamp workbench features' },
       {
@@ -400,7 +400,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Common cron patterns' },
       { type: 'list', items: ['0 * * * * — every hour at minute 0', '0 9 * * 1-5 — 9 AM weekdays', '*/15 * * * * — every 15 minutes', '0 0 1 * * — first day of every month at midnight', '0 0 * * 0 — every Sunday at midnight'] },
       { type: 'heading', text: 'Validate with next-run preview' },
-      { type: 'paragraph', text: 'The Utillio Cron workbench parses any expression and shows the next 5 scheduled runs with a field-by-field breakdown. Paste an existing cron from crontab or build one visually with presets — both tabs share the same page.' },
+      { type: 'paragraph', text: 'The Utiliio Cron workbench parses any expression and shows the next 5 scheduled runs with a field-by-field breakdown. Paste an existing cron from crontab or build one visually with presets — both tabs share the same page.' },
       { type: 'tool-cta', toolId: 'cron-parser', label: 'Open Cron workbench' },
       { type: 'heading', text: 'Special characters' },
       { type: 'list', items: ['* — any value', '*/n — every n units', 'n-m — range from n to m', 'n,m — list of values n and m'] },
@@ -527,7 +527,7 @@ export const guides: Record<string, Guide> = {
   'hmac-vs-hash-guide': {
     slug: 'hmac-vs-hash-guide',
     title: 'HMAC vs Hash: What Is the Difference?',
-    description: 'Understand when to use a plain hash versus HMAC — and how Utillio\'s Hash/HMAC workbench covers both.',
+    description: 'Understand when to use a plain hash versus HMAC — and how Utiliio\'s Hash/HMAC workbench covers both.',
     publishedAt: '2026-03-10',
     updatedAt: '2026-07-26',
     keywords: ['hmac vs hash', 'hmac explained', 'message authentication', 'sha256 hmac', 'hash workbench'],
@@ -539,9 +539,9 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'When to use HMAC' },
       { type: 'list', items: ['API request signing (Stripe, AWS, webhooks)', 'Verifying JWT HS256 signatures in the JWT workbench', 'Cookie signing in web frameworks', 'Any workflow needing a shared secret'] },
       { type: 'heading', text: 'One workbench, two tabs' },
-      { type: 'paragraph', text: 'Utillio combines Hash and HMAC on one page with SHA-256, SHA-384, and SHA-512. Switch tabs without losing input — shareable links preserve algorithm and active tab.' },
+      { type: 'paragraph', text: 'Utiliio combines Hash and HMAC on one page with SHA-256, SHA-384, and SHA-512. Switch tabs without losing input — shareable links preserve algorithm and active tab.' },
       { type: 'tool-cta', toolId: 'hash-generator', label: 'Open Hash/HMAC workbench' },
-      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
+      { type: 'compare-cta', slug: 'utiliio-vs-hash-tools', label: 'Compare Utiliio vs online hash tools' },
     ],
   },
   'reading-time-seo-guide': {
@@ -563,7 +563,7 @@ export const guides: Record<string, Guide> = {
   'ip-address-basics-guide': {
     slug: 'ip-address-basics-guide',
     title: 'IPv4 Address Formats Explained',
-    description: 'Learn dotted decimal, integer, and hex representations — with live conversion in Utillio\'s IP workbench.',
+    description: 'Learn dotted decimal, integer, and hex representations — with live conversion in Utiliio\'s IP workbench.',
     publishedAt: '2026-03-12',
     updatedAt: '2026-07-26',
     keywords: ['ipv4 explained', 'ip address format', 'ip to decimal', 'ip to hex', 'network basics'],
@@ -591,7 +591,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'What minifiers remove' },
       { type: 'list', items: ['Single-line comments (//)', 'Multi-line comments (/* */)', 'Extra whitespace and line breaks', 'In advanced tools: shorten variable names (mangling)'] },
       { type: 'heading', text: 'Web Formatter workbench' },
-      { type: 'paragraph', text: 'Utillio combines HTML beautify, CSS minify, JS minify, and XML format on one page. Each tab shows byte savings for minifiers and preserves separate inputs when switching tabs.' },
+      { type: 'paragraph', text: 'Utiliio combines HTML beautify, CSS minify, JS minify, and XML format on one page. Each tab shows byte savings for minifiers and preserves separate inputs when switching tabs.' },
       { type: 'tool-cta', toolId: 'javascript-minifier', label: 'Open Web Formatter' },
       { type: 'heading', text: 'Production best practices' },
       { type: 'list', items: ['Always test minified code before deployment', 'Use source maps for debugging production issues', 'Combine with gzip/brotli compression on the server', 'For large apps, use build tools like esbuild or Terser'] },
@@ -797,7 +797,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Why use a browser converter?' },
       {
         type: 'paragraph',
-        text: 'Server-side converters upload your config to a remote machine. For production secrets, internal hostnames, or API keys embedded in YAML, that is a security risk. Utillio converts YAML to JSON entirely in your browser — nothing is sent over the network.',
+        text: 'Server-side converters upload your config to a remote machine. For production secrets, internal hostnames, or API keys embedded in YAML, that is a security risk. Utiliio converts YAML to JSON entirely in your browser — nothing is sent over the network.',
       },
       { type: 'tool-cta', toolId: 'yaml-to-json', label: 'Convert YAML to JSON now' },
     ],
@@ -902,7 +902,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'One workbench, two directions' },
       {
         type: 'paragraph',
-        text: 'Utillio combines encode and decode on a single page with live output. Switch between standard Base64 (+/ padding) and URL-safe Base64 (-_ no padding) — the mode JWTs use. Round-trip your input to confirm encoding is correct.',
+        text: 'Utiliio combines encode and decode on a single page with live output. Switch between standard Base64 (+/ padding) and URL-safe Base64 (-_ no padding) — the mode JWTs use. Round-trip your input to confirm encoding is correct.',
       },
       { type: 'heading', text: 'Common use cases' },
       {
@@ -916,7 +916,7 @@ export const guides: Record<string, Guide> = {
       },
       {
         type: 'paragraph',
-        text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead — Utillio processes everything in your browser.',
+        text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead — Utiliio processes everything in your browser.',
       },
       { type: 'tool-cta', toolId: 'base64-encoder', label: 'Open Base64 workbench' },
     ],
@@ -1038,10 +1038,10 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Never upload your secret key' },
       {
         type: 'paragraph',
-        text: 'Server-side HMAC tools receive your API secret on their servers. Utillio computes HMAC entirely in your browser using the Web Crypto API.',
+        text: 'Server-side HMAC tools receive your API secret on their servers. Utiliio computes HMAC entirely in your browser using the Web Crypto API.',
       },
       { type: 'tool-cta', toolId: 'hmac-generator', label: 'Open Hash/HMAC workbench' },
-      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
+      { type: 'compare-cta', slug: 'utiliio-vs-hash-tools', label: 'Compare Utiliio vs online hash tools' },
     ],
   },
   'uuid-generator-v4-online-free': {
@@ -1106,7 +1106,7 @@ export const guides: Record<string, Guide> = {
           'Sharing formatted output with teammates via shareable link',
         ],
       },
-      { type: 'heading', text: 'What makes Utillio different' },
+      { type: 'heading', text: 'What makes Utiliio different' },
       {
         type: 'list',
         items: [
@@ -1118,7 +1118,7 @@ export const guides: Record<string, Guide> = {
         ],
       },
       { type: 'tool-cta', toolId: 'json-formatter', label: 'Format JSON now' },
-      { type: 'compare-cta', slug: 'utillio-vs-json-formatter', label: 'Compare Utillio vs JSONFormatter.org' },
+      { type: 'compare-cta', slug: 'utiliio-vs-json-formatter', label: 'Compare Utiliio vs JSONFormatter.org' },
     ],
   },
   'password-generator-strong-online-free': {
@@ -1224,7 +1224,7 @@ export const guides: Record<string, Guide> = {
         ],
       },
       { type: 'tool-cta', toolId: 'hash-generator', label: 'Open Hash/HMAC workbench' },
-      { type: 'compare-cta', slug: 'utillio-vs-hash-tools', label: 'Compare Utillio vs online hash tools' },
+      { type: 'compare-cta', slug: 'utiliio-vs-hash-tools', label: 'Compare Utiliio vs online hash tools' },
     ],
   },
   'jwt-decoder-online-free': {
@@ -1270,10 +1270,10 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'Important security note' },
       {
         type: 'paragraph',
-        text: 'Decoding alone does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utillio processes everything in your browser.',
+        text: 'Decoding alone does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utiliio processes everything in your browser.',
       },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Open JWT workbench' },
-      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+      { type: 'compare-cta', slug: 'utiliio-vs-jwt-io', label: 'Compare Utiliio vs jwt.io' },
     ],
   },
   'unix-timestamp-converter-online': {
@@ -1791,7 +1791,7 @@ export const guides: Record<string, Guide> = {
       },
       { type: 'tool-cta', toolId: 'jwt-generator', label: 'Sign a JWT' },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode and verify tokens' },
-      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+      { type: 'compare-cta', slug: 'utiliio-vs-jwt-io', label: 'Compare Utiliio vs jwt.io' },
     ],
   },
   'compound-interest-calculator-online-free': {
@@ -2002,7 +2002,7 @@ export const guides: Record<string, Guide> = {
   },
   'share-tool-links-guide': {
     slug: 'share-tool-links-guide',
-    title: 'How to Share Utillio Tool Links With Preserved Input',
+    title: 'How to Share Utiliio Tool Links With Preserved Input',
     description:
       'Share JSON, JWT, regex patterns, workbench state, and more via URL — input is encoded in the link and restored when opened. Nothing stored on our servers.',
     publishedAt: '2026-04-16',
@@ -2011,14 +2011,14 @@ export const guides: Record<string, Guide> = {
       'share json formatter link',
       'shareable tool url with input',
       'private online tools share state',
-      'utillio share link',
+      'utiliio share link',
       'share jwt decoder link',
     ],
     relatedTools: ['json-formatter', 'jwt-decoder', 'regex-tester', 'text-diff', 'base64-encoder'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'Many Utillio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
+        text: 'Many Utiliio tools encode your input in the URL query string so you can bookmark, Slack, or email a link that reopens with the same content. Processing still happens entirely in your browser — we never store shared input on a server.',
       },
       { type: 'heading', text: 'How sharing works' },
       {
@@ -2087,7 +2087,7 @@ export const guides: Record<string, Guide> = {
       { type: 'heading', text: 'HMAC verification (HS256, HS384, HS512)' },
       {
         type: 'paragraph',
-        text: 'Symmetric algorithms use a shared secret. Paste the JWT and enter the same secret your server uses. Utillio recomputes the signature locally and shows valid or invalid instantly.',
+        text: 'Symmetric algorithms use a shared secret. Paste the JWT and enter the same secret your server uses. Utiliio recomputes the signature locally and shows valid or invalid instantly.',
       },
       { type: 'heading', text: 'RSA verification (RS256, RS384, RS512)' },
       {
@@ -2104,7 +2104,7 @@ export const guides: Record<string, Guide> = {
         ],
       },
       { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Verify a JWT now' },
-      { type: 'compare-cta', slug: 'utillio-vs-jwt-io', label: 'Compare Utillio vs jwt.io' },
+      { type: 'compare-cta', slug: 'utiliio-vs-jwt-io', label: 'Compare Utiliio vs jwt.io' },
     ],
   },
   'url-parser-online-free': {
@@ -2235,7 +2235,7 @@ export const guides: Record<string, Guide> = {
     blocks: [
       {
         type: 'paragraph',
-        text: 'Frontend developers constantly switch between beautifying HTML for debugging and minifying CSS/JS for production. Utillio combines all four formatters on one page so you do not juggle separate tools.',
+        text: 'Frontend developers constantly switch between beautifying HTML for debugging and minifying CSS/JS for production. Utiliio combines all four formatters on one page so you do not juggle separate tools.',
       },
       { type: 'heading', text: 'Four tabs, one workbench' },
       {

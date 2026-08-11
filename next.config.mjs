@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const compareRedirects = [
+const compareSlugs = [
   'json-formatter',
   'base64-encode',
   'cron-tools',
@@ -9,11 +9,20 @@ const compareRedirects = [
   'hash-tools',
   'yaml-converters',
   'url-encoders',
-].map((slug) => ({
-  source: `/compare/utilio-vs-${slug}`,
-  destination: `/compare/utillio-vs-${slug}`,
-  permanent: true,
-}))
+]
+
+const compareRedirects = [
+  ...compareSlugs.map((slug) => ({
+    source: `/compare/utilio-vs-${slug}`,
+    destination: `/compare/utiliio-vs-${slug}`,
+    permanent: true,
+  })),
+  ...compareSlugs.map((slug) => ({
+    source: `/compare/utillio-vs-${slug}`,
+    destination: `/compare/utiliio-vs-${slug}`,
+    permanent: true,
+  })),
+]
 
 const nextConfig = {
   images: {

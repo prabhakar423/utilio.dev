@@ -1,4 +1,4 @@
-# Utillio — Product Hunt Launch Kit
+# Utiliio — Product Hunt Launch Kit
 
 Use this copy when submitting to Product Hunt. Update stats (tool count, etc.) if they've changed since launch prep.
 
@@ -6,7 +6,7 @@ Use this copy when submitting to Product Hunt. Update stats (tool count, etc.) i
 
 ## Product name
 
-**Utillio**
+**Utiliio**
 
 ## Tagline (60 chars max)
 
@@ -18,17 +18,17 @@ Alternative taglines:
 
 ## Website
 
-https://utillio.com
+https://utiliio.com
 
 ## Description (260 chars for PH short description)
 
-Utillio is a free collection of 100+ developer and everyday utilities — JSON formatter, JWT decoder, hash generator, regex tester, calculators, and more. Every tool runs locally in your browser. No uploads, no account, no tracking your input.
+Utiliio is a free collection of 100+ developer and everyday utilities — JSON formatter, JWT decoder, hash generator, regex tester, calculators, and more. Every tool runs locally in your browser. No uploads, no account, no tracking your input.
 
 ## Full description (for gallery / maker comment)
 
 **The problem:** Most "free online tools" send your JSON, JWTs, API keys, and documents to their servers. Developers need quick utilities without leaking sensitive data.
 
-**Utillio** is a privacy-first utility platform with 102+ tools across 9 categories:
+**Utiliio** is a privacy-first utility platform with 102+ tools across 9 categories:
 
 - **Developer:** JSON/YAML/XML formatters, JWT decode/generate, Base64, regex tester, text diff, hash generator
 - **Security:** Password generator, chmod calculator, CIDR calculator
@@ -36,11 +36,11 @@ Utillio is a free collection of 100+ developer and everyday utilities — JSON f
 - **Finance:** EMI, SIP, GST, VAT, compound interest calculators
 - **And more:** QR codes, timezone converter, cron builder, color converter
 
-**Why Utillio is different:**
+**Why Utiliio is different:**
 1. **Local processing** — Web Crypto, native APIs; your data stays on your device
 2. **Shareable tool links** — Encode input in the URL to bookmark or share with teammates (no server storage)
 3. **Fast** — Lighthouse 95, static generation, instant search across all tools
-4. **Guides & comparisons** — 70+ how-to guides and honest "Utillio vs X" pages for informed choices
+4. **Guides & comparisons** — 70+ how-to guides and honest "Utiliio vs X" pages for informed choices
 
 Built with Next.js, TypeScript, and Tailwind. Open to feedback — we're adding tools and guides every week.
 
@@ -52,14 +52,14 @@ Developer Tools, Productivity, Open Source, Privacy, SaaS
 
 Hey Product Hunt 👋
 
-I'm [Your Name], maker of **Utillio** (https://utillio.com).
+I'm [Your Name], maker of **Utiliio** (https://utiliio.com).
 
-I built Utillio because I was tired of pasting JWTs and API responses into random online formatters that clearly sent data to a backend. I wanted one place with all the small tools I reach for daily — without the privacy tradeoff.
+I built Utiliio because I was tired of pasting JWTs and API responses into random online formatters that clearly sent data to a backend. I wanted one place with all the small tools I reach for daily — without the privacy tradeoff.
 
 **What you can try in 30 seconds:**
-- [JSON Formatter](https://utillio.com/tools/json-formatter) — format, validate, minify; share the link with your team
-- [JWT Decoder](https://utillio.com/tools/jwt-decoder) — inspect header and payload locally
-- [Regex Tester](https://utillio.com/tools/regex-tester) — live match highlighting, no reload
+- [JSON Formatter](https://utiliio.com/tools/json-formatter) — format, validate, minify; share the link with your team
+- [JWT Decoder](https://utiliio.com/tools/jwt-decoder) — inspect header and payload locally
+- [Regex Tester](https://utiliio.com/tools/regex-tester) — live match highlighting, no reload
 
 Everything runs in your browser. We don't store what you paste.
 
@@ -72,11 +72,11 @@ Thanks for checking it out 🙏
 ## Social posts
 
 **Twitter/X:**
-> Launched Utillio on @ProductHunt — 102+ free dev tools that run in your browser. JSON, JWT, regex, hashes, calculators — no uploads, no account. Would love your support 🚀
-> https://utillio.com
+> Launched Utiliio on @ProductHunt — 102+ free dev tools that run in your browser. JSON, JWT, regex, hashes, calculators — no uploads, no account. Would love your support 🚀
+> https://utiliio.com
 
 **LinkedIn:**
-> Excited to share Utillio — a privacy-first utility platform for developers. 100+ tools (JSON, JWT, regex, diff, calculators) that process data locally in your browser. Live on Product Hunt today. Link in comments.
+> Excited to share Utiliio — a privacy-first utility platform for developers. 100+ tools (JSON, JWT, regex, diff, calculators) that process data locally in your browser. Live on Product Hunt today. Link in comments.
 
 ## Screenshots checklist
 
@@ -84,7 +84,7 @@ Thanks for checking it out 🙏
 2. JSON Formatter with formatted output
 3. JWT Decoder showing header/payload
 4. "Runs locally" privacy badge on a tool page
-5. Compare page (Utillio vs JWT.io) — optional differentiation slide
+5. Compare page (Utiliio vs JWT.io) — optional differentiation slide
 
 ## Launch day checklist
 
@@ -93,4 +93,4 @@ Thanks for checking it out 🙏
 - [ ] Reply to every PH comment within 2 hours
 - [ ] Post maker comment immediately after publish
 - [ ] Share in relevant Slack/Discord dev communities (no spam)
-- [ ] Monitor utillio.com traffic in analytics
+- [ ] Monitor utiliio.com traffic in analytics
