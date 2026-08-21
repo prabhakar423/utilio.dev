@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { Scale } from 'lucide-react'
+import { ClusterToolLinks } from '@/components/layout/cluster-tool-links'
 import { PrimaryToolBanner } from '@/components/layout/primary-tool-banner'
 import { AdSlot } from '@/components/layout/ad-slot'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
@@ -27,6 +28,7 @@ import { getGuidesForTool } from '@/lib/guides'
 import {
   getCategoryById,
   getCategoryName,
+  getClusterToolsForTool,
   getRelatedTools,
   type ToolDefinition,
 } from '@/lib/tools'
@@ -42,6 +44,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
   const related = getRelatedTools(tool)
   const relatedGuides = getGuidesForTool(tool.id)
   const relatedComparisons = getComparisonsForTool(tool.id)
+  const clusterTools = getClusterToolsForTool(tool.id)
   const faq = tool.faq ?? []
   const Icon = getLucideIcon(tool.icon)
   const toolUrl = `${siteConfig.url}/tools/${tool.id}`
@@ -133,6 +136,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
               {children}
             </div>
             <AdSlot placement="content-middle" className="mt-8" />
+            <ClusterToolLinks tools={clusterTools} />
           </div>
           <AdSlot placement="sidebar" />
         </div>

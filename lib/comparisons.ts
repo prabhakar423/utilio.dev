@@ -309,6 +309,72 @@ export const comparisons: Record<string, Comparison> = {
     verdict:
       'Debugging OAuth redirects or API URLs with encoded query params? Utiliio\'s URL workbench encodes, decodes, and parses in one place — nothing hits a server, and you can share the exact state via link.',
   },
+  'utiliio-vs-json-to-csv': {
+    slug: 'utiliio-vs-json-to-csv',
+    title: 'Utiliio vs Online JSON to CSV Converters — Private Export',
+    description: `Compare ${siteConfig.name} with typical JSON to CSV converters. Live row counts, round-trip CSV ↔ JSON, and no upload for sensitive exports.`,
+    competitor: 'Typical online JSON to CSV converter',
+    toolId: 'json-to-csv',
+    publishedAt: '2026-08-21',
+    keywords: [
+      'json to csv converter comparison',
+      'json to csv online free',
+      'private json csv converter',
+      'export json to csv no upload',
+      'utiliio vs json csv converter',
+    ],
+    intro:
+      'JSON to CSV converters turn API array responses into spreadsheet-ready files. Most upload your payload to a server. Utiliio converts locally with live row counts and a CSV → JSON tab for round-trip verification.',
+    utiliioPoints: [
+      'JSON → CSV and CSV → JSON tabs on one workbench',
+      'Live row count as you paste — catch empty arrays instantly',
+      'Headers derived automatically from object keys',
+      '100% client-side — customer or financial data never uploaded',
+      'Shareable links preserve input and active tab',
+      'Pair with JSON Formatter on the same site for inspect-then-export workflows',
+    ],
+    competitorPoints: [
+      'Simple paste-and-convert forms on many converter sites',
+      'Often server-side — sensitive exports may be logged',
+      'Separate tools needed for CSV back to JSON or JSON validation',
+      'May lack row counts or nested-object warnings',
+    ],
+    verdict:
+      'Exporting user records or transaction JSON to CSV? Utiliio converts in your browser — paste, verify row counts, copy to Excel, and round-trip to JSON without sending data to a third party.',
+  },
+  'utiliio-vs-html-encoders': {
+    slug: 'utiliio-vs-html-encoders',
+    title: 'Utiliio vs Online HTML Encoders — Escape Entities Privately',
+    description: `Compare ${siteConfig.name} with typical HTML encoder sites. Encode and decode entities in one browser workbench — no upload for templates or user content.`,
+    competitor: 'Typical online HTML encoder',
+    toolId: 'html-encoder',
+    publishedAt: '2026-08-21',
+    keywords: [
+      'html encoder comparison',
+      'html encode online free',
+      'escape html private',
+      'html entities encoder no upload',
+      'utiliio vs html encoder',
+    ],
+    intro:
+      'HTML encoders escape `<`, `>`, `&`, and quotes so dynamic content renders safely. Dedicated encoder sites often process input server-side. Utiliio encodes and decodes in one tabbed workbench entirely in JavaScript.',
+    utiliioPoints: [
+      'Encode and Decode tabs on one page with live output',
+      'Escapes `<`, `>`, `&`, `"`, and apostrophes instantly',
+      '100% client-side — safe for email templates and user-generated previews',
+      'Shareable links preserve input and active tab',
+      'Integrated with JSON Formatter, URL encoder, and 100+ dev tools',
+      'Works offline after the page loads',
+    ],
+    competitorPoints: [
+      'Single-purpose encode or decode pages on many sites',
+      'Server-side processing may log template or user content',
+      'Often no decode tab on the same page',
+      'Ad-heavy layouts on popular encoder sites',
+    ],
+    verdict:
+      'Escaping HTML before inserting user content into a template? Utiliio encodes locally — paste, copy entities, and switch to Decode to verify round-trip without sending proprietary copy to a server.',
+  },
 }
 
 export function getAllComparisons(): Comparison[] {

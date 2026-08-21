@@ -2155,6 +2155,7 @@ export const guides: Record<string, Guide> = {
       },
       { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON to CSV online free' },
       { type: 'tool-cta', toolId: 'csv-to-json', label: 'Convert CSV back to JSON' },
+      { type: 'compare-cta', slug: 'utiliio-vs-json-to-csv', label: 'Compare Utiliio vs online JSON to CSV converters' },
       { type: 'compare-cta', slug: 'browser-tools-vs-server-upload', label: 'Why browser-based converters matter' },
     ],
   },
@@ -2485,6 +2486,7 @@ export const guides: Record<string, Guide> = {
       },
       { type: 'tool-cta', toolId: 'html-encoder', label: 'Encode HTML online free' },
       { type: 'tool-cta', toolId: 'html-decoder', label: 'Decode HTML entities' },
+      { type: 'compare-cta', slug: 'utiliio-vs-html-encoders', label: 'Compare Utiliio vs online HTML encoders' },
     ],
   },
   'ascii-decoder-online-free': {

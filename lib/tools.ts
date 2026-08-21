@@ -101,6 +101,21 @@ export const tools: Record<string, ToolDefinition> = {
         question: 'Does this show where JSON syntax errors are?',
         answer: 'Yes. Invalid JSON shows the parse error with line and column numbers so you can fix issues quickly.',
       },
+      {
+        question: 'Is there a free online JSON formatter without upload?',
+        answer:
+          'Yes. Utiliio formats JSON entirely in your browser — paste API responses or config files without sending data to a server. Live output updates as you type.',
+      },
+      {
+        question: 'Does this JSON formatter show error line numbers?',
+        answer:
+          'Yes. Syntax errors display the parser message with line and column so you can jump straight to the broken character or missing comma.',
+      },
+      {
+        question: 'Can I pretty print minified JSON from an API response?',
+        answer:
+          'Paste one-line JSON into Format mode — readable indentation appears instantly. Switch to Minify to compress it again for production.',
+      },
       ...defaultFaq,
     ],
     component: () =>
@@ -486,7 +501,7 @@ export const tools: Record<string, ToolDefinition> = {
     seoIntro:
       'Escape angle brackets, ampersands, and quotes into HTML entities for safe rendering in pages and templates. Switch to the Decode tab on the same page to reverse entities back to plain text.',
     seoGuideSlug: 'html-encoder-online-free',
-    relatedComparisonSlugs: ['utiliio-vs-cyberchef', 'browser-tools-vs-server-upload'],
+    relatedComparisonSlugs: ['utiliio-vs-html-encoders', 'utiliio-vs-cyberchef', 'browser-tools-vs-server-upload'],
     category: 'encoding',
     icon: 'code',
     keywords: [
@@ -508,6 +523,21 @@ export const tools: Record<string, ToolDefinition> = {
       {
         question: 'Can I decode HTML entities here?',
         answer: 'Yes. Switch to the Decode tab in the same HTML workbench — encode and decode share one page with shareable links.',
+      },
+      {
+        question: 'How do I html encode online?',
+        answer:
+          'Paste plain text into the Encode tab — angle brackets, ampersands, and quotes convert to HTML entities with live output. No sign-up or server upload.',
+      },
+      {
+        question: 'How do I escape `<` and `>` for XSS prevention?',
+        answer:
+          'Encoding converts `<` to &lt; and `>` to &gt; so user content renders as text instead of executable HTML — essential when displaying untrusted input in templates.',
+      },
+      {
+        question: 'Which characters does HTML encoding escape?',
+        answer:
+          'By default: `<`, `>`, `&`, `"`, and apostrophes. These are the characters that break markup or enable injection when inserted into HTML attributes or body content.',
       },
       ...defaultFaq,
     ],
@@ -982,7 +1012,7 @@ export const tools: Record<string, ToolDefinition> = {
     seoIntro:
       'Paste a JSON array of objects and get spreadsheet-ready CSV with column headers derived from keys. See row counts as you type, copy output in one click, and switch to CSV → JSON for round-trip verification — all locally in your browser.',
     seoGuideSlug: 'json-to-csv-converter-online-free',
-    relatedComparisonSlugs: ['browser-tools-vs-server-upload'],
+    relatedComparisonSlugs: ['utiliio-vs-json-to-csv', 'browser-tools-vs-server-upload'],
     category: 'developer',
     icon: 'sheet',
     keywords: [
@@ -1008,6 +1038,21 @@ export const tools: Record<string, ToolDefinition> = {
       {
         question: 'Is it safe to convert sensitive JSON to CSV online?',
         answer: 'With Utiliio, conversion runs entirely in your browser. Your data never leaves your device.',
+      },
+      {
+        question: 'How do I convert a JSON array to CSV online?',
+        answer:
+          'Paste a JSON array of flat objects — each object becomes one row and keys become column headers. Output updates live with a row count badge.',
+      },
+      {
+        question: 'Does JSON to CSV handle nested objects?',
+        answer:
+          'Flat key-value objects work best. Deeply nested fields may need flattening first — use JSON Formatter to inspect structure before converting.',
+      },
+      {
+        question: 'Can I export JSON to CSV for Excel or Google Sheets?',
+        answer:
+          'Yes. Copy the CSV output and paste into a spreadsheet, or save as a .csv file. Quoted fields preserve commas inside cell values.',
       },
       ...defaultFaq,
     ],
@@ -1993,6 +2038,21 @@ export const tools: Record<string, ToolDefinition> = {
         question: 'Can I encode text to ASCII codes here?',
         answer: 'Yes. Switch to the Char → Code tab in the same ASCII workbench to encode plain text to decimal and hex values.',
       },
+      {
+        question: 'What is an ASCII decoder?',
+        answer:
+          'An ASCII decoder converts numeric character codes (decimal or hex) back into readable text — useful for log output, serial debug dumps, and encoding puzzles.',
+      },
+      {
+        question: 'Can I decode decimal ASCII codes separated by spaces?',
+        answer:
+          'Yes. Paste codes like 72 101 108 108 111 — space or comma separators both work. Hex codes with 0x prefix are supported too.',
+      },
+      {
+        question: 'What is the difference between ASCII decode and ASCII convert?',
+        answer:
+          'Decode focuses on turning code sequences into text. The ASCII Converter adds a character lookup table — use the decoder page when search intent is "decode ascii" or "ascii to text".',
+      },
       ...defaultFaq,
     ],
     component: () => import('@/components/tools/ascii-decoder').then((mod) => ({ default: mod.AsciiDecoder })),
@@ -2274,6 +2334,21 @@ export const CLICK_PRIORITY_TOOL_IDS = [
   'uuid-generator',
   'jwt-decoder',
 ] as const
+
+/** Cross-linked cluster for money-page internal linking (excludes current tool). */
+export const CLICK_CLUSTER_TOOL_IDS = [
+  'json-formatter',
+  'json-to-csv',
+  'html-encoder',
+  'ascii-decoder',
+] as const
+
+export function getClusterToolsForTool(toolId: string): ToolDefinition[] {
+  if (!(CLICK_CLUSTER_TOOL_IDS as readonly string[]).includes(toolId)) return []
+  return CLICK_CLUSTER_TOOL_IDS.filter((id) => id !== toolId)
+    .map((id) => tools[id])
+    .filter(Boolean)
+}
 
 export const CLICK_PRIORITY_TIER2_TOOL_IDS = [
   'base64-encoder',
