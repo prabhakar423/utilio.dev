@@ -11,10 +11,18 @@ export interface Guide {
   slug: string
   title: string
   description: string
+  /** Optional `<title>` override — use when H1 targets keywords but tab title should say "Guide" */
+  seoTitle?: string
   publishedAt: string
   updatedAt?: string
   keywords: string[]
   relatedTools: string[]
+  /** Primary tool linked in the guide header — funnels transactional intent to the tool page */
+  primaryToolId?: string
+  /** Omit from related-guides sections on tool pages (avoids cannibalizing money URLs) */
+  hideFromToolPages?: boolean
+  /** Exclude from index — for pages that attract irrelevant impressions */
+  noindex?: boolean
   blocks: GuideBlock[]
 }
 
@@ -330,21 +338,24 @@ export const guides: Record<string, Guide> = {
   },
   'html-encoding-explained': {
     slug: 'html-encoding-explained',
-    title: 'HTML Encoding Explained',
+    title: 'HTML Encoding Explained — Developer Guide',
+    seoTitle: 'HTML Encoding Explained — Developer Guide | Utiliio',
     description:
-      'Why HTML encoding matters, common entities, and how to encode special characters safely — with a free browser-based encoder.',
+      'Learn why HTML encoding matters, which characters to escape, and when encoding prevents XSS — with a link to the free browser encoder.',
     publishedAt: '2026-02-19',
     updatedAt: '2026-08-21',
     keywords: [
-      'html encode',
-      'html encoding',
-      'html encoder online free',
-      'html entities',
-      'escape html',
+      'html encoding explained',
+      'html entities guide',
+      'escape html characters',
       'xss prevention',
+      'html special characters',
     ],
+    primaryToolId: 'html-encoder',
+    hideFromToolPages: true,
     relatedTools: ['html-encoder', 'html-decoder', 'strip-html-tags'],
     blocks: [
+      { type: 'tool-cta', toolId: 'html-encoder', label: 'Encode HTML online free' },
       {
         type: 'paragraph',
         text: 'HTML encoding converts special characters into HTML entities so they display as text instead of being interpreted as markup. This prevents broken layouts and is essential for XSS (cross-site scripting) prevention when rendering user-generated content.',
@@ -777,6 +788,8 @@ export const guides: Record<string, Guide> = {
     title: 'Essential Meta Tags for SEO and Social Sharing',
     description: 'Which meta tags every webpage needs for search engines and social previews.',
     publishedAt: '2026-03-25',
+    noindex: true,
+    hideFromToolPages: true,
     keywords: ['meta tags seo', 'open graph tags', 'twitter cards', 'seo meta description'],
     relatedTools: ['meta-tag-generator', 'slug-generator', 'reading-time-calculator'],
     blocks: [
@@ -820,6 +833,7 @@ export const guides: Record<string, Guide> = {
     title: 'How to Create Markdown Tables',
     description: 'Syntax and tips for building tables in Markdown for GitHub, docs, and blogs.',
     publishedAt: '2026-03-28',
+    hideFromToolPages: true,
     keywords: ['markdown tables', 'markdown table syntax', 'github tables', 'readme table'],
     relatedTools: ['markdown-table-generator', 'markdown-to-html', 'csv-to-json'],
     blocks: [
@@ -1185,6 +1199,7 @@ export const guides: Record<string, Guide> = {
       'Pretty-print, minify, and validate JSON online with live output, error locations, and structure preview. Free, private, no upload.',
     publishedAt: '2026-04-04',
     updatedAt: '2026-08-21',
+    primaryToolId: 'json-formatter',
     keywords: [
       'json formatter online free',
       'free online json formatter',
@@ -1196,6 +1211,7 @@ export const guides: Record<string, Guide> = {
     ],
     relatedTools: ['json-formatter', 'json-to-csv', 'json-to-yaml'],
     blocks: [
+      { type: 'tool-cta', toolId: 'json-formatter', label: 'Open JSON Formatter online free' },
       {
         type: 'paragraph',
         text: 'Raw JSON from APIs is often minified — one long line that is hard to read and debug. Pretty-printing adds indentation so you can inspect nested objects, spot missing commas, and compare payloads before deployment.',
@@ -2090,6 +2106,7 @@ export const guides: Record<string, Guide> = {
       'Convert JSON arrays to CSV online with live row counts, headers from keys, and CSV → JSON round-trip. Free, private, no upload.',
     publishedAt: '2026-04-16',
     updatedAt: '2026-08-21',
+    primaryToolId: 'json-to-csv',
     keywords: [
       'json to csv',
       'json to csv converter online free',
@@ -2101,6 +2118,7 @@ export const guides: Record<string, Guide> = {
     ],
     relatedTools: ['json-to-csv', 'csv-to-json', 'json-formatter'],
     blocks: [
+      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON to CSV online free' },
       {
         type: 'paragraph',
         text: 'API responses and database exports often arrive as JSON arrays of objects. Spreadsheets, BI tools, and finance teams expect CSV. Converting locally avoids uploading sensitive customer or financial data to third-party converters.',
@@ -2429,6 +2447,7 @@ export const guides: Record<string, Guide> = {
       'Encode and decode HTML entities online instantly. Escape special characters for safe display — free, private, runs in your browser.',
     publishedAt: '2026-08-21',
     updatedAt: '2026-08-21',
+    primaryToolId: 'html-encoder',
     keywords: [
       'html encode',
       'html encoder online free',
@@ -2439,6 +2458,7 @@ export const guides: Record<string, Guide> = {
     ],
     relatedTools: ['html-encoder', 'html-decoder', 'url-encoder'],
     blocks: [
+      { type: 'tool-cta', toolId: 'html-encoder', label: 'Encode HTML online free' },
       {
         type: 'paragraph',
         text: 'HTML encoding converts characters like <, >, and & into entities so browsers render them as text instead of markup. Developers use it when inserting dynamic content into templates, preventing XSS, and debugging escaped strings from CMS exports.',
@@ -2474,6 +2494,7 @@ export const guides: Record<string, Guide> = {
       'Decode ASCII and Unicode character codes to readable text. Decimal or hex input, live output — free, private, no upload.',
     publishedAt: '2026-08-21',
     updatedAt: '2026-08-21',
+    primaryToolId: 'ascii-decoder',
     keywords: [
       'ascii decoder',
       'ascii decoder online free',
@@ -2484,6 +2505,7 @@ export const guides: Record<string, Guide> = {
     ],
     relatedTools: ['ascii-decoder', 'ascii-converter', 'hex-decoder'],
     blocks: [
+      { type: 'tool-cta', toolId: 'ascii-decoder', label: 'Decode ASCII online free' },
       {
         type: 'paragraph',
         text: 'An ASCII decoder turns numeric character codes back into readable text. Log files, protocol dumps, and debug scripts often output decimal (72 101 108) or hex (0x48 0x65) values instead of letters — decoding them manually is slow and error-prone.',
@@ -2552,7 +2574,12 @@ export function getGuidesForTool(toolId: string, limit = 3): Guide[] {
   const tool = tools[toolId]
   const primary = tool?.seoGuideSlug ? guides[tool.seoGuideSlug] : undefined
   const others = getAllGuides()
-    .filter((guide) => guide.relatedTools.includes(toolId) && guide.slug !== tool?.seoGuideSlug)
+    .filter(
+      (guide) =>
+        guide.relatedTools.includes(toolId) &&
+        guide.slug !== tool?.seoGuideSlug &&
+        !guide.hideFromToolPages,
+    )
     .sort((a, b) => {
       const aDate = new Date(a.updatedAt ?? a.publishedAt).getTime()
       const bDate = new Date(b.updatedAt ?? b.publishedAt).getTime()

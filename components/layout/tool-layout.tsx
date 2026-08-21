@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { Scale } from 'lucide-react'
+import { PrimaryToolBanner } from '@/components/layout/primary-tool-banner'
 import { AdSlot } from '@/components/layout/ad-slot'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { FaqSection } from '@/components/layout/faq-section'
@@ -102,6 +103,15 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
                   <Scale className="size-4" />
                   {relatedComparisons[0].title}
                 </Link>
+              )}
+              {tool.toolCallout && (
+                <div className="mt-6">
+                  <PrimaryToolBanner
+                    toolId={tool.toolCallout.toolId}
+                    label={tool.toolCallout.label}
+                    message={tool.toolCallout.message}
+                  />
+                </div>
               )}
             </div>
             <div className="flex shrink-0 gap-2">

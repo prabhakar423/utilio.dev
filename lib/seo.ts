@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { Guide } from '@/lib/guides'
 import { withPrivacyMetaDescription } from '@/lib/privacy-copy'
 import { siteConfig } from '@/lib/site'
 import type { ToolDefinition } from '@/lib/tools'
@@ -10,12 +11,14 @@ export function createPageMetadata({
   path,
   keywords,
   ogImage,
+  noindex,
 }: {
   title: string
   description: string
   path: string
   keywords?: string[]
   ogImage?: string
+  noindex?: boolean
 }): Metadata {
   const url = `${siteConfig.url}${path}`
 
@@ -24,6 +27,7 @@ export function createPageMetadata({
     description,
     keywords,
     alternates: { canonical: url },
+    ...(noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,
@@ -53,6 +57,17 @@ export function createToolMetadata(tool: ToolDefinition): Metadata {
     path: `/tools/${tool.id}`,
     keywords: tool.keywords,
     ogImage,
+  })
+}
+
+export function createGuideMetadata(guide: Guide): Metadata {
+  const title = guide.seoTitle ?? `${guide.title} — ${siteConfig.name}`
+  return createPageMetadata({
+    title,
+    description: withPrivacyMetaDescription(guide.description),
+    path: `/guides/${guide.slug}`,
+    keywords: guide.keywords,
+    noindex: guide.noindex,
   })
 }
 

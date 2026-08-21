@@ -8,7 +8,7 @@ import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { JsonLd } from '@/components/seo/json-ld'
 import { breadcrumbJsonLd, categoryMetadata } from '@/lib/seo'
-import { categories, getToolsByCategory } from '@/lib/tools'
+import { categories, getFeaturedToolsForCategory, getToolsByCategory } from '@/lib/tools'
 import { getLucideIcon } from '@/lib/utils'
 
 interface PageProps {
@@ -33,6 +33,9 @@ export default async function CategoryPage({ params }: PageProps) {
   }
 
   const categoryTools = getToolsByCategory(categoryId)
+  const featuredTools = getFeaturedToolsForCategory(categoryId)
+  const featuredIds = new Set(featuredTools.map((tool) => tool.id))
+  const remainingTools = categoryTools.filter((tool) => !featuredIds.has(tool.id))
   const Icon = getLucideIcon(category.icon)
 
   return (
@@ -72,9 +75,27 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          {categoryTools.length > 0 ? (
+          {featuredTools.length > 0 && (
+            <section className="mb-12">
+              <h2 className="text-xl font-semibold tracking-tight">Popular in {category.name}</h2>
+              <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {featuredTools.map((tool) => (
+                  <ToolCardWithFavorite
+                    key={tool.id}
+                    id={tool.id}
+                    title={tool.title}
+                    description={tool.description}
+                    icon={tool.icon}
+                    category={tool.category}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {remainingTools.length > 0 ? (
             <CategoryToolGrid
-              tools={categoryTools.map((tool) => ({
+              tools={remainingTools.map((tool) => ({
                 id: tool.id,
                 title: tool.title,
                 description: tool.description,
@@ -82,13 +103,13 @@ export default async function CategoryPage({ params }: PageProps) {
                 category: tool.category,
               }))}
             />
-          ) : (
+          ) : categoryTools.length === 0 ? (
             <EmptyState
               title="No tools yet"
               description="This category is being expanded. Check back soon or browse other categories."
               actionHref="/"
             />
-          )}
+          ) : null}
 
           <div className="mt-12 text-center">
             <Link

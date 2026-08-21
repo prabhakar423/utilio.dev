@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
 import { categories } from '@/lib/categories'
 import { getComparisonSlugs } from '@/lib/comparisons'
-import { getAllGuides } from '@/lib/guides'
+import { CLICK_PRIORITY_GUIDE_SLUGS, getAllGuides } from '@/lib/guides'
 import { siteConfig } from '@/lib/site'
+import { CLICK_PRIORITY_TOOL_IDS } from '@/lib/tools'
 import { toolSearchIndex } from '@/lib/tool-search-index'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -19,12 +20,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ]
 
-  const guidePages: MetadataRoute.Sitemap = getAllGuides().map((guide) => ({
-    url: `${base}/guides/${guide.slug}`,
-    lastModified: new Date(guide.updatedAt ?? guide.publishedAt),
-    changeFrequency: 'monthly' as const,
-    priority: 0.75,
-  }))
+  const clickPriorityGuideSlugs = new Set<string>(CLICK_PRIORITY_GUIDE_SLUGS)
+  const clickPriorityToolIds = new Set<string>(CLICK_PRIORITY_TOOL_IDS)
+
+  const guidePages: MetadataRoute.Sitemap = getAllGuides()
+    .filter((guide) => !guide.noindex)
+    .map((guide) => ({
+      url: `${base}/guides/${guide.slug}`,
+      lastModified: new Date(guide.updatedAt ?? guide.publishedAt),
+      changeFrequency: 'monthly' as const,
+      priority: clickPriorityGuideSlugs.has(guide.slug) ? 0.85 : 0.75,
+    }))
 
   const comparisonPages: MetadataRoute.Sitemap = getComparisonSlugs().map((slug) => ({
     url: `${base}/compare/${slug}`,
@@ -44,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}/tools/${tool.id}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.9,
+    priority: clickPriorityToolIds.has(tool.id) ? 0.95 : 0.9,
   }))
 
   return [...staticPages, ...guidePages, ...comparisonPages, ...categoryPages, ...toolPages]

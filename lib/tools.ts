@@ -25,6 +25,8 @@ export interface ToolDefinition {
   seoGuideSlug?: string
   /** Compare page slugs to cross-link (in addition to matches on toolId) */
   relatedComparisonSlugs?: string[]
+  /** Prominent cross-link when a sibling tool is the better match for search intent */
+  toolCallout?: { toolId: string; message: string; label: string }
   category: string
   icon: string
   keywords: string[]
@@ -518,6 +520,18 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Decode HTML entities back to plain text',
     longDescription:
       'Convert HTML entities like &amp;lt; and &amp;amp; back to readable characters. Same workbench as the HTML Encoder — switch tabs without leaving the page.',
+    seoTitle: 'HTML Decoder Online Free — Decode HTML Entities | Utiliio',
+    seoDescription:
+      'Decode HTML entities back to plain text online. Same workbench as the HTML Encoder — free, private, runs in your browser.',
+    seoH1: 'HTML Decoder Online Free',
+    seoIntro:
+      'Convert HTML entities like &lt; and &amp; back to readable characters. Need to escape text for safe HTML output? Use the HTML Encoder linked below.',
+    toolCallout: {
+      toolId: 'html-encoder',
+      message:
+        'Need to encode special characters for safe HTML output? The HTML Encoder is the primary tool for html encode queries.',
+      label: 'Open HTML Encoder online free',
+    },
     category: 'encoding',
     icon: 'code',
     keywords: ['html decoder', 'decode html entities', 'unescape html', 'html entity decoder'],
@@ -1070,6 +1084,18 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Convert text to binary and binary back to text',
     longDescription:
       'Encode text to 8-bit binary groups or decode binary back to readable text in one workbench — with byte count, examples, and round-trip support.',
+    seoTitle: 'Binary Converter Online Free — Text to Binary | Utiliio',
+    seoDescription:
+      'Convert text to 8-bit binary and binary back to text online. Live output, byte counts, round-trip — free, private, runs in your browser.',
+    seoH1: 'Binary Converter Online Free',
+    seoIntro:
+      'Encode plain text to space-separated 8-bit binary groups, or decode binary strings back to readable text. For decode-only workflows, the Binary Decoder page below is the better match.',
+    toolCallout: {
+      toolId: 'binary-decoder',
+      message:
+        'Need to decode a binary string to text? Use the dedicated Binary Decoder for a focused decode workflow.',
+      label: 'Open Binary Decoder',
+    },
     category: 'encoding',
     icon: 'binary',
     keywords: ['binary converter', 'text to binary', 'binary to text', 'binary encoder', 'binary decoder'],
@@ -1891,6 +1917,18 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Convert characters to ASCII codes and back',
     longDescription:
       'Look up ASCII/Unicode code points in a character table, or convert decimal and hex codes back to text — one shareable workbench.',
+    seoTitle: 'ASCII Converter Online Free — Character Code Table | Utiliio',
+    seoDescription:
+      'Convert characters to ASCII decimal and hex codes with a live character table. Encode and lookup code points — free, private, runs in your browser.',
+    seoH1: 'ASCII Converter Online Free',
+    seoIntro:
+      'Look up ASCII and Unicode code points in a character table, or convert between characters and decimal/hex codes. Need to decode a sequence of numeric codes to readable text? Use the ASCII Decoder linked below — it is the best page for decode queries.',
+    toolCallout: {
+      toolId: 'ascii-decoder',
+      message:
+        'Searching for an ASCII decoder? Paste decimal or hex codes and get text instantly on the dedicated decoder page.',
+      label: 'Open ASCII Decoder online free',
+    },
     category: 'encoding',
     icon: 'hash',
     keywords: ['ascii converter', 'char to ascii', 'ascii code', 'character code', 'ascii table'],
@@ -1898,6 +1936,11 @@ export const tools: Record<string, ToolDefinition> = {
     addedAt: '2026-03-20',
     relatedTools: ['ascii-decoder', 'hex-encoder', 'binary-converter'],
     faq: [
+      {
+        question: 'What is the difference between ASCII converter and ASCII decoder?',
+        answer:
+          'The converter focuses on character ↔ code lookup and tables. For decoding numeric code sequences (72 101 108) to text, use the ASCII Decoder tool — it is optimized for that workflow.',
+      },
       {
         question: 'Does it show a character code table?',
         answer: 'Yes. In Char → Code mode, each character is listed with decimal and hex values in a table below the output.',
@@ -2238,6 +2281,19 @@ export const CLICK_PRIORITY_TIER2_TOOL_IDS = [
   'csv-to-json',
   'html-beautifier',
 ] as const
+
+/** Pin high-intent tools at the top of category pages (GSC click clusters). */
+export const CATEGORY_FEATURED_TOOL_IDS: Record<string, readonly string[]> = {
+  encoding: ['ascii-decoder', 'html-encoder', 'base64-encoder', 'binary-decoder'],
+  text: ['json-formatter'],
+  developer: ['json-to-csv', 'csv-to-json', 'jwt-decoder'],
+}
+
+export function getFeaturedToolsForCategory(categoryId: string): ToolDefinition[] {
+  const ids = CATEGORY_FEATURED_TOOL_IDS[categoryId]
+  if (!ids) return []
+  return ids.map((id) => tools[id]).filter(Boolean)
+}
 
 export function getClickPriorityTools(): ToolDefinition[] {
   return CLICK_PRIORITY_TOOL_IDS.map((id) => tools[id]).filter(Boolean)

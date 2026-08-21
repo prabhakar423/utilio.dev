@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ToolCard } from '@/components/cards/tool-card'
+import { PrimaryToolBanner } from '@/components/layout/primary-tool-banner'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { JsonLd } from '@/components/seo/json-ld'
 import { getGuideBySlug, getGuideSlugs, type GuideBlock } from '@/lib/guides'
-import { withPrivacyMetaDescription } from '@/lib/privacy-copy'
-import { createPageMetadata } from '@/lib/seo'
+import { createGuideMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 import { tools } from '@/lib/tools'
 
@@ -24,12 +24,7 @@ export async function generateMetadata({ params }: PageProps) {
   const guide = getGuideBySlug(slug)
   if (!guide) return { title: 'Guide Not Found' }
 
-  return createPageMetadata({
-    title: `${guide.title} — ${siteConfig.name}`,
-    description: withPrivacyMetaDescription(guide.description),
-    path: `/guides/${guide.slug}`,
-    keywords: guide.keywords,
-  })
+  return createGuideMetadata(guide)
 }
 
 function GuideBlockRenderer({ block }: { block: GuideBlock }) {
@@ -115,6 +110,18 @@ export default async function GuidePage({ params }: PageProps) {
             </time>
             <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{guide.title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">{guide.description}</p>
+            {guide.primaryToolId && (
+              <div className="mt-6">
+                <PrimaryToolBanner
+                  toolId={guide.primaryToolId}
+                  label={
+                    tools[guide.primaryToolId]?.seoH1
+                      ? `${tools[guide.primaryToolId].seoH1} →`
+                      : `Open ${tools[guide.primaryToolId]?.title ?? 'tool'} →`
+                  }
+                />
+              </div>
+            )}
           </header>
 
           <div className="mt-8 text-muted-foreground">
