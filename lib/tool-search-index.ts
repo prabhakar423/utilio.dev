@@ -33,12 +33,12 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "encoding",
     "icon": "binary",
     "keywords": [
-      "base64",
-      "encode",
-      "decode",
-      "text",
-      "converter",
-      "base64url"
+      "base64 encoder online free",
+      "base64 encode decode online",
+      "encode base64",
+      "decode base64",
+      "url-safe base64",
+      "base64 converter"
     ],
     "categoryName": "Converters"
   },
@@ -171,12 +171,12 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "security",
     "icon": "shield-check",
     "keywords": [
-      "hash generator",
-      "sha256",
-      "sha512",
-      "checksum",
-      "cryptographic hash",
-      "hmac generator"
+      "hash generator online free",
+      "sha256 hash generator online",
+      "sha256 online",
+      "hmac generator",
+      "sha512 hash",
+      "cryptographic hash browser"
     ],
     "categoryName": "Security"
   },
@@ -203,12 +203,13 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "developer",
     "icon": "key",
     "keywords": [
-      "jwt decoder",
-      "json web token",
-      "decode jwt",
+      "jwt decoder online free",
+      "decode jwt online",
+      "jwt verify online",
+      "json web token decoder",
       "jwt payload",
-      "auth token",
-      "jwt verify"
+      "auth token inspector",
+      "rs256 jwt verify"
     ],
     "categoryName": "Developer"
   },
@@ -575,9 +576,11 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "icon": "table",
     "keywords": [
       "csv to json",
-      "convert csv",
+      "csv to json converter online free",
+      "convert csv to json",
       "csv json converter",
-      "csv parser"
+      "csv parser online",
+      "spreadsheet to json"
     ],
     "categoryName": "Developer"
   },
@@ -930,10 +933,12 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "developer",
     "icon": "code",
     "keywords": [
-      "html beautifier",
-      "format html",
+      "html beautifier online free",
+      "webformatter",
+      "format html online",
       "pretty print html",
-      "html formatter"
+      "html formatter",
+      "web formatter online"
     ],
     "categoryName": "Developer"
   },

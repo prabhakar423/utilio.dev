@@ -1,3 +1,5 @@
+import { tools } from '@/lib/tools'
+
 export type GuideBlock =
   | { type: 'paragraph'; text: string }
   | { type: 'heading'; text: string }
@@ -31,6 +33,16 @@ export const FEATURED_GUIDE_SLUGS = [
   'base64-encode-decode-online-free',
   'url-encode-decode-online-free',
   'cron-expression-generator-online',
+] as const
+
+/** Guides aligned to GSC click-opportunity queries — tool + guide clusters */
+export const CLICK_PRIORITY_GUIDE_SLUGS = [
+  'json-to-csv-converter-online-free',
+  'json-formatter-pretty-print-online-free',
+  'ascii-decoder-online-free',
+  'html-encoder-online-free',
+  'uuid-generator-v4-online-free',
+  'jwt-decoder-online-free',
 ] as const
 
 export const guides: Record<string, Guide> = {
@@ -320,14 +332,22 @@ export const guides: Record<string, Guide> = {
     slug: 'html-encoding-explained',
     title: 'HTML Encoding Explained',
     description:
-      'Learn why HTML encoding matters, common entities, and how to encode special characters safely.',
+      'Why HTML encoding matters, common entities, and how to encode special characters safely — with a free browser-based encoder.',
     publishedAt: '2026-02-19',
-    keywords: ['html encoding', 'html entities', 'escape html', 'xss prevention'],
-    relatedTools: ['html-encoder', 'strip-html-tags', 'markdown-to-html'],
+    updatedAt: '2026-08-21',
+    keywords: [
+      'html encode',
+      'html encoding',
+      'html encoder online free',
+      'html entities',
+      'escape html',
+      'xss prevention',
+    ],
+    relatedTools: ['html-encoder', 'html-decoder', 'strip-html-tags'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'HTML encoding converts special characters into HTML entities so they display as text instead of being interpreted as markup. This prevents broken layouts and is essential for XSS (cross-site scripting) prevention.',
+        text: 'HTML encoding converts special characters into HTML entities so they display as text instead of being interpreted as markup. This prevents broken layouts and is essential for XSS (cross-site scripting) prevention when rendering user-generated content.',
       },
       { type: 'heading', text: 'Characters that must be encoded' },
       {
@@ -340,7 +360,7 @@ export const guides: Record<string, Guide> = {
           "' becomes &#39; (safe inside single-quoted attributes)",
         ],
       },
-      { type: 'heading', text: 'When to encode' },
+      { type: 'heading', text: 'When to encode HTML' },
       {
         type: 'list',
         items: [
@@ -350,8 +370,18 @@ export const guides: Record<string, Guide> = {
           'Building email templates with dynamic data',
         ],
       },
-      { type: 'tool-cta', toolId: 'html-encoder', label: 'Encode HTML online' },
-      { type: 'tool-cta', toolId: 'strip-html-tags', label: 'Strip HTML to plain text' },
+      { type: 'heading', text: 'How to encode HTML online' },
+      {
+        type: 'list',
+        items: [
+          'Paste plain text into the Encode tab — entities appear instantly',
+          'Switch to Decode to reverse entities back to characters',
+          'Use for quick XSS checks before deploying template changes',
+          'Processing stays in your browser — safe for proprietary copy',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'html-encoder', label: 'Open HTML Encoder online free' },
+      { type: 'tool-cta', toolId: 'html-decoder', label: 'Decode HTML entities' },
     ],
   },
   'markdown-guide': {
@@ -667,18 +697,51 @@ export const guides: Record<string, Guide> = {
   'ascii-encoding-guide': {
     slug: 'ascii-encoding-guide',
     title: 'ASCII and Character Encoding Basics',
-    description: 'How ASCII codes work — with a character table, decimal/hex lookup, and code-to-text conversion.',
+    description:
+      'How ASCII codes work — decimal, hex, encode/decode text, and when to use an ASCII decoder online.',
     publishedAt: '2026-03-19',
-    updatedAt: '2026-07-26',
-    keywords: ['ascii explained', 'character encoding', 'ascii code', 'utf-8 basics', 'ascii table'],
-    relatedTools: ['ascii-converter', 'ascii-decoder', 'hex-encoder'],
+    updatedAt: '2026-08-21',
+    keywords: [
+      'ascii decoder',
+      'ascii explained',
+      'character encoding',
+      'ascii code',
+      'ascii to text',
+      'decode ascii online',
+    ],
+    relatedTools: ['ascii-decoder', 'ascii-converter', 'hex-encoder'],
     blocks: [
-      { type: 'paragraph', text: 'ASCII assigns numeric codes to 128 characters (0–127). Extended ASCII and Unicode expanded this to support international characters. UTF-8 encodes Unicode using variable-length byte sequences.' },
+      {
+        type: 'paragraph',
+        text: 'ASCII assigns numeric codes to 128 characters (0–127). Extended ASCII and Unicode expanded this to support international characters. UTF-8 encodes Unicode using variable-length byte sequences — but debugging often starts with raw decimal or hex codes.',
+      },
       { type: 'heading', text: 'Common ASCII codes' },
-      { type: 'list', items: ['A = 65, a = 97', '0 = 48', 'Space = 32', 'Newline (LF) = 10', 'Tab = 9'] },
+      {
+        type: 'list',
+        items: ['A = 65, a = 97', '0 = 48', 'Space = 32', 'Newline (LF) = 10', 'Tab = 9', 'Hello = 72 101 108 108 111 (decimal)'],
+      },
+      { type: 'heading', text: 'When you need an ASCII decoder' },
+      {
+        type: 'list',
+        items: [
+          'Log files show decimal character codes instead of text',
+          'Serial or protocol dumps use hex byte values',
+          'CTF challenges and encoding homework',
+          'Verifying output from scripts that print char codes',
+        ],
+      },
       { type: 'heading', text: 'ASCII workbench features' },
-      { type: 'list', items: ['Char → Code tab with decimal and hex table per character', 'Code → Char tab accepts decimal (72 101) or hex (0x48) codes', 'Copy decimal codes for scripts and debug output', 'Shareable links preserve input and active tab'] },
-      { type: 'tool-cta', toolId: 'ascii-converter', label: 'Open ASCII workbench' },
+      {
+        type: 'list',
+        items: [
+          'Char → Code tab with decimal and hex table per character',
+          'Code → Char tab accepts decimal (72 101) or hex (0x48) codes',
+          'Dedicated ASCII decoder URL for reverse conversion',
+          'Shareable links preserve input and active tab',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'ascii-decoder', label: 'Open ASCII Decoder online free' },
+      { type: 'tool-cta', toolId: 'ascii-converter', label: 'Open full ASCII workbench' },
     ],
   },
   'string-similarity-guide': {
@@ -881,17 +944,18 @@ export const guides: Record<string, Guide> = {
   },
   'base64-encode-decode-online-free': {
     slug: 'base64-encode-decode-online-free',
-    title: 'Base64 Encode and Decode Online (Free, Private)',
+    title: 'Base64 Encoder Online Free — Encode & Decode in Browser',
     description:
-      'Encode text to Base64 or decode Base64 strings online — standard and URL-safe modes on one page. Free, instant, and private.',
+      'Encode text to Base64 or decode Base64 strings online — standard and URL-safe modes, live round-trip, no upload.',
     publishedAt: '2026-03-30',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
+      'base64 encoder online free',
       'base64 encode decode online free',
       'base64 encoder online',
       'decode base64 string',
-      'base64 converter private',
       'url-safe base64',
+      'base64 converter private',
     ],
     relatedTools: ['base64-encoder', 'base64-decoder', 'jwt-decoder'],
     blocks: [
@@ -899,10 +963,24 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'Base64 encoding converts binary or text data into ASCII-safe characters. Developers use it for JWT payloads, data URIs, email attachments, and embedding small files in JSON. It is encoding, not encryption — anyone can decode it.',
       },
-      { type: 'heading', text: 'One workbench, two directions' },
+      { type: 'heading', text: 'How to encode Base64 online for free' },
       {
-        type: 'paragraph',
-        text: 'Utiliio combines encode and decode on a single page with live output. Switch between standard Base64 (+/ padding) and URL-safe Base64 (-_ no padding) — the mode JWTs use. Round-trip your input to confirm encoding is correct.',
+        type: 'list',
+        items: [
+          'Paste text into the Encode tab — Base64 output updates live',
+          'Toggle URL-safe mode for JWT-style encoding (-_ instead of +/)',
+          'Switch to Decode to reverse a Base64 string back to text',
+          'Use round-trip to confirm encoding is correct before shipping',
+        ],
+      },
+      { type: 'heading', text: 'Standard vs URL-safe Base64' },
+      {
+        type: 'list',
+        items: [
+          'Standard uses +, /, and = padding — fine for JSON and email',
+          'URL-safe replaces + with - and / with _ — required in JWT segments and query strings',
+          'JWT header and payload are URL-safe Base64 — not the same as standard',
+        ],
       },
       { type: 'heading', text: 'Common use cases' },
       {
@@ -918,7 +996,8 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'Many online Base64 tools send your input to a server. For tokens, passwords, or proprietary data, use a client-side encoder instead — Utiliio processes everything in your browser.',
       },
-      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Open Base64 workbench' },
+      { type: 'tool-cta', toolId: 'base64-encoder', label: 'Encode Base64 online free' },
+      { type: 'compare-cta', slug: 'utiliio-vs-base64-encode', label: 'Compare Utillio vs Base64Encode.org' },
     ],
   },
   'cron-expression-generator-online': {
@@ -1046,21 +1125,34 @@ export const guides: Record<string, Guide> = {
   },
   'uuid-generator-v4-online-free': {
     slug: 'uuid-generator-v4-online-free',
-    title: 'UUID v4 Generator Online (Free)',
+    title: 'UUID Generator Online Free — Generate UUID v4 Instantly',
     description:
-      'Generate random UUID v4 identifiers instantly. Free, private, and browser-based — no server round-trip.',
+      'Generate cryptographically random UUID v4 identifiers online. Free, private, bulk copy — runs in your browser, no upload.',
     publishedAt: '2026-04-01',
+    updatedAt: '2026-08-21',
     keywords: [
+      'uuid generator online free',
       'uuid generator v4 online free',
       'uuid v4 generator',
       'random uuid generator',
       'generate uuid online',
+      'guid generator online',
     ],
     relatedTools: ['uuid-generator', 'uuid-validator', 'jwt-decoder'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'UUID v4 identifiers are 128-bit random values used as database primary keys, session IDs, correlation IDs, and file names. RFC 4122 specifies the format: 8-4-4-4-12 hexadecimal digits with version and variant bits set.',
+        text: 'UUID v4 identifiers are 128-bit random values used as database primary keys, session IDs, correlation IDs, and test fixtures. RFC 4122 specifies the format: 8-4-4-4-12 hexadecimal digits with version and variant bits set.',
+      },
+      { type: 'heading', text: 'How to generate a UUID online' },
+      {
+        type: 'list',
+        items: [
+          'Open the UUID Generator — a new v4 value appears instantly',
+          'Click Generate again for another random UUID',
+          'Generate multiple UUIDs at once for seed data or load tests',
+          'Copy with one click — nothing is sent to a server',
+        ],
       },
       { type: 'heading', text: 'UUID versions at a glance' },
       {
@@ -1072,29 +1164,51 @@ export const guides: Record<string, Guide> = {
           'v7 — timestamp-ordered (sortable, newer standard)',
         ],
       },
-      { type: 'tool-cta', toolId: 'uuid-generator', label: 'Generate UUID v4' },
-      { type: 'tool-cta', toolId: 'uuid-validator', label: 'Validate a UUID' },
+      { type: 'heading', text: 'When to use UUID v4' },
+      {
+        type: 'list',
+        items: [
+          'Database primary keys in distributed systems',
+          'Request correlation IDs in microservices logs',
+          'Temporary filenames and upload keys',
+          'Mock data and API testing',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'uuid-generator', label: 'Generate UUID v4 online free' },
+      { type: 'tool-cta', toolId: 'uuid-validator', label: 'Validate a UUID format' },
     ],
   },
   'json-formatter-pretty-print-online-free': {
     slug: 'json-formatter-pretty-print-online-free',
-    title: 'JSON Formatter & Pretty Print Online (Free, Private)',
+    title: 'JSON Formatter Online Free — Pretty Print & Validate JSON',
     description:
-      'Pretty-print, minify, and validate JSON online with live output, error locations, and structure preview. Runs in your browser.',
+      'Pretty-print, minify, and validate JSON online with live output, error locations, and structure preview. Free, private, no upload.',
     publishedAt: '2026-04-04',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
+      'json formatter online free',
+      'free online json formatter',
       'json formatter pretty print online free',
       'pretty print json online',
       'format json online private',
       'json beautifier free',
       'validate json online',
     ],
-    relatedTools: ['json-formatter', 'json-to-yaml', 'csv-to-json'],
+    relatedTools: ['json-formatter', 'json-to-csv', 'json-to-yaml'],
     blocks: [
       {
         type: 'paragraph',
         text: 'Raw JSON from APIs is often minified — one long line that is hard to read and debug. Pretty-printing adds indentation so you can inspect nested objects, spot missing commas, and compare payloads before deployment.',
+      },
+      { type: 'heading', text: 'How to format JSON online for free' },
+      {
+        type: 'list',
+        items: [
+          'Paste JSON into the formatter — output updates live',
+          'Use Format mode for readable indentation',
+          'Switch to Minify for compact production payloads',
+          'Validate mode confirms syntax without reformatting',
+        ],
       },
       { type: 'heading', text: 'When to pretty-print JSON' },
       {
@@ -1106,18 +1220,28 @@ export const guides: Record<string, Guide> = {
           'Sharing formatted output with teammates via shareable link',
         ],
       },
+      { type: 'heading', text: 'Common JSON errors' },
+      {
+        type: 'list',
+        items: [
+          'Trailing comma after last array/object item',
+          'Single quotes instead of double quotes',
+          'Unescaped newlines inside strings',
+          'Missing closing bracket or brace',
+        ],
+      },
       { type: 'heading', text: 'What makes Utiliio different' },
       {
         type: 'list',
         items: [
-          'Live output — no button click required, results update as you paste',
+          'Live output — results update as you paste',
           'Error line and column when JSON is invalid',
           'Structure preview with object/array counts and max depth',
           'Format, Minify, and Validate modes on one page',
           'Share button encodes input in the URL for team handoffs',
         ],
       },
-      { type: 'tool-cta', toolId: 'json-formatter', label: 'Format JSON now' },
+      { type: 'tool-cta', toolId: 'json-formatter', label: 'Open JSON Formatter online free' },
       { type: 'compare-cta', slug: 'utiliio-vs-json-formatter', label: 'Compare Utiliio vs JSONFormatter.org' },
     ],
   },
@@ -1185,45 +1309,55 @@ export const guides: Record<string, Guide> = {
   },
   'hash-generator-sha256-online-free': {
     slug: 'hash-generator-sha256-online-free',
-    title: 'SHA-256 Hash Generator Online (Free, Private)',
+    title: 'SHA-256 Hash Generator Online Free — Hash & HMAC Workbench',
     description:
-      'Generate SHA-256, SHA-384, and SHA-512 hashes with live output — Hash and HMAC tabs on one page.',
+      'Generate SHA-256, SHA-384, and SHA-512 hashes online with live output. HMAC tab for webhook signatures — free, private, Web Crypto API.',
     publishedAt: '2026-04-05',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
       'sha256 hash generator online free',
-      'hash generator online',
+      'hash generator online free',
+      'sha256 online',
       'sha256 calculator private',
+      'hmac sha256 generator online',
       'generate hash browser',
-      'hash workbench',
     ],
     relatedTools: ['hash-generator', 'hmac-generator', 'jwt-decoder'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'Cryptographic hashes produce a fixed-length fingerprint of input data. SHA-256 is widely used for checksums and integrity verification — hashing is one-way, not encryption.',
+        text: 'Cryptographic hashes produce a fixed-length fingerprint of input data. SHA-256 is widely used for checksums and integrity verification — hashing is one-way, not encryption. Never use plain SHA-256 alone to store passwords; use dedicated password hashing algorithms in production.',
+      },
+      { type: 'heading', text: 'How to generate SHA-256 online for free' },
+      {
+        type: 'list',
+        items: [
+          'Paste text into the Hash tab — SHA-256 output updates as you type',
+          'Switch to SHA-384 or SHA-512 from the algorithm selector',
+          'Use the HMAC tab when a secret key is involved (webhooks, API signatures)',
+          'Copy the digest or share a link — input stays in your browser',
+        ],
+      },
+      { type: 'heading', text: 'Hash vs HMAC — when to use which' },
+      {
+        type: 'list',
+        items: [
+          'Plain hash — checksums, comparing file integrity, deterministic fingerprints',
+          'HMAC — Stripe/GitHub webhooks, signed API requests, JWT HS256 verification',
+          'HMAC requires a secret — never paste production secrets into server-side tools',
+        ],
       },
       { type: 'heading', text: 'Hash workbench features' },
       {
         type: 'list',
         items: [
-          'Live SHA-256, SHA-384, and SHA-512 as you type',
-          'HMAC tab for keyed signatures with a secret',
-          'Shareable links with algorithm preserved',
-          '100% client-side via Web Crypto API',
+          'Live SHA-256, SHA-384, and SHA-512 via Web Crypto API',
+          'HMAC tab on the same page — no separate tool needed',
+          'Shareable links with algorithm and tab preserved',
+          '100% client-side — inputs never uploaded',
         ],
       },
-      { type: 'heading', text: 'When to use SHA-256' },
-      {
-        type: 'list',
-        items: [
-          'Verify file integrity with checksums',
-          'Compare whether two strings produce the same hash',
-          'Debug API workflows — use HMAC tab when a secret is involved',
-          'Generate deterministic fingerprints from content',
-        ],
-      },
-      { type: 'tool-cta', toolId: 'hash-generator', label: 'Open Hash/HMAC workbench' },
+      { type: 'tool-cta', toolId: 'hash-generator', label: 'Generate SHA-256 online free' },
       { type: 'compare-cta', slug: 'utiliio-vs-hash-tools', label: 'Compare Utiliio vs online hash tools' },
     ],
   },
@@ -1233,9 +1367,10 @@ export const guides: Record<string, Guide> = {
     description:
       'Decode, verify, and inspect JSON Web Tokens online — HS256/RS256 support, expiry badges, and claims table. Nothing uploaded.',
     publishedAt: '2026-04-06',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
       'jwt decoder online free',
+      'decode jwt online free',
       'decode jwt token',
       'jwt parser online',
       'inspect jwt private',
@@ -1272,7 +1407,7 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'Decoding alone does not verify the signature. Never paste production JWTs into server-side decoders — they may log tokens. Utiliio processes everything in your browser.',
       },
-      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Open JWT workbench' },
+      { type: 'tool-cta', toolId: 'jwt-decoder', label: 'Decode JWT online free' },
       { type: 'compare-cta', slug: 'utiliio-vs-jwt-io', label: 'Compare Utiliio vs jwt.io' },
     ],
   },
@@ -1344,36 +1479,48 @@ export const guides: Record<string, Guide> = {
   },
   'csv-to-json-converter-online-free': {
     slug: 'csv-to-json-converter-online-free',
-    title: 'CSV to JSON Converter Online (Free, Private)',
+    title: 'CSV to JSON Converter Online Free — Parse Spreadsheets to JSON',
     description:
-      'Convert CSV to JSON arrays with row counts and round-trip — CSV ↔ JSON workbench, nothing uploaded.',
+      'Convert CSV to JSON arrays online with live row counts, header detection, and JSON → CSV round-trip. Free, private, no upload.',
     publishedAt: '2026-04-07',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
+      'csv to json',
       'csv to json converter online free',
-      'convert csv json online',
+      'convert csv to json online',
       'csv json converter private',
       'spreadsheet to json',
-      'csv json workbench',
+      'csv parser online',
     ],
     relatedTools: ['csv-to-json', 'json-to-csv', 'json-formatter'],
     blocks: [
       {
         type: 'paragraph',
-        text: 'CSV is universal for spreadsheets and exports; JSON is standard for APIs and JavaScript apps. Converting between them is a daily task for data engineers and frontend developers.',
+        text: 'CSV is universal for spreadsheets and exports; JSON is standard for APIs and JavaScript apps. Converting between them is a daily task for data engineers and frontend developers — doing it locally keeps customer and financial data off third-party servers.',
+      },
+      { type: 'heading', text: 'How to convert CSV to JSON online' },
+      {
+        type: 'list',
+        items: [
+          'Paste CSV with column headers in the first row',
+          'JSON array output updates live as you edit',
+          'Quoted fields with commas inside values are handled correctly',
+          'Row count badge confirms how many records were parsed',
+        ],
       },
       { type: 'heading', text: 'CSV ↔ JSON workbench' },
       {
         type: 'list',
         items: [
           'CSV → JSON and JSON → CSV tabs on one page',
-          'Live output with row count badge',
-          'Swap output to the reverse tab for round-trip checks',
-          'First row treated as column headers',
-          'Shareable links — spreadsheet data stays in your browser',
+          'Round-trip button sends output to the reverse tab',
+          'Shareable links for team debugging',
+          '100% client-side — spreadsheet data never uploaded',
         ],
       },
-      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Open CSV ↔ JSON workbench' },
+      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Convert CSV to JSON online free' },
+      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON back to CSV' },
+      { type: 'compare-cta', slug: 'browser-tools-vs-server-upload', label: 'Why browser-based converters matter' },
     ],
   },
   'url-encode-decode-online-free': {
@@ -1938,17 +2085,19 @@ export const guides: Record<string, Guide> = {
   },
   'json-to-csv-converter-online-free': {
     slug: 'json-to-csv-converter-online-free',
-    title: 'JSON to CSV Converter Online (Free, Private)',
+    title: 'JSON to CSV Converter Online Free — Export Arrays to Spreadsheet',
     description:
-      'Export JSON arrays to CSV with live row counts — same workbench handles CSV → JSON round-trip.',
+      'Convert JSON arrays to CSV online with live row counts, headers from keys, and CSV → JSON round-trip. Free, private, no upload.',
     publishedAt: '2026-04-16',
-    updatedAt: '2026-07-26',
+    updatedAt: '2026-08-21',
     keywords: [
+      'json to csv',
       'json to csv converter online free',
+      'convert json to csv online',
       'convert json array to csv',
       'json csv export private',
       'json spreadsheet converter browser',
-      'csv json workbench',
+      'export json to csv',
     ],
     relatedTools: ['json-to-csv', 'csv-to-json', 'json-formatter'],
     blocks: [
@@ -1956,17 +2105,39 @@ export const guides: Record<string, Guide> = {
         type: 'paragraph',
         text: 'API responses and database exports often arrive as JSON arrays of objects. Spreadsheets, BI tools, and finance teams expect CSV. Converting locally avoids uploading sensitive customer or financial data to third-party converters.',
       },
-      { type: 'heading', text: 'JSON → CSV tab' },
+      { type: 'heading', text: 'How to convert JSON to CSV online' },
       {
         type: 'list',
         items: [
-          'Paste a JSON array of objects — headers derived from keys',
-          'Row count shown after conversion',
-          'Swap to CSV → JSON tab to verify round-trip',
-          'Shareable state for team debugging',
+          'Paste a JSON array of flat objects — e.g. [{"name":"Ada","role":"eng"}]',
+          'Column headers are derived automatically from object keys',
+          'CSV output updates live as you edit the JSON',
+          'Copy the result or open in Excel / Google Sheets',
         ],
       },
-      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Open CSV ↔ JSON workbench' },
+      { type: 'heading', text: 'JSON → CSV tips' },
+      {
+        type: 'list',
+        items: [
+          'Each object should share the same keys for clean columns',
+          'Nested objects may need flattening before conversion',
+          'Quoted fields handle commas inside values correctly',
+          'Use the row count badge to verify record totals',
+        ],
+      },
+      { type: 'heading', text: 'CSV ↔ JSON workbench' },
+      {
+        type: 'list',
+        items: [
+          'JSON → CSV and CSV → JSON tabs on one page',
+          'Round-trip button sends output to the reverse tab',
+          'Shareable links for team debugging',
+          '100% client-side — nothing uploaded',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'json-to-csv', label: 'Convert JSON to CSV online free' },
+      { type: 'tool-cta', toolId: 'csv-to-json', label: 'Convert CSV back to JSON' },
+      { type: 'compare-cta', slug: 'browser-tools-vs-server-upload', label: 'Why browser-based converters matter' },
     ],
   },
   'color-converter-hex-rgb-online-free': {
@@ -2251,10 +2422,114 @@ export const guides: Record<string, Guide> = {
       { type: 'tool-cta', toolId: 'html-beautifier', label: 'Open Web Formatter workbench' },
     ],
   },
+  'html-encoder-online-free': {
+    slug: 'html-encoder-online-free',
+    title: 'HTML Encoder Online Free — Escape & Encode HTML Entities',
+    description:
+      'Encode and decode HTML entities online instantly. Escape special characters for safe display — free, private, runs in your browser.',
+    publishedAt: '2026-08-21',
+    updatedAt: '2026-08-21',
+    keywords: [
+      'html encode',
+      'html encoder online free',
+      'html encode online',
+      'escape html online',
+      'html entities encoder',
+      'encode html characters',
+    ],
+    relatedTools: ['html-encoder', 'html-decoder', 'url-encoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'HTML encoding converts characters like <, >, and & into entities so browsers render them as text instead of markup. Developers use it when inserting dynamic content into templates, preventing XSS, and debugging escaped strings from CMS exports.',
+      },
+      { type: 'heading', text: 'How to encode HTML online' },
+      {
+        type: 'list',
+        items: [
+          'Paste plain text into the Encode tab — output updates live',
+          'Angle brackets become &lt; and &gt;, ampersands become &amp;',
+          'Switch to Decode to reverse entities back to characters',
+          'Share a link with your team — state is preserved in the URL',
+        ],
+      },
+      { type: 'heading', text: 'Common encoded characters' },
+      {
+        type: 'list',
+        items: ['< → &lt;', '> → &gt;', '& → &amp;', '" → &quot;', "' → &#39;"],
+      },
+      { type: 'heading', text: 'Why use a browser-based encoder' },
+      {
+        type: 'paragraph',
+        text: 'Server-side encoders receive your text on their infrastructure. For user-generated content previews, email templates with client names, or proprietary copy, a client-side tool keeps data on your device.',
+      },
+      { type: 'tool-cta', toolId: 'html-encoder', label: 'Encode HTML online free' },
+      { type: 'tool-cta', toolId: 'html-decoder', label: 'Decode HTML entities' },
+    ],
+  },
+  'ascii-decoder-online-free': {
+    slug: 'ascii-decoder-online-free',
+    title: 'ASCII Decoder Online Free — Convert Codes to Text',
+    description:
+      'Decode ASCII and Unicode character codes to readable text. Decimal or hex input, live output — free, private, no upload.',
+    publishedAt: '2026-08-21',
+    updatedAt: '2026-08-21',
+    keywords: [
+      'ascii decoder',
+      'ascii decoder online free',
+      'decode ascii',
+      'ascii to text',
+      'character code decoder',
+      'decimal to ascii online',
+    ],
+    relatedTools: ['ascii-decoder', 'ascii-converter', 'hex-decoder'],
+    blocks: [
+      {
+        type: 'paragraph',
+        text: 'An ASCII decoder turns numeric character codes back into readable text. Log files, protocol dumps, and debug scripts often output decimal (72 101 108) or hex (0x48 0x65) values instead of letters — decoding them manually is slow and error-prone.',
+      },
+      { type: 'heading', text: 'How to decode ASCII online' },
+      {
+        type: 'list',
+        items: [
+          'Paste decimal codes separated by spaces — e.g. 72 101 108 108 111',
+          'Or paste hex codes — e.g. 0x48 0x65 0x6C 0x6C 0x6F',
+          'Text output updates live as you type',
+          'Switch to Char → Code tab to encode text back to numbers',
+        ],
+      },
+      { type: 'heading', text: 'Supported input formats' },
+      {
+        type: 'list',
+        items: [
+          'Space-separated decimal: 72 101 108 108 111',
+          'Comma-separated decimal: 72,101,108,108,111',
+          'Hex with 0x prefix: 0x48 0x65 0x6C',
+          'Plain hex pairs: 48656c6c6f (via Hex workbench for continuous hex)',
+        ],
+      },
+      { type: 'heading', text: 'When you need ASCII decode' },
+      {
+        type: 'list',
+        items: [
+          'Reading serial port or socket debug output',
+          'CTF and encoding puzzles',
+          'Verifying charCodeAt() output from JavaScript',
+          'Teaching character encoding basics',
+        ],
+      },
+      { type: 'tool-cta', toolId: 'ascii-decoder', label: 'Decode ASCII online free' },
+      { type: 'tool-cta', toolId: 'ascii-converter', label: 'Open full ASCII workbench' },
+    ],
+  },
 }
 
 export function getWorkbenchGuides(): Guide[] {
   return WORKBENCH_GUIDE_SLUGS.map((slug) => guides[slug]).filter(Boolean)
+}
+
+export function getClickPriorityGuides(): Guide[] {
+  return CLICK_PRIORITY_GUIDE_SLUGS.map((slug) => guides[slug]).filter(Boolean)
 }
 
 export function getFeaturedGuides(): Guide[] {
@@ -2274,8 +2549,15 @@ export function getGuideBySlug(slug: string): Guide | undefined {
 }
 
 export function getGuidesForTool(toolId: string, limit = 3): Guide[] {
-  return getAllGuides()
-    .filter((guide) => guide.relatedTools.includes(toolId))
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, limit)
+  const tool = tools[toolId]
+  const primary = tool?.seoGuideSlug ? guides[tool.seoGuideSlug] : undefined
+  const others = getAllGuides()
+    .filter((guide) => guide.relatedTools.includes(toolId) && guide.slug !== tool?.seoGuideSlug)
+    .sort((a, b) => {
+      const aDate = new Date(a.updatedAt ?? a.publishedAt).getTime()
+      const bDate = new Date(b.updatedAt ?? b.publishedAt).getTime()
+      return bDate - aDate
+    })
+
+  return [primary, ...others].filter(Boolean).slice(0, limit) as Guide[]
 }

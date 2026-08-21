@@ -11,11 +11,12 @@ import { JsonLd } from '@/components/seo/json-ld'
 import { HeroSearchForm } from '@/components/search/hero-search-form'
 import { siteConfig } from '@/lib/site'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
-import { getAllGuides } from '@/lib/guides'
+import { getAllGuides, getClickPriorityGuides } from '@/lib/guides'
 import { getAllComparisons } from '@/lib/comparisons'
 import {
   categories,
   getAllTools,
+  getClickPriorityTier2Tools,
   getClickPriorityTools,
   getRecentlyAddedTools,
   getToolCount,
@@ -27,11 +28,10 @@ export default function HomePage() {
   const allTools = getAllTools()
   const trendingTools = getTrendingTools()
   const converterTools = getClickPriorityTools()
+  const tier2Tools = getClickPriorityTier2Tools()
   const recentTools = getRecentlyAddedTools(4)
+  const clickGuides = getClickPriorityGuides().slice(0, 4)
   const allGuides = getAllGuides()
-  const guides = allGuides
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 4)
   const comparisons = getAllComparisons().slice(0, 3)
   const previewTools = [...allTools]
     .sort((a, b) => a.title.localeCompare(b.title))
@@ -185,6 +185,30 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Auth, hash & format tools */}
+        <section className="border-b border-border/60 py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10">
+              <h2 className="text-3xl font-bold tracking-tight">Security & formatting tools</h2>
+              <p className="mt-2 text-muted-foreground">
+                JWT, Base64, hashes, CSV parse, and HTML beautify — all private by default
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {tier2Tools.map((tool) => (
+                <ToolCardWithFavorite
+                  key={tool.id}
+                  id={tool.id}
+                  title={tool.seoH1 ?? tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                  category={tool.category}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Popular */}
         <section className="border-y border-border/60 bg-muted/20 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -243,9 +267,9 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">Guides</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Guides for popular tools</h2>
                 <p className="mt-2 text-muted-foreground">
-                  {allGuides.length} guides · learn the concepts behind the tools
+                  Step-by-step explainers linked to free browser tools
                 </p>
               </div>
               <Link
@@ -257,7 +281,7 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {guides.map((guide) => (
+              {clickGuides.map((guide) => (
                 <GuideCard key={guide.slug} guide={guide} compact />
               ))}
             </div>

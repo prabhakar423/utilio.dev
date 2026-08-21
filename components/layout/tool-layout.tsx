@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { Suspense } from 'react'
+import { Scale } from 'lucide-react'
 import { AdSlot } from '@/components/layout/ad-slot'
 import { Breadcrumb } from '@/components/layout/breadcrumb'
 import { FaqSection } from '@/components/layout/faq-section'
@@ -92,6 +94,15 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
               <p className="mt-3 text-lg leading-relaxed text-muted-foreground">
                 {tool.seoIntro ?? tool.longDescription ?? tool.description}
               </p>
+              {relatedComparisons.length > 0 && (
+                <Link
+                  href={`/compare/${relatedComparisons[0].slug}`}
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
+                >
+                  <Scale className="size-4" />
+                  {relatedComparisons[0].title}
+                </Link>
+              )}
             </div>
             <div className="flex shrink-0 gap-2">
               <FavoriteButton toolId={tool.id} toolTitle={tool.title} />

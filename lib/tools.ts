@@ -21,6 +21,10 @@ export interface ToolDefinition {
   seoH1?: string
   /** Extra keyword-rich intro shown under the H1 — falls back to longDescription */
   seoIntro?: string
+  /** Primary SEO guide slug — surfaced first in related guides */
+  seoGuideSlug?: string
+  /** Compare page slugs to cross-link (in addition to matches on toolId) */
+  relatedComparisonSlugs?: string[]
   category: string
   icon: string
   keywords: string[]
@@ -62,6 +66,8 @@ export const tools: Record<string, ToolDefinition> = {
     seoH1: 'JSON Formatter Online Free',
     seoIntro:
       'Paste raw JSON and get formatted output instantly with live syntax validation. See exact line and column errors, preview object structure, minify for production, and share the same payload via link — all in your browser.',
+    seoGuideSlug: 'json-formatter-pretty-print-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-json-formatter', 'browser-tools-vs-server-upload'],
     category: 'text',
     icon: 'braces',
     keywords: [
@@ -104,13 +110,32 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Encode and decode Base64 in one workbench',
     longDescription:
       'Convert text to Base64 and back — standard or URL-safe — with live output. One workbench for encode and decode, no page switching.',
+    seoTitle: 'Base64 Encoder Online Free — Encode & Decode | Utiliio',
+    seoDescription:
+      'Encode and decode Base64 online with standard and URL-safe modes. Live round-trip, shareable links — free, no upload.',
+    seoH1: 'Base64 Encoder Online Free',
+    seoIntro:
+      'Convert text to Base64 or decode Base64 strings instantly — standard (+/) or URL-safe (-_) modes for JWTs and query strings. Encode and decode tabs share one page with live output and shareable state.',
+    seoGuideSlug: 'base64-encode-decode-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-base64-encode', 'browser-tools-vs-server-upload'],
     category: 'encoding',
     icon: 'binary',
-    keywords: ['base64', 'encode', 'decode', 'text', 'converter', 'base64url'],
+    keywords: [
+      'base64 encoder online free',
+      'base64 encode decode online',
+      'encode base64',
+      'decode base64',
+      'url-safe base64',
+      'base64 converter',
+    ],
     type: 'static',
     addedAt: '2026-01-18',
-    relatedTools: ['base64-decoder', 'url-encoder', 'jwt-decoder'],
+    relatedTools: ['base64-decoder', 'jwt-decoder', 'url-encoder'],
     faq: [
+      {
+        question: 'How do I encode Base64 online for free?',
+        answer: 'Paste text into the Encode tab — Base64 output updates live. Toggle URL-safe mode for JWT-style encoding. No upload required.',
+      },
       {
         question: 'What is URL-safe Base64?',
         answer: 'URL-safe Base64 replaces + with - and / with _ and omits padding. Use it in JWTs, query strings, and filenames where standard Base64 characters cause issues.',
@@ -198,6 +223,8 @@ export const tools: Record<string, ToolDefinition> = {
     seoH1: 'UUID Generator Online Free',
     seoIntro:
       'Create RFC 4122 UUID v4 values for databases, API keys, and test fixtures. Generate one or many at once, copy with one click, and keep everything local — no server round-trip.',
+    seoGuideSlug: 'uuid-generator-v4-online-free',
+    relatedComparisonSlugs: ['browser-tools-vs-server-upload'],
     category: 'generators',
     icon: 'fingerprint',
     keywords: [
@@ -297,13 +324,32 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Generate SHA-256, SHA-384, and SHA-512 hashes',
     longDescription:
       'Compute cryptographic hashes and HMAC signatures in one workbench. SHA-256, SHA-384, and SHA-512 via Web Crypto — switch between Hash and HMAC tabs without leaving the page.',
+    seoTitle: 'SHA-256 Hash Generator Online Free — Hash & HMAC | Utiliio',
+    seoDescription:
+      'Generate SHA-256, SHA-384, and SHA-512 hashes online. HMAC tab for webhook signatures — free, private, Web Crypto API.',
+    seoH1: 'Hash Generator Online Free',
+    seoIntro:
+      'Compute SHA-256, SHA-384, and SHA-512 digests as you type — or switch to the HMAC tab for keyed signatures with a secret. Ideal for checksums, webhook verification, and debugging API auth flows, all locally in your browser.',
+    seoGuideSlug: 'hash-generator-sha256-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-hash-tools', 'browser-tools-vs-server-upload'],
     category: 'security',
     icon: 'shield-check',
-    keywords: ['hash generator', 'sha256', 'sha512', 'checksum', 'cryptographic hash', 'hmac generator'],
+    keywords: [
+      'hash generator online free',
+      'sha256 hash generator online',
+      'sha256 online',
+      'hmac generator',
+      'sha512 hash',
+      'cryptographic hash browser',
+    ],
     type: 'static',
     addedAt: '2026-02-10',
     relatedTools: ['hmac-generator', 'jwt-decoder', 'base64-encoder'],
     faq: [
+      {
+        question: 'How do I generate a SHA-256 hash online for free?',
+        answer: 'Paste your text into the Hash tab — SHA-256 output updates live. Switch algorithms to SHA-384 or SHA-512. Processing uses the browser Web Crypto API.',
+      },
       {
         question: 'What hash algorithms are supported?',
         answer: 'SHA-256, SHA-384, and SHA-512 via the browser Web Crypto API. MD5 is not included because it is cryptographically broken.',
@@ -339,13 +385,33 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Decode, inspect, and verify JSON Web Tokens',
     longDescription:
       'Paste a JWT to decode its header and payload, inspect standard claims, check expiry, and verify HMAC signatures (HS256/384/512) — all in your browser. One workbench for decode, verify, and sign.',
+    seoTitle: 'JWT Decoder Online Free — Decode & Verify Tokens | Utiliio',
+    seoDescription:
+      'Decode and verify JWT tokens online. HS256 and RS256 signature check, expiry badges, claims table — free, private, no upload.',
+    seoH1: 'JWT Decoder Online Free',
+    seoIntro:
+      'Paste a JSON Web Token to inspect header and payload claims, check expiration at a glance, and verify HMAC or RSA signatures — decode, verify, and sign test tokens in one workbench without sending tokens to a server.',
+    seoGuideSlug: 'jwt-decoder-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-jwt-io'],
     category: 'developer',
     icon: 'key',
-    keywords: ['jwt decoder', 'json web token', 'decode jwt', 'jwt payload', 'auth token', 'jwt verify'],
+    keywords: [
+      'jwt decoder online free',
+      'decode jwt online',
+      'jwt verify online',
+      'json web token decoder',
+      'jwt payload',
+      'auth token inspector',
+      'rs256 jwt verify',
+    ],
     type: 'static',
     addedAt: '2026-02-11',
-    relatedTools: ['jwt-generator', 'json-formatter', 'hash-generator'],
+    relatedTools: ['jwt-generator', 'json-formatter', 'base64-encoder'],
     faq: [
+      {
+        question: 'How do I decode a JWT online for free?',
+        answer: 'Paste the token into the Decode tab — header and payload appear as formatted JSON instantly with a claims table and expiry badge.',
+      },
       {
         question: 'Can this tool verify JWT signatures?',
         answer: 'Yes. Open the Verify tab. For HS256/384/512, paste the HMAC secret. For RS256/384/512, paste the PEM public key (SPKI format). Verification runs locally via Web Crypto.',
@@ -417,6 +483,8 @@ export const tools: Record<string, ToolDefinition> = {
     seoH1: 'HTML Encoder Online Free',
     seoIntro:
       'Escape angle brackets, ampersands, and quotes into HTML entities for safe rendering in pages and templates. Switch to the Decode tab on the same page to reverse entities back to plain text.',
+    seoGuideSlug: 'html-encoder-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-cyberchef', 'browser-tools-vs-server-upload'],
     category: 'encoding',
     icon: 'code',
     keywords: [
@@ -852,13 +920,32 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Convert CSV data to JSON format',
     longDescription:
       'Transform comma-separated values into a JSON array of objects — switch to JSON → CSV on the same page for round-trip conversion with live output.',
+    seoTitle: 'CSV to JSON Converter Online Free — Parse Spreadsheets | Utiliio',
+    seoDescription:
+      'Convert CSV to JSON arrays online with live row counts. Round-trip to JSON → CSV — free, private, runs in your browser.',
+    seoH1: 'CSV to JSON Converter Online Free',
+    seoIntro:
+      'Paste CSV with a header row and get a JSON array of objects instantly. Row count badge confirms records converted — swap to JSON → CSV tab to verify round-trip without uploading spreadsheet data.',
+    seoGuideSlug: 'csv-to-json-converter-online-free',
+    relatedComparisonSlugs: ['browser-tools-vs-server-upload'],
     category: 'developer',
     icon: 'table',
-    keywords: ['csv to json', 'convert csv', 'csv json converter', 'csv parser'],
+    keywords: [
+      'csv to json',
+      'csv to json converter online free',
+      'convert csv to json',
+      'csv json converter',
+      'csv parser online',
+      'spreadsheet to json',
+    ],
     type: 'static',
     addedAt: '2026-02-23',
     relatedTools: ['json-to-csv', 'json-formatter', 'csv-formatter'],
     faq: [
+      {
+        question: 'How do I convert CSV to JSON online for free?',
+        answer: 'Paste CSV with column headers in the first row — JSON array output updates live. Quoted fields with commas are handled correctly.',
+      },
       {
         question: 'Can I convert JSON back to CSV?',
         answer: 'Yes. Use the JSON → CSV tab in the same workbench — input and tab are shareable via link.',
@@ -880,6 +967,8 @@ export const tools: Record<string, ToolDefinition> = {
     seoH1: 'JSON to CSV Converter Online Free',
     seoIntro:
       'Paste a JSON array of objects and get spreadsheet-ready CSV with column headers derived from keys. See row counts as you type, copy output in one click, and switch to CSV → JSON for round-trip verification — all locally in your browser.',
+    seoGuideSlug: 'json-to-csv-converter-online-free',
+    relatedComparisonSlugs: ['browser-tools-vs-server-upload'],
     category: 'developer',
     icon: 'sheet',
     keywords: [
@@ -1356,13 +1445,32 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Format and indent HTML code',
     longDescription:
       'Pretty-print HTML with proper indentation — part of the Web Formatter workbench alongside CSS minify, JS minify, and XML format.',
+    seoTitle: 'HTML Beautifier Online Free — Web Formatter Workbench | Utiliio',
+    seoDescription:
+      'Beautify HTML online with readable indentation. CSS/JS minify and XML format on the same page — free, private, no upload.',
+    seoH1: 'HTML Beautifier Online Free',
+    seoIntro:
+      'Pretty-print minified or messy HTML with consistent indentation to spot unclosed tags and nested structure issues. Part of the Web Formatter workbench — switch to CSS minify, JS minify, or XML format without leaving the page.',
+    seoGuideSlug: 'web-formatter-online-free',
+    relatedComparisonSlugs: ['browser-tools-vs-server-upload'],
     category: 'developer',
     icon: 'code',
-    keywords: ['html beautifier', 'format html', 'pretty print html', 'html formatter'],
+    keywords: [
+      'html beautifier online free',
+      'webformatter',
+      'format html online',
+      'pretty print html',
+      'html formatter',
+      'web formatter online',
+    ],
     type: 'static',
     addedAt: '2026-03-06',
-    relatedTools: ['css-minifier', 'javascript-minifier', 'markdown-preview'],
+    relatedTools: ['css-minifier', 'javascript-minifier', 'xml-formatter'],
     faq: [
+      {
+        question: 'How do I beautify HTML online for free?',
+        answer: 'Paste HTML into the HTML tab — indented output updates live. Switch tabs for CSS minify, JS minify, or XML format on the same page.',
+      },
       {
         question: 'Does it validate HTML?',
         answer: 'It pretty-prints structure with indentation. For XML validation and formatting, use the XML tab in the same workbench.',
@@ -1814,6 +1922,8 @@ export const tools: Record<string, ToolDefinition> = {
     seoH1: 'ASCII Decoder Online Free',
     seoIntro:
       'Paste decimal (72 101 108) or hex (0x48 0x65 0x6C) character codes and get readable text instantly. Same workbench as ASCII Converter — round-trip encode and decode with shareable links.',
+    seoGuideSlug: 'ascii-decoder-online-free',
+    relatedComparisonSlugs: ['utiliio-vs-cyberchef', 'browser-tools-vs-server-upload'],
     category: 'encoding',
     icon: 'hash',
     keywords: [
@@ -2122,8 +2232,19 @@ export const CLICK_PRIORITY_TOOL_IDS = [
   'jwt-decoder',
 ] as const
 
+export const CLICK_PRIORITY_TIER2_TOOL_IDS = [
+  'base64-encoder',
+  'hash-generator',
+  'csv-to-json',
+  'html-beautifier',
+] as const
+
 export function getClickPriorityTools(): ToolDefinition[] {
   return CLICK_PRIORITY_TOOL_IDS.map((id) => tools[id]).filter(Boolean)
+}
+
+export function getClickPriorityTier2Tools(): ToolDefinition[] {
+  return CLICK_PRIORITY_TIER2_TOOL_IDS.map((id) => tools[id]).filter(Boolean)
 }
 
 export function getTrendingTools(): ToolDefinition[] {

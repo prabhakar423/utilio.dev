@@ -10,6 +10,7 @@ import {
   getComparisonBySlug,
   getComparisonSlugs,
 } from '@/lib/comparisons'
+import { getGuideBySlug } from '@/lib/guides'
 import { createPageMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 import { tools } from '@/lib/tools'
@@ -44,6 +45,7 @@ export default async function ComparePage({ params }: PageProps) {
   }
 
   const tool = tools[comparison.toolId]
+  const seoGuide = tool?.seoGuideSlug ? getGuideBySlug(tool.seoGuideSlug) : undefined
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -116,6 +118,14 @@ export default async function ComparePage({ params }: PageProps) {
               <div className="mt-4 max-w-md">
                 <ToolCard {...tool} />
               </div>
+              {seoGuide && (
+                <Link
+                  href={`/guides/${seoGuide.slug}`}
+                  className="mt-4 inline-flex text-sm font-medium text-primary hover:text-primary/80"
+                >
+                  Read: {seoGuide.title} →
+                </Link>
+              )}
             </section>
           )}
 

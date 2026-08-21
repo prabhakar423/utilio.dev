@@ -4,7 +4,7 @@ import { GuideCard } from '@/components/cards/guide-card'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { JsonLd } from '@/components/seo/json-ld'
-import { getAllGuides, getFeaturedGuides, getWorkbenchGuides } from '@/lib/guides'
+import { getAllGuides, getClickPriorityGuides, getFeaturedGuides, getWorkbenchGuides } from '@/lib/guides'
 import { createPageMetadata } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 
@@ -25,9 +25,11 @@ export const metadata = createPageMetadata({
 export default function GuidesIndexPage() {
   const featured = getFeaturedGuides()
   const workbench = getWorkbenchGuides()
+  const clickPriority = getClickPriorityGuides()
   const excludedSlugs = new Set([
     ...featured.map((g) => g.slug),
     ...workbench.map((g) => g.slug),
+    ...clickPriority.map((g) => g.slug),
   ])
   const guides = getAllGuides()
     .filter((g) => !excludedSlugs.has(g.slug))
@@ -87,6 +89,18 @@ export default function GuidesIndexPage() {
             </p>
             <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {workbench.map((guide) => (
+                <GuideCard key={guide.slug} guide={guide} />
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-14">
+            <h2 className="text-xl font-semibold tracking-tight">High-traffic tool guides</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Guides matched to popular search queries — JSON, CSV, encoding, UUID, and JWT.
+            </p>
+            <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {clickPriority.map((guide) => (
                 <GuideCard key={guide.slug} guide={guide} />
               ))}
             </div>

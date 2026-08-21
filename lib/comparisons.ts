@@ -1,4 +1,6 @@
 import { siteConfig } from '@/lib/site'
+import { categories, type CategoryDefinition } from '@/lib/categories'
+import { tools } from '@/lib/tools'
 
 export interface Comparison {
   slug: string
@@ -321,6 +323,23 @@ export function getComparisonBySlug(slug: string): Comparison | undefined {
   return comparisons[slug]
 }
 
-export function getComparisonsForTool(toolId: string): Comparison[] {
-  return getAllComparisons().filter((comparison) => comparison.toolId === toolId)
+export function getComparisonsForTool(toolId: string, limit = 3): Comparison[] {
+  const tool = tools[toolId]
+  const seen = new Set<string>()
+  const result: Comparison[] = []
+
+  const add = (comparison: Comparison | undefined) => {
+    if (!comparison || seen.has(comparison.slug)) return
+    seen.add(comparison.slug)
+    result.push(comparison)
+  }
+
+  for (const comparison of getAllComparisons()) {
+    if (comparison.toolId === toolId) add(comparison)
+  }
+  for (const slug of tool?.relatedComparisonSlugs ?? []) {
+    add(getComparisonBySlug(slug))
+  }
+
+  return result.slice(0, limit)
 }
