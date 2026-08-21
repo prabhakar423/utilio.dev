@@ -16,6 +16,7 @@ import { getAllComparisons } from '@/lib/comparisons'
 import {
   categories,
   getAllTools,
+  getClickPriorityTools,
   getRecentlyAddedTools,
   getToolCount,
   getTrendingTools,
@@ -25,6 +26,7 @@ export default function HomePage() {
   const toolCount = getToolCount()
   const allTools = getAllTools()
   const trendingTools = getTrendingTools()
+  const converterTools = getClickPriorityTools()
   const recentTools = getRecentlyAddedTools(4)
   const allGuides = getAllGuides()
   const guides = allGuides
@@ -157,13 +159,39 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Popular converters — GSC priority queries */}
+        <section className="border-b border-border/60 bg-muted/20 py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight">Popular converters</h2>
+                <p className="mt-2 text-muted-foreground">
+                  Free online converters — live output, no upload, runs in your browser
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {converterTools.map((tool) => (
+                <ToolCardWithFavorite
+                  key={tool.id}
+                  id={tool.id}
+                  title={tool.seoH1 ?? tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                  category={tool.category}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Popular */}
         <section className="border-y border-border/60 bg-muted/20 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">Popular tools</h2>
-                <p className="mt-2 text-muted-foreground">Most useful utilities to start with</p>
+                <h2 className="text-3xl font-bold tracking-tight">More popular tools</h2>
+                <p className="mt-2 text-muted-foreground">JWT, formatting, encoding — all private by default</p>
               </div>
               <Link
                 href="/search"

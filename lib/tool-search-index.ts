@@ -16,12 +16,12 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "text",
     "icon": "braces",
     "keywords": [
-      "json",
-      "format",
-      "validate",
-      "pretty print",
-      "minify",
-      "beautify",
+      "json formatter online free",
+      "pretty print json",
+      "format json online",
+      "json validator",
+      "minify json",
+      "json beautifier",
       "json error line"
     ],
     "categoryName": "Text Tools"
@@ -97,11 +97,12 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "generators",
     "icon": "fingerprint",
     "keywords": [
-      "uuid",
-      "guid",
-      "generate",
-      "unique identifier",
-      "v4"
+      "uuid generator online free",
+      "uuid v4 generator",
+      "generate uuid",
+      "guid generator",
+      "unique identifier generator",
+      "random uuid"
     ],
     "categoryName": "Generators"
   },
@@ -247,10 +248,11 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "category": "encoding",
     "icon": "code",
     "keywords": [
-      "html encoder",
+      "html encode",
+      "html encoder online free",
       "html entities",
       "escape html",
-      "html encode",
+      "html encode online",
       "html decode"
     ],
     "categoryName": "Converters"
@@ -587,9 +589,11 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "icon": "sheet",
     "keywords": [
       "json to csv",
+      "json to csv converter online free",
       "convert json csv",
-      "export json",
-      "json csv converter"
+      "export json to csv",
+      "json csv converter",
+      "json array to csv"
     ],
     "categoryName": "Developer"
   },
@@ -1320,9 +1324,11 @@ export const toolSearchIndex: ToolSearchItem[] = [
     "icon": "hash",
     "keywords": [
       "ascii decoder",
+      "ascii decoder online free",
       "code to char",
       "ascii to text",
-      "character code decoder"
+      "character code decoder",
+      "decode ascii"
     ],
     "categoryName": "Converters"
   },

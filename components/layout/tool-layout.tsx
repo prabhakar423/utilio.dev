@@ -86,9 +86,11 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
                 </span>
                 <LocalProcessingBadge />
               </div>
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{tool.title}</h1>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                {tool.seoH1 ?? tool.title}
+              </h1>
               <p className="mt-3 text-lg leading-relaxed text-muted-foreground">
-                {tool.longDescription ?? tool.description}
+                {tool.seoIntro ?? tool.longDescription ?? tool.description}
               </p>
             </div>
             <div className="flex shrink-0 gap-2">

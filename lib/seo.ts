@@ -44,9 +44,11 @@ export function createPageMetadata({
 
 export function createToolMetadata(tool: ToolDefinition): Metadata {
   const ogImage = `${siteConfig.url}/tools/${tool.id}/opengraph-image`
-  const description = withPrivacyMetaDescription(tool.longDescription ?? tool.description)
+  const description = tool.seoDescription
+    ? withPrivacyMetaDescription(tool.seoDescription)
+    : withPrivacyMetaDescription(tool.longDescription ?? tool.description)
   return createPageMetadata({
-    title: `${tool.title} — Free Online Tool`,
+    title: tool.seoTitle ?? `${tool.title} — Free Online Tool | ${siteConfig.name}`,
     description,
     path: `/tools/${tool.id}`,
     keywords: tool.keywords,
@@ -84,12 +86,13 @@ export function faqJsonLd(faq: { question: string; answer: string }[]) {
 
 export function toolJsonLd(tool: ToolDefinition) {
   const category = getCategoryById(tool.category)
+  const description = tool.seoDescription ?? tool.longDescription ?? tool.description
 
   return {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: tool.title,
-    description: tool.longDescription ?? tool.description,
+    name: tool.seoH1 ?? tool.title,
+    description,
     url: `${siteConfig.url}/tools/${tool.id}`,
     applicationCategory: category?.name ?? 'Utility',
     operatingSystem: 'Any',

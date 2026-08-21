@@ -13,6 +13,14 @@ export interface ToolDefinition {
   title: string
   description: string
   longDescription?: string
+  /** Search-optimized `<title>` — falls back to `${title} — Free Online Tool | Utiliio` */
+  seoTitle?: string
+  /** Search-optimized meta description — falls back to longDescription + privacy suffix */
+  seoDescription?: string
+  /** Keyword-rich H1 — falls back to title */
+  seoH1?: string
+  /** Extra keyword-rich intro shown under the H1 — falls back to longDescription */
+  seoIntro?: string
   category: string
   icon: string
   keywords: string[]
@@ -48,24 +56,42 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Format, validate, and minify JSON with live error locations',
     longDescription:
       'Free online JSON formatter and validator. Pretty-print with live output, pinpoint syntax errors by line and column, preview structure, and minify for production.',
+    seoTitle: 'JSON Formatter Online Free — Pretty Print & Validate | Utiliio',
+    seoDescription:
+      'Format and validate JSON online with live error locations. Pretty-print, minify, structure preview, and shareable links — free, no upload.',
+    seoH1: 'JSON Formatter Online Free',
+    seoIntro:
+      'Paste raw JSON and get formatted output instantly with live syntax validation. See exact line and column errors, preview object structure, minify for production, and share the same payload via link — all in your browser.',
     category: 'text',
     icon: 'braces',
-    keywords: ['json', 'format', 'validate', 'pretty print', 'minify', 'beautify', 'json error line'],
+    keywords: [
+      'json formatter online free',
+      'pretty print json',
+      'format json online',
+      'json validator',
+      'minify json',
+      'json beautifier',
+      'json error line',
+    ],
     type: 'static',
     addedAt: '2026-01-15',
-    relatedTools: ['base64-encoder', 'url-encoder', 'yaml-to-json'],
+    relatedTools: ['json-to-csv', 'yaml-to-json', 'jwt-decoder'],
     faq: [
+      {
+        question: 'How do I format JSON online for free?',
+        answer: 'Paste your JSON into the input box — output updates live in Format mode with readable indentation. No sign-up or upload required.',
+      },
       {
         question: 'How do I format JSON online?',
         answer: 'Paste your JSON into the input box — output updates live in Format mode with readable indentation.',
       },
       {
-        question: 'Can this tool show where JSON syntax errors are?',
-        answer: 'Yes. Invalid JSON displays the parse error with line and column numbers when your browser provides them.',
+        question: 'Is it safe to paste API JSON into an online formatter?',
+        answer: 'With Utiliio, yes — processing happens entirely in your browser. Your JSON never leaves your device, unlike server-side formatters.',
       },
       {
-        question: 'Can this tool minify JSON?',
-        answer: 'Yes. Switch to Minify mode to remove whitespace and produce compact JSON for APIs and production use.',
+        question: 'Does this show where JSON syntax errors are?',
+        answer: 'Yes. Invalid JSON shows the parse error with line and column numbers so you can fix issues quickly.',
       },
       ...defaultFaq,
     ],
@@ -166,13 +192,36 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Generate RFC 4122 UUID v4 identifiers',
     longDescription:
       'Create cryptographically random UUID v4 values for databases, APIs, and distributed systems. Copy single or bulk UUIDs in one click.',
+    seoTitle: 'UUID Generator Online Free — Generate UUID v4 Instantly | Utiliio',
+    seoDescription:
+      'Generate UUID v4 identifiers online instantly. Cryptographically random, bulk copy, runs in your browser — free, no upload.',
+    seoH1: 'UUID Generator Online Free',
+    seoIntro:
+      'Create RFC 4122 UUID v4 values for databases, API keys, and test fixtures. Generate one or many at once, copy with one click, and keep everything local — no server round-trip.',
     category: 'generators',
     icon: 'fingerprint',
-    keywords: ['uuid', 'guid', 'generate', 'unique identifier', 'v4'],
+    keywords: [
+      'uuid generator online free',
+      'uuid v4 generator',
+      'generate uuid',
+      'guid generator',
+      'unique identifier generator',
+      'random uuid',
+    ],
     type: 'static',
     addedAt: '2026-01-22',
-    relatedTools: ['password-generator', 'json-formatter', 'base64-encoder'],
-    faq: defaultFaq,
+    relatedTools: ['uuid-validator', 'password-generator', 'jwt-decoder'],
+    faq: [
+      {
+        question: 'How do I generate a UUID online for free?',
+        answer: 'Click Generate to create a cryptographically random UUID v4 instantly. Copy one UUID or generate multiple at once — all in your browser.',
+      },
+      {
+        question: 'What UUID version does this generate?',
+        answer: 'UUID v4 — random 128-bit values per RFC 4122, suitable for most database primary keys and API identifiers.',
+      },
+      ...defaultFaq,
+    ],
     component: () =>
       import('@/components/tools/uuid-generator').then((mod) => ({ default: mod.UuidGenerator })),
   },
@@ -362,13 +411,30 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Encode special characters to HTML entities',
     longDescription:
       'Encode and decode HTML entities on one page — escape &lt;, &gt;, &amp;, and quotes for safe display, or reverse entities back to characters.',
+    seoTitle: 'HTML Encoder Online Free — Escape & Encode Entities | Utiliio',
+    seoDescription:
+      'Encode HTML entities online instantly. Escape special characters for safe display — free, private, runs in your browser with decode tab.',
+    seoH1: 'HTML Encoder Online Free',
+    seoIntro:
+      'Escape angle brackets, ampersands, and quotes into HTML entities for safe rendering in pages and templates. Switch to the Decode tab on the same page to reverse entities back to plain text.',
     category: 'encoding',
     icon: 'code',
-    keywords: ['html encoder', 'html entities', 'escape html', 'html encode', 'html decode'],
+    keywords: [
+      'html encode',
+      'html encoder online free',
+      'html entities',
+      'escape html',
+      'html encode online',
+      'html decode',
+    ],
     type: 'static',
     addedAt: '2026-02-12',
     relatedTools: ['html-decoder', 'url-encoder', 'json-formatter'],
     faq: [
+      {
+        question: 'How do I encode HTML online for free?',
+        answer: 'Paste your text into the Encode tab — special characters convert to HTML entities instantly with live output. No upload required.',
+      },
       {
         question: 'Can I decode HTML entities here?',
         answer: 'Yes. Switch to the Decode tab in the same HTML workbench — encode and decode share one page with shareable links.',
@@ -808,16 +874,37 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Convert JSON arrays to CSV format',
     longDescription:
       'Export JSON array data to CSV for spreadsheets — same workbench as CSV → JSON with row count and round-trip support.',
+    seoTitle: 'JSON to CSV Converter Online Free — Export Arrays to CSV | Utiliio',
+    seoDescription:
+      'Convert JSON arrays to CSV online instantly. Live row counts, round-trip to JSON, shareable links — free, private, no upload.',
+    seoH1: 'JSON to CSV Converter Online Free',
+    seoIntro:
+      'Paste a JSON array of objects and get spreadsheet-ready CSV with column headers derived from keys. See row counts as you type, copy output in one click, and switch to CSV → JSON for round-trip verification — all locally in your browser.',
     category: 'developer',
     icon: 'sheet',
-    keywords: ['json to csv', 'convert json csv', 'export json', 'json csv converter'],
+    keywords: [
+      'json to csv',
+      'json to csv converter online free',
+      'convert json csv',
+      'export json to csv',
+      'json csv converter',
+      'json array to csv',
+    ],
     type: 'static',
     addedAt: '2026-02-23',
     relatedTools: ['csv-to-json', 'json-formatter', 'csv-formatter'],
     faq: [
       {
+        question: 'How do I convert JSON to CSV online for free?',
+        answer: 'Paste a JSON array of objects into the input — CSV output updates live with headers from object keys. No upload or sign-up required.',
+      },
+      {
         question: 'Can I convert CSV back to JSON?',
         answer: 'Yes. Switch to the CSV → JSON tab on the same page — both directions share one workbench.',
+      },
+      {
+        question: 'Is it safe to convert sensitive JSON to CSV online?',
+        answer: 'With Utiliio, conversion runs entirely in your browser. Your data never leaves your device.',
       },
       ...defaultFaq,
     ],
@@ -1721,16 +1808,37 @@ export const tools: Record<string, ToolDefinition> = {
     description: 'Convert ASCII/Unicode codes back to characters',
     longDescription:
       'Paste decimal or hex character codes and get readable text. Same workbench as the ASCII Converter — supports space or comma-separated codes.',
+    seoTitle: 'ASCII Decoder Online Free — Convert Codes to Text | Utiliio',
+    seoDescription:
+      'Decode ASCII and Unicode character codes to text online. Decimal or hex input, live output — free, private, runs in your browser.',
+    seoH1: 'ASCII Decoder Online Free',
+    seoIntro:
+      'Paste decimal (72 101 108) or hex (0x48 0x65 0x6C) character codes and get readable text instantly. Same workbench as ASCII Converter — round-trip encode and decode with shareable links.',
     category: 'encoding',
     icon: 'hash',
-    keywords: ['ascii decoder', 'code to char', 'ascii to text', 'character code decoder'],
+    keywords: [
+      'ascii decoder',
+      'ascii decoder online free',
+      'code to char',
+      'ascii to text',
+      'character code decoder',
+      'decode ascii',
+    ],
     type: 'static',
     addedAt: '2026-07-26',
     relatedTools: ['ascii-converter', 'hex-decoder', 'binary-decoder'],
     faq: [
       {
+        question: 'How do I decode ASCII codes online for free?',
+        answer: 'Paste decimal or hex codes separated by spaces or commas — text output updates live. Processing happens entirely in your browser.',
+      },
+      {
         question: 'What code formats are supported?',
         answer: 'Decimal (72 101 108) and hex (0x48 0x65 0x6C) codes, separated by spaces or commas.',
+      },
+      {
+        question: 'Can I encode text to ASCII codes here?',
+        answer: 'Yes. Switch to the Char → Code tab in the same ASCII workbench to encode plain text to decimal and hex values.',
       },
       ...defaultFaq,
     ],
@@ -2004,14 +2112,28 @@ export function searchTools(query: string): ToolDefinition[] {
   })
 }
 
+/** GSC-validated high-intent tools — used for homepage converter section and internal linking. */
+export const CLICK_PRIORITY_TOOL_IDS = [
+  'json-to-csv',
+  'json-formatter',
+  'ascii-decoder',
+  'html-encoder',
+  'uuid-generator',
+  'jwt-decoder',
+] as const
+
+export function getClickPriorityTools(): ToolDefinition[] {
+  return CLICK_PRIORITY_TOOL_IDS.map((id) => tools[id]).filter(Boolean)
+}
+
 export function getTrendingTools(): ToolDefinition[] {
   return [
     'json-formatter',
+    'json-to-csv',
     'jwt-decoder',
-    'hash-generator',
-    'regex-tester',
-    'base64-encoder',
-    'password-generator',
+    'ascii-decoder',
+    'html-encoder',
+    'uuid-generator',
   ]
     .map((id) => tools[id])
     .filter(Boolean)
